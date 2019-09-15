@@ -1,7 +1,7 @@
 {
   "name": "tim_d",
   "version": "0.1.0",
-  "description": "Define and manipulate DOM elements to easily create user interfaces. Imagine JQuery and React had a child that was bitten by a radioactive dinosaur and was recruited by the Kingsmen. OK, not quite that cool, but very close.",
+  "description": "_d: [dom] Define and manipulate DOM elements to easily create user interfaces",
   "main": "index.js",
   "types": "types/index.d.ts",
   "scripts": {
