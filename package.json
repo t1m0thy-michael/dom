@@ -1,7 +1,7 @@
 {
   "name": "tim_dom",
   "version": "0.1.0",
-  "description": "_d: [dom] Define and manipulate DOM elements to easily create user interfaces",
+  "description": "d: [dom] Define and manipulate DOM elements to easily create user interfaces",
   "main": "index.js",
   "types": "types/index.d.ts",
   "scripts": {
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/t1m0thy-michael/d.git"
+    "url": "git://github.com/t1m0thy-michael/dom.git"
   },
   "author": "Timothy Michael",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/t1m0thy-michael/d/issues"
+    "url": "https://github.com/t1m0thy-michael/dom/issues"
   },
-  "homepage": "https://github.com/t1m0thy-michael/d#readme",
+  "homepage": "https://github.com/t1m0thy-michael/dom#readme",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.2.0",
     "@typescript-eslint/parser": "^2.2.0",
