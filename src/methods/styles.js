@@ -3,7 +3,7 @@ import runFactory from '../utils/runFactory'
 import runAndReturnFactory from '../utils/runAndReturnFactory'
 
 import u from '@t1m0thy_michael/u'
-import b from '../../browser'
+import { img } from '../utils/image'
 
 const hasStyleProperty = (e) => (e && e.style)
 
@@ -27,11 +27,11 @@ const background = async (
 		position = '',
 	}) => {
 
-	if (!hasStyleProperty(element)) return
+	//if (!hasStyleProperty(element)) return
 
 	if (path) {
 
-		const img = await b.image(path, brightness)
+		const img = await img(path, brightness)
 
 		if (img.status !== 'ok') return false
 
@@ -67,8 +67,8 @@ const backgroundColour = (element, domElement, color) => {
 }
 
 const Dimension = {
-	height = 'height',
-	width = 'width',
+	height: 'height',
+	width: 'width',
 }
 
 const dimension = (element, dimension, val, unit = 'px') => {

@@ -8,7 +8,11 @@ const value = (element, domElement, val) => {
 	element.value = val
 }
 
-const resetDefault = (element, domElement) => {
+const dflt = (element, domElement, val) => {
+	if (!u.isUndefined(val)) {
+		domElement.data('default', val)
+		element.value = isFunction(val) ? val() : val
+	}
 	const val = element.DOM.data['default']
 	element.value = u.isFunction(val) ? val() : val || ''
 }
@@ -98,7 +102,7 @@ const formValues = (element, domElement) => {
 export default {
 	deselect: function (px) { return runFactory(this, deselect)() },
 	formValues: function (px) { return runAndReturnFactory(this, formValues)(px) },
-	resetDefault: function () { return runFactory(this, resetDefault)() },
+	dflt: function (val) { return runFactory(this, dflt)(val) },
 	select: function (px) { return runFactory(this, select)() },
 	updateSelect: function (def) { return runFactory(this, updateSelect)(def) },
 	validate: function (extra) { return runAndReturnFactory(this, validate)(extra) },

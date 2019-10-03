@@ -14,7 +14,7 @@ const scrollMore = (element, domElement, px) => element.scrollTop += px
 const getBounding = (element, domElement) => element.getBoundingClientRect()
 
 export default {
-	scrollTop: function (this, px) { return runAndReturnFactory(this, scrollTop)(px) },
-	scrollMore: function (this, px) { return runFactory(this, scrollMore)(px) },
-	getBounding: function (this) { return runAndReturnFactory(this, getBounding)() },
+	scrollTop: function (px) { return runAndReturnFactory(this, scrollTop)(px) },
+	scrollMore: function (px) { return runFactory(this, scrollMore)(px) },
+	getBounding: function () { return runAndReturnFactory(this, getBounding)() },
 }

@@ -1,5 +1,5 @@
 import runFactory from '../utils/runFactory'
-import { DomEventBusError } from '../utils/errors'
+import { Dom_EventBus_Error } from '../utils/errors'
 import u from '@t1m0thy_michael/u'
 
 const sub = (
@@ -15,7 +15,7 @@ const sub = (
 	}
 ) => {
 
-	if (!domElement.eventbus) throw new DomEventBusError('Not registered')
+	if (!domElement.eventbus) throw new Dom_EventBus_Error('Not registered')
 	if (!topic || !fn || !u.isFunction(fn)) return
 	
 	const subscription = {
@@ -79,29 +79,21 @@ const onEvent = (
 					ctx: elementAsCtx ? element : undefined
 				})
 			} else {
-				if (!domElement.eventbus) throw new DomEventBusError('Not registered')
+				if (!domElement.eventbus) throw new Dom_EventBus_Error('Not registered')
 			}
 		}
 	}
 
 	element.DOM.event.onEvent.push(onEventHandler)
-
 	element.addEventListener(event, onEventHandler)
 }
 
-const on = (
-	element, 
-	domElement,
-	evnt,
-	fn
-) => {
+const on = (element, domElement, evnt, fn) => {
 	onEvent(
 		element,
 		domElement,
-		{
-			event: evnt,
-			fn: fn
-		})
+		{ event: evnt, fn: fn }
+	)
 }
 
 const fireEvent = (element, domElement, event) => {
@@ -110,17 +102,11 @@ const fireEvent = (element, domElement, event) => {
 	element.dispatchEvent(evt)
 }
 
-const click = (element, domElement) => fireEvent(element, domElement, 'click')
-
-const change = (element, domElement) => fireEvent(element, domElement, 'change')
-
 export default {
-	change: function () { return runFactory(this, change)() },
-	click: function () { return runFactory(this, click)() },
+	change: function () { return runFactory(this, fireEvent)('change') },
+	click: function () { return runFactory(this, fireEvent)('click') },
 	fireEvent: function (str) { return runFactory(this, fireEvent)(str) },
 	on: function (evnt, fn) { return runFactory(this, on)(evnt, fn) },
 	onEvent: function (opt) { return runFactory(this, onEvent)(opt) },
 	sub: function (opt) { return runFactory(this, sub)(opt) },
 }
-
-

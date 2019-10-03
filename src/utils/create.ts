@@ -1,13 +1,18 @@
+import { DomDefinition, DomElement } from '../types'
 import { HTMLTag } from '../enum'
 
-import dom from '../dom'
-import u from '@t1m0thy_michael/u'
+import dom from '../index'
 import setters from './setters'
 
-const create = (d = {}) => {
+export interface Create {
+	(d: Partial<DomDefinition>): DomElement
+}
+
+
+const create: Create = (d = {} as Partial<DomDefinition>) => {
 	if (d.tag === undefined) {
-		for (let tag in HTMLTag) { // HTMLTag enum defined in types.d.ts
-			if (!u.isUndefined(d[tag])) {
+		for (let tag in HTMLTag) {
+			if (d[tag] !== undefined) {
 				d.tag = tag
 				if (d.tag === 'select') {
 					d.options = d[tag]

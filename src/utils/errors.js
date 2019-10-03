@@ -1,6 +1,5 @@
 Error.stackTraceLimit = 50
-
-export class DomEventBusError extends Error {
+export class Dom_EventBus_Error extends Error {
 	constructor(message) {
 		super(message)
 		this.name = this.constructor.name
@@ -8,6 +7,10 @@ export class DomEventBusError extends Error {
 	}
 }
 
-export default {
-	DomEventBusError
+export class Dom_Element_Definition_Error extends Error {
+	constructor(message) {
+		super(message)
+		this.name = this.constructor.name
+		Error.captureStackTrace(this, this.constructor)
+	}
 }

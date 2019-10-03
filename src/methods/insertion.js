@@ -1,5 +1,5 @@
 import u from '@t1m0thy_michael/u'
-import dom from '../dom'
+import dom from '..'
 import eventJS from '@t1m0thy_michael/e'
 
 import runFactory from '../utils/runFactory'
