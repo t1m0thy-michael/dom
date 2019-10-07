@@ -1,75 +1,64 @@
-import attributeMethods from '../methods/attributes'
-import classMethods from '../methods/classes'
-import eventMethods from '../methods/events'
-import insertionMethods from '../methods/insertion'
-import selectionMethods from '../methods/selection'
-import styleMethods from '../methods/styles'
-import viewportMethods from '../methods/viewport'
-import formMethods from '../methods/form'
+import { selection } from '../methods/selection'
+import { attribute } from '../methods/attributes'
+import { classes } from '../methods/classes'
+import { event } from '../methods/events'
+import { insertion } from '../methods/insertion'
+import { styles } from '../methods/styles'
+// import viewportMethods from '../methods/viewport'
+// import formMethods from '../methods/form'
 
-import u from '@t1m0thy_michael/u'
+import { runFactory, runAndReturnFactory } from '../utils/run'
 
-export interface DomObjectPrototype {
+export const DOM = {
+	
+	// selection methods
+	child: runAndReturnFactory(selection.child),
+	parent: runAndReturnFactory(selection.parent),
+	sibling: runAndReturnFactory(selection.sibling),
 
-	[index: string]: any,
+	// attributes
+	attr: runAndReturnFactory(attribute.attr),
+	data: runAndReturnFactory(attribute.data),
+	disable: runFactory(attribute.disable),
+	enable: runFactory(attribute.enable),
+	id: runFactory(attribute.id),
+	innerHTML: runAndReturnFactory(attribute.innerHTML),
+	innerText: runAndReturnFactory(attribute.innerText),
 
-	// getters...
-	isAppended: boolean,
+	// classes
+	addClass: runFactory(classes.addClass),
+	removeClass: runFactory(classes.removeClass),
+	replaceClass: runFactory(classes.replaceClass),
+	toggleClass: runFactory(classes.toggleClass),
+	hasClass: runFactory(classes.hasClass),
 
-	// language feature overrides
-	toString: () => string,
-	toJson: () => object,
-}
-
-export const DOM: DomObjectPrototype = {
-
-	// // event methods
-	// change: eventMethods.change,
-	// click: eventMethods.click,
-	// fireEvent: eventMethods.fireEvent,
-	// on: eventMethods.on,
-	// onEvent: eventMethods.onEvent,
-	// sub: eventMethods.sub,
-
-	// // style methods
-	// background: styleMethods.background,
-	// backgroundColour: styleMethods.backgroundColour,
-	// colour: styleMethods.colour,
-	// height: styleMethods.height,
-	// hide: styleMethods.hide,
-	// show: styleMethods.show,
-	// style: styleMethods.style,
-	// width: styleMethods.width,
-
-	// // class methods
-	// addClass: classMethods.addClass,
-	// hasClass: classMethods.hasClass,
-	// removeClass: classMethods.removeClass,
-	// replaceClass: classMethods.replaceClass,
-	// toggleClass: classMethods.toggleClass,
+	// events
+	change: runFactory(event.change),
+	click: runFactory(event.click),
+	fireEvent: runFactory(event.fireEvent),
+	on: runFactory(event.on),
+	onEvent: runFactory(event.onEvent),
+	sub: runFactory(event.sub),
+	
+	// style
+	background: runAndReturnFactory(styles.background),
+	backgroundColour: runAndReturnFactory(styles.backgroundColour),
+	colour: runAndReturnFactory(styles.colour),
+	height: runAndReturnFactory(styles.height),
+	hide: runFactory(styles.hide),
+	show: runFactory(styles.show),
+	style: runAndReturnFactory(styles.style),
+	width: runAndReturnFactory(styles.width),
 
 	// // insertion methods
-	// appendAfter: insertionMethods.appendAfter,
-	// appendBefore: insertionMethods.appendBefore,
-	// appendFirstChild: insertionMethods.appendFirstChild,
-	// appendLastChild: insertionMethods.appendLastChild,
-	// appendTo: insertionMethods.appendTo,
-	// empty: insertionMethods.empty,
-	// remove: insertionMethods.remove,
-	// replace: insertionMethods.replace,
-
-	// selection methods
-	child: selectionMethods.child,
-	parent: selectionMethods.parent,
-	sibling: selectionMethods.sibling,
-
-	// // attribute methods
-	// attr: attributeMethods.attr,
-	// data: attributeMethods.data,
-	// innerText: attributeMethods.innerText,
-	// innerHTML: attributeMethods.innerHTML,
-	// disable: attributeMethods.disable,
-	// enable: attributeMethods.enable,
+	appendAfter: runFactory(insertion.appendAfter),
+	appendBefore: runFactory(insertion.appendBefore),
+	appendFirstChild: runFactory(insertion.appendFirstChild),
+	appendLastChild: runFactory(insertion.appendLastChild),
+	appendTo: runFactory(insertion.appendTo),
+	empty: runFactory(insertion.empty),
+	remove: runFactory(insertion.remove),
+	replace: runFactory(insertion.replace),
 
 	// // viewport methods
 	// getBounding: viewportMethods.getBounding,
@@ -85,10 +74,6 @@ export const DOM: DomObjectPrototype = {
 	// validate: formMethods.validate,
 	// value: formMethods.value,
 
-	eventBus: false,
-
-	get isAppended() { return this.list.length > 0 && document.contains(this.element) },
-
 	toString: function() { return '[object Dom]' },
-	toJson: function() { return u.decycle(this) }
+	// toJson: function() { return 'AHHHHH!!!! this doesnt work' }
 }

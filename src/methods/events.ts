@@ -1,10 +1,15 @@
-import runFactory from '../utils/runFactory'
+import { 
+	NodeDescendant,
+	DomEventSubscription,
+	DomEvent,
+ } from '../types'
+
+import { dom } from '../index'
 import { Dom_EventBus_Error } from '../utils/errors'
-import u from '@t1m0thy_michael/u'
+import { isFunction }from '@t1m0thy_michael/u'
 
 const sub = (
-	element, 
-	domElement,
+	element: NodeDescendant,
 	{
 		topic,
 		fn,
@@ -12,11 +17,13 @@ const sub = (
 		once,
 		minInterval,
 		description,
-	}
+	}: DomEventSubscription
 ) => {
 
-	if (!domElement.eventbus) throw new Dom_EventBus_Error('Not registered')
-	if (!topic || !fn || !u.isFunction(fn)) return
+	const obj = dom(element)
+
+	if (!obj.eventbus) throw new Dom_EventBus_Error('Not registered')
+	if (!topic || !fn || !isFunction(fn)) return
 	
 	const subscription = {
 		topic: topic,
@@ -27,13 +34,12 @@ const sub = (
 		description: description || ''
 	}
 
-	const token = domElement.eventbus.sub(subscription)
+	const token = obj.eventbus.sub(subscription)
 	element.DOM.event.subscriptions.push({ subscription, token })
 }
 
 const onEvent = (
-	element, 
-	domElement,
+	element: NodeDescendant,
 	{
 		event,
 		topic,
@@ -42,10 +48,13 @@ const onEvent = (
 		stopPropagation = false,
 		preventDefault = true,
 		elementAsCtx = true,
-	}
+	}: DomEvent
 ) => {
-	if (u.isFunction(fn)) fn = fn.bind(element)
-	if (u.isFunction(data)) data = data.bind(element)
+
+	const obj = dom(element)
+
+	if (isFunction(fn)) fn = fn.bind(element)
+	if (isFunction(data)) data = data.bind(element)
 
 	// TODO: special DOM events
 	// move array of events somewhere else...
@@ -62,24 +71,24 @@ const onEvent = (
 		DOMNodeRemovedFromDocument
 		DOMSubtreeModified
 	*/
-	if (['append'].includes(event.toLowerCase())) {
+	if (isFunction(fn) && ['append'].includes(event.toLowerCase())) {
 		element.DOM.on[event] = fn
 		return
 	}
 
-	const onEventHandler = async function (e) {
+	const onEventHandler = async function (e: Event) {
 		if (preventDefault) e.preventDefault()
 		if (stopPropagation) e.stopPropagation()
-		if (u.isFunction(fn)) fn(e)
+		if (isFunction(fn)) fn(e)
 		if (topic) {
-			if (domElement.eventbus) {
-				domElement.eventbus.pub({
+			if (obj.eventbus) {
+				obj.eventbus.pub({
 					topic: topic,
-					data: u.isFunction(data) ? data(e) : data,
+					data: isFunction(data) ? data(e) : data,
 					ctx: elementAsCtx ? element : undefined
 				})
 			} else {
-				if (!domElement.eventbus) throw new Dom_EventBus_Error('Not registered')
+				if (!obj.eventbus) throw new Dom_EventBus_Error('Not registered')
 			}
 		}
 	}
@@ -88,25 +97,19 @@ const onEvent = (
 	element.addEventListener(event, onEventHandler)
 }
 
-const on = (element, domElement, evnt, fn) => {
-	onEvent(
-		element,
-		domElement,
-		{ event: evnt, fn: fn }
-	)
-}
+const on = (element: NodeDescendant, evnt: string, fn: EventListener) => onEvent(element, { event: evnt, fn: fn })
 
-const fireEvent = (element, domElement, event) => {
+const fireEvent = (element: NodeDescendant, event: string) => {
 	const evt = document.createEvent('HTMLEvents')
 	evt.initEvent(event, false, true)
 	element.dispatchEvent(evt)
 }
 
-export default {
-	change: function () { return runFactory(this, fireEvent)('change') },
-	click: function () { return runFactory(this, fireEvent)('click') },
-	fireEvent: function (str) { return runFactory(this, fireEvent)(str) },
-	on: function (evnt, fn) { return runFactory(this, on)(evnt, fn) },
-	onEvent: function (opt) { return runFactory(this, onEvent)(opt) },
-	sub: function (opt) { return runFactory(this, sub)(opt) },
+export const event = {
+	change: (element: NodeDescendant) => fireEvent(element, 'change'),
+	click: (element: NodeDescendant) => fireEvent(element, 'click'),
+	fireEvent,
+	on,
+	onEvent,
+	sub,
 }

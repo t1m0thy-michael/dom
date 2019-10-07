@@ -3,6 +3,7 @@ import {
 	DomDefinition,
 	DomObject,
 	DomSetter,
+	DomSetters,
 } from '../types'
 
 import { 
@@ -22,15 +23,15 @@ import dom from '../index'
 	utility factory functions
 =======================================*/
 
-const set_attr_value = (prop: keyof typeof DomAttributeSetters): DomSetter => 
+export const set_attr_value = (prop: keyof typeof DomAttributeSetters): DomSetter => 
 	(o: DomObject, e: DomElement, d: Partial<DomDefinition>): void => e[prop] = d[prop]
 
-const set_kv_pairs = (prop: keyof typeof DomObjectSetters): DomSetter => (o: DomObject, e: DomElement, d: Partial<DomDefinition>): void => 
+export const set_kv_pairs = (prop: keyof typeof DomObjectSetters): DomSetter => (o: DomObject, e: DomElement, d: Partial<DomDefinition>): void => 
 {
 	const obj = d[prop]
 	if (!obj) return
 	Object.keys(obj).forEach((key) => {
-		if (isFunction(o[prop])) o[prop](key, obj)
+		if (isFunction(o[prop])) o[prop](key, obj[key])
 	})
 }
 
@@ -38,7 +39,7 @@ const set_kv_pairs = (prop: keyof typeof DomObjectSetters): DomSetter => (o: Dom
 	DOM Defnition Only Method
 =======================================*/
 
-const content: DomSetter = (o, e, d) => {
+export const content: DomSetter = (o, e, d) => {
 	const arr = makeSureItsAnArray(d.content)
 	for (let i = 0; i < arr.length; i++) {
 		const item = arr[i]
@@ -90,7 +91,7 @@ const value = set_attr_value('value')
 const width = set_attr_value('width')
 
 
-export const setters = {
+export const setters: DomSetters = {
 	attr,
 	content,
 	id,

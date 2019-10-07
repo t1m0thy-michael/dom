@@ -2,14 +2,13 @@ import { DomDefinition, DomElement } from '../types'
 import { HTMLTag } from '../enum'
 
 import dom from '../index'
-import setters from './setters'
+import { setters } from './setters'
 
 export interface Create {
 	(d: Partial<DomDefinition>): DomElement
 }
 
-
-const create: Create = (d = {} as Partial<DomDefinition>) => {
+export const create: Create = (d: Partial<DomDefinition> = {}) => {
 	if (d.tag === undefined) {
 		for (let tag in HTMLTag) {
 			if (d[tag] !== undefined) {
@@ -38,5 +37,3 @@ const create: Create = (d = {} as Partial<DomDefinition>) => {
 
 	return obj.element
 }
-
-export default create
