@@ -3,7 +3,7 @@ import {
 	DomObject,
 } from '../types'
 
-import dom from '../index'
+import dom from '../dom'
 
 export const child = (element: NodeDescendant, selector: string): DomObject => {
 	if (!element|| !element.querySelectorAll) return dom([])

@@ -1,18 +1,21 @@
-const path = require('path')
+// const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
 	entry: {
 		index: './src/index.ts'
 	},
 	output: {
-		path: path.resolve('./'),
-		libraryTarget: 'commonjs2',
+		path: __dirname + '',
+		publicPath: '/'
+		// path: path.resolve('./'),
+		//libraryTarget: 'commonjs2',
 	},
 	resolve: {
 		extensions: ['.js', '.ts'],
 		symlinks: false,
 	},
-	devtool: false, //'cheap-module-eval-source-map'/* 'inline-source-map' */,
+	devtool: 'eval-source-map', //'cheap-module-eval-source-map'/* 'inline-source-map' */,
 	module: {
 		rules: [
 			{
@@ -45,4 +48,21 @@ module.exports = {
 		removeEmptyChunks: false,
 		splitChunks: false,
 	},
+	devServer: {
+		port: 3000,
+		contentBase: './build',
+		historyApiFallback: {
+			index: '/index.html'
+		}
+	},
+	plugins: [
+		new HtmlWebpackPlugin({
+			template: './src/html/index.html',
+			filename: 'index.html',
+			title: 'timothymichael.co.uk',
+			inject: true,
+			hash: false,
+			assets: {},
+		}),
+	]
 }

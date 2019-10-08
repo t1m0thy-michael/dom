@@ -17,7 +17,7 @@ const getBounding = (element: NodeDescendant): ClientRect | DOMRect => {
 	return element.getBoundingClientRect()
 }
 
-export default {
+export const viewport = {
 	scrollTop,
 	scrollMore,
 	getBounding,

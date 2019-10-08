@@ -4,8 +4,8 @@ import { classes } from '../methods/classes'
 import { event } from '../methods/events'
 import { insertion } from '../methods/insertion'
 import { styles } from '../methods/styles'
-// import viewportMethods from '../methods/viewport'
-// import formMethods from '../methods/form'
+import { viewport } from '../methods/viewport'
+import form from '../methods/form'
 
 import { runFactory, runAndReturnFactory } from '../utils/run'
 
@@ -60,20 +60,19 @@ export const DOM = {
 	remove: runFactory(insertion.remove),
 	replace: runFactory(insertion.replace),
 
-	// // viewport methods
-	// getBounding: viewportMethods.getBounding,
-	// scrollMore: viewportMethods.scrollMore,
-	// scrollTop: viewportMethods.scrollTop,
+	// viewport methods
+	getBounding: runAndReturnFactory(viewport.getBounding),
+	scrollMore: runFactory(viewport.scrollMore),
+	scrollTop: runAndReturnFactory(viewport.scrollTop),
 
-	// // form methods
-	// deselect: formMethods.deselect,
-	// formValues: formMethods.formValues,
-	// resetDefault: formMethods.resetDefault,
-	// select: formMethods.select,
-	// updateSelect: formMethods.updateSelect,
-	// validate: formMethods.validate,
-	// value: formMethods.value,
+	// form methods
+	deselect: runFactory(form.deselect),
+	formValues: runFactory(form.formValues),
+	dflt: runFactory(form.dflt),
+	select: runFactory(form.select),
+	updateSelect: runFactory(form.updateSelect),
+	validate: runFactory(form.validate),
+	value: runFactory(form.value),
 
 	toString: function() { return '[object Dom]' },
-	// toJson: function() { return 'AHHHHH!!!! this doesnt work' }
 }

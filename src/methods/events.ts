@@ -4,7 +4,7 @@ import {
 	DomEvent,
  } from '../types'
 
-import { dom } from '../index'
+import { dom } from '../dom'
 import { Dom_EventBus_Error } from '../utils/errors'
 import { isFunction }from '@t1m0thy_michael/u'
 

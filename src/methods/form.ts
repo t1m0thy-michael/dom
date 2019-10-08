@@ -1,32 +1,31 @@
 import { NodeDescendant, DomSelectDefinition, Scalar, DomElement } from '../types'
 
-import { dom } from '../index'
-import { isDomElement } from '../utils/typeChecks'
+import { dom } from '../dom'
+import { isDomElement, isOption, isSelect } from '../utils/typeChecks'
 
 import { isUndefined, isFunction, makeSureItsAnArray} from '@t1m0thy_michael/u'
 
-const value = (element: NodeDescendant, val: any) => {
+const value = (element: NodeDescendant, val: any): any => {
 	if (isUndefined(val)) return element.value
 	element.value = val
 }
 
-const dflt = (element: NodeDescendant, val: any) => {
+const dflt = (element: NodeDescendant, val: any): any => {
 	if (!isUndefined(val)) {
 		const obj = dom(element)
 		obj.data('default', val)
 		element.value = isFunction(val) ? val() : val
+		return element.value
 	}
 	val = element.DOM.data['default']
 	element.value = isFunction(val) ? val() : val || ''
+	return element.value
 }
 
-const validate = (element: NodeDescendant, extra: any) => {
+const validate = (element: NodeDescendant, extra: any): boolean => {
 	if (!isFunction(element.DOM.data.validate)) return true
 	return element.DOM.data.validate(element.value, extra)
 }
-
-const isOption = (element: NodeDescendant): element is HTMLOptionElement => element.tagName === 'OPTION'
-const isSelect = (element: NodeDescendant): element is HTMLSelectElement => element.tagName === 'SELECT'
 
 const select = (element: NodeDescendant) => {
 	if (isOption(element)) {

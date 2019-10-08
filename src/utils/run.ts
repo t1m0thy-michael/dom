@@ -1,12 +1,6 @@
 import { DomElement } from '../types'
 import { clean } from '@t1m0thy_michael/u'
-import { dom } from '../index'
 
-/**
- * Returns function without the requirement for first arg (DomElement).
- * when called fn runs for evey element in this.list
- * Returns this
- */
 export const runFactory = <T extends any[], R>(fn: (o: DomElement, ...args: T) => R): ((...args: T) => DomElement) =>
 	function (this: DomElement, ...args) {
 		for (let i = 0; i < this.list.length; i++) {
@@ -19,12 +13,6 @@ export const runFactory = <T extends any[], R>(fn: (o: DomElement, ...args: T) =
 		return this
 	}
 
-/**
- * Returns function without the requirement for first arg (DomElement).
- * when called fn runs for every element in this.list
- * Returns this (if there are no defined return values from fn
- * otherwise returns array of return values
- */
 export const runAndReturnFactory = <T extends any[], R>(fn: (o: DomElement, ...args: T) => R): ((...args: T) => (R extends void ? DomElement : R[])) =>
 	function (this: DomElement, ...args) {
 		let results = []

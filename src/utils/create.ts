@@ -1,22 +1,19 @@
 import { DomDefinition, DomElement } from '../types'
 import { HTMLTag } from '../enum'
 
-import dom from '../index'
+import dom from '../dom'
 import { setters } from './setters'
 
-export interface Create {
-	(d: Partial<DomDefinition>): DomElement
-}
-
-export const create: Create = (d: Partial<DomDefinition> = {}) => {
+export const create = (d: Partial<DomDefinition> = {}): DomElement => {
 	if (d.tag === undefined) {
 		for (let tag in HTMLTag) {
 			if (d[tag] !== undefined) {
 				d.tag = tag
-				if (d.tag === 'select') {
-					d.options = d[tag]
-				} else {
-					d.content = d[tag]
+				switch(d.tag){
+					case 'img':
+					case 'script': d.src = d[tag]; break;
+					case 'select': d.options = d[tag]; break;
+					default: d.content = d[tag]
 				}
 				delete d[tag]
 				break
@@ -31,7 +28,7 @@ export const create: Create = (d: Partial<DomDefinition> = {}) => {
 
 	for (let prop in d) {
 		if (setters[prop]) {
-			setters[prop](obj, obj.element, d)
+			setters[prop](obj, d)
 		}
 	}
 

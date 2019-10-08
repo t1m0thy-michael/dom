@@ -1,9 +1,11 @@
 import {
-	DomElement,
 	DomDefinition,
 	DomObject,
 	DomSetter,
 	DomSetters,
+	DomObjectPrototype,
+	DomSelectDefinition,
+	DomEventSubscription,
 } from '../types'
 
 import { 
@@ -17,29 +19,35 @@ import {
 	makeSureItsAnArray 
 } from '@t1m0thy_michael/u'
 
-import dom from '../index'
+import dom from '../dom'
 
 /*=======================================
 	utility factory functions
 =======================================*/
 
 export const set_attr_value = (prop: keyof typeof DomAttributeSetters): DomSetter => 
-	(o: DomObject, e: DomElement, d: Partial<DomDefinition>): void => e[prop] = d[prop]
+	(o: DomObject, d: Partial<DomDefinition>): void => o.element[prop] = d[prop]
 
-export const set_kv_pairs = (prop: keyof typeof DomObjectSetters): DomSetter => (o: DomObject, e: DomElement, d: Partial<DomDefinition>): void => 
-{
-	const obj = d[prop]
-	if (!obj) return
-	Object.keys(obj).forEach((key) => {
-		if (isFunction(o[prop])) o[prop](key, obj[key])
-	})
+export const set_kv_pairs = (prop: keyof typeof DomObjectSetters): DomSetter => 
+	(o: DomObject, d: Partial<DomDefinition>): void => {
+		const obj = d[prop]
+		if (!obj) return
+		Object.keys(obj).forEach((key) => {
+			if (isFunction(o[prop])) o[prop](key, obj[key] as any)
+		})
 }
+
+export const call_dom_fn = (prop: keyof DomObjectPrototype): DomSetter =>
+	(o: DomObject, d: Partial<DomDefinition>): void => {
+		// TS insists on 2nd argument to o[prop] - thats just as likley to be wrong as one...
+		(o[prop] as (a: any) => any)(d[prop])
+	}
 
 /*=======================================
 	DOM Defnition Only Method
 =======================================*/
 
-export const content: DomSetter = (o, e, d) => {
+export const content: DomSetter = (o, d) => {
 	const arr = makeSureItsAnArray(d.content)
 	for (let i = 0; i < arr.length; i++) {
 		const item = arr[i]
@@ -58,16 +66,16 @@ Set using DomObject methods
 =======================================*/
 
 const attr = set_kv_pairs('attr')
-const background: DomSetter = (o, e, d) => o.background(d.background)
-const classes: DomSetter = (o, e, d) => o.addClass(d.classes)
+const background: DomSetter = call_dom_fn('background')
+const classes: DomSetter =  call_dom_fn('addClass')
 const data = set_kv_pairs('data')
-const dflt: DomSetter = (o, e, d) => o.dflt(d.dflt)
-const id: DomSetter = (o, e, d) => o.id(d.id)
-const on: DomSetter = (o, e, d) => makeSureItsAnArray(d.onEvent).forEach((item) => o.onEvent(item))
-const options: DomSetter = (o, e, d) => { if (e instanceof HTMLSelectElement) { o.updateSelect(d) } }
-const style: DomSetter = (o, e, d) => Object.assign(o.element.style, d.style)
-const sub: DomSetter =  (o, e, d) => makeSureItsAnArray(d.sub).forEach((item) => o.sub(item))
-const validate: DomSetter = (o, e, d) => o.data('validate', d.validate)
+const dflt: DomSetter = call_dom_fn('dflt')
+const id: DomSetter = call_dom_fn('id')
+const on: DomSetter = (o, d) => makeSureItsAnArray(d.onEvent).forEach((item) => o.onEvent(item))
+const options: DomSetter = (o, d) => { if (o.element instanceof HTMLSelectElement) { o.updateSelect(d as DomSelectDefinition) } }
+const style: DomSetter = (o, d) => Object.assign(o.element.style, d.style)
+const sub: DomSetter = (o, d) => makeSureItsAnArray(d.sub).forEach((item) => o.sub(item as DomEventSubscription))
+const validate: DomSetter = (o, d) => o.data('validate', d.validate)
 
 /*=======================================
 	Attributes

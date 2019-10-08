@@ -115,11 +115,11 @@ export type DomObjectPrototype = {
 	click: () => DomObject
 	fireEvent: (evnt: string) => DomObject
 	on: (evnt: string, fn: EventListener) => DomObject
-	onEvent: (__1: DomEvent) => DomObject
-	sub: (__1: DomEventSubscription) => DomObject
+	onEvent: (eventDef: DomEvent) => DomObject
+	sub: (subscription: DomEventSubscription) => DomObject
 
 	// style
-	background: (__1: DomBackgroundDefinition) => Promise<boolean | undefined>[]
+	background: (bgDef: DomBackgroundDefinition) => Promise<boolean | undefined>[]
 	backgroundColour: (color: string) => any[] | DomObject
 	colour: (color: string) => any[] | DomObject
 	height: (h: string | number | ((h?: string | undefined) => string), unit?: string | undefined) => DomObject | number[]
@@ -145,14 +145,16 @@ export type DomObjectPrototype = {
 
 	// forms
 	deselect: () => DomObject,
+	dflt: (val?: any) => DomObject,
 	formValues: () => DomObject,
-	dflt: () => DomObject,
 	select: () => DomObject,
-	updateSelect: () => DomObject,
-	validate: () => DomObject,
-	value: () => DomObject,
+	updateSelect: (def: DomSelectDefinition) => DomObject,
+	validate: (extra?: any) => DomObject,
+	value: (val?: any) => DomObject,
 
 	// misc
+	isAppended: () => boolean,
+
 	toString: () => string,
 }
 
@@ -165,7 +167,7 @@ export type DomObject = DomObjectPrototype & {
 }
 
 export interface DomSetter {
-	(o: DomObject, e: DomElement, d: Partial<DomDefinition>): void
+	(o: DomObject, d: Partial<DomDefinition>): void
 }
 
 export interface DomSetters {

@@ -2,7 +2,7 @@ import {
 	NodeDescendant,
 } from '../types'
 
-import { dom } from '../index'
+import { dom } from '../dom'
 
 import { isUndefined, isFunction, isString } from '@t1m0thy_michael/u'
 import { img } from '../utils/image'

@@ -18,11 +18,13 @@ export enum HTMLTag {
 	'h6',
 	'header',
 	'i',
+	'img',
 	'main',
 	'mark',
 	'nav',
 	'p',
 	'pre',
+	'script',
 	'select',
 	'span',
 	'summary',
@@ -58,5 +60,4 @@ export enum DomAttributeSetters {
 export enum DomObjectSetters {
 	'attr',
 	'data',
-
 }
