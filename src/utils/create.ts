@@ -10,7 +10,8 @@ export const create = (d: Partial<DomDefinition> = {}): DomElement => {
 			if (d[tag] !== undefined) {
 				d.tag = tag
 				switch(d.tag){
-					case 'img':
+					case 'img': d.src = d[tag]; break;
+					case 'input': d.value = d[tag]; break;
 					case 'script': d.src = d[tag]; break;
 					case 'select': d.options = d[tag]; break;
 					default: d.content = d[tag]

@@ -96,7 +96,7 @@ export type DomObjectPrototype = {
 
 	// attributes
 	attr: (attribute: string, val: string | number) => DomObject | (boolean | string)[],
-	data: (key: string, val: any) => DomObject | (any | boolean)[],
+	data: (key: string, val?: any) => DomObject | (any | boolean)[],
 	disable: () => DomObject,
 	enable: () => DomObject,
 	id: (id: string) => DomObject,

@@ -18,7 +18,7 @@ export const attr = (element: NodeDescendant, attr: string, val: string | number
 	element.setAttribute(attr, String(val))
 }
 
-export const data = (element: NodeDescendant, key: string, val: any): any | false | void => {
+export const data = (element: NodeDescendant, key: string, val?: any): any | false | void => {
 	if (isUndefined(val)) return element.DOM.data.get(key) || false
 	element.DOM.data.set(key, val)
 }

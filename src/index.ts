@@ -9,15 +9,21 @@
 
 import { dom } from './dom'
 
-const test = dom({
-	span: ['hello world'],
+dom({
+	span: ['hello world '],
 	style: {
 		color: 'red'
 	}
 }).appendTo('body')
 
-console.log(test)
+const test1 = dom({
+	input: 'hello world',
+	dflt: 'eh?',
+	style: {
+		width: '10%'
+	}
+}).appendTo('body')
 
-console.log(test.isAppended)
-
+console.log(test1)
+test1.dflt()
 // export default dom

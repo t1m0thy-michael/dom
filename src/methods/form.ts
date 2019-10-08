@@ -11,13 +11,13 @@ const value = (element: NodeDescendant, val: any): any => {
 }
 
 const dflt = (element: NodeDescendant, val: any): any => {
+	const obj = dom(element)
 	if (!isUndefined(val)) {
-		const obj = dom(element)
 		obj.data('default', val)
 		element.value = isFunction(val) ? val() : val
 		return element.value
 	}
-	val = element.DOM.data['default']
+	val = obj.data('default')
 	element.value = isFunction(val) ? val() : val || ''
 	return element.value
 }

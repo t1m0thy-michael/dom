@@ -66,11 +66,11 @@ Set using DomObject methods
 =======================================*/
 
 const attr = set_kv_pairs('attr')
-const background: DomSetter = call_dom_fn('background')
-const classes: DomSetter =  call_dom_fn('addClass')
+const background = call_dom_fn('background')
+const classes =  call_dom_fn('addClass')
 const data = set_kv_pairs('data')
-const dflt: DomSetter = call_dom_fn('dflt')
-const id: DomSetter = call_dom_fn('id')
+const dflt = call_dom_fn('dflt')
+const id = call_dom_fn('id')
 const on: DomSetter = (o, d) => makeSureItsAnArray(d.onEvent).forEach((item) => o.onEvent(item))
 const options: DomSetter = (o, d) => { if (o.element instanceof HTMLSelectElement) { o.updateSelect(d as DomSelectDefinition) } }
 const style: DomSetter = (o, d) => Object.assign(o.element.style, d.style)
@@ -107,7 +107,7 @@ export const setters: DomSetters = {
 	background,
 	classes,
 	data,
-	default: dflt,
+	dflt,
 	height,
 	href,
 	htmlFor,
