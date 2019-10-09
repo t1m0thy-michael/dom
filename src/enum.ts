@@ -18,15 +18,15 @@ export enum HTMLTag {
 	'h6',
 	'header',
 	'i',
-	'img', // special case
-	'input', // special case
+	'img', // special case - src
+	'input', // special case - value
 	'main',
 	'mark',
 	'nav',
 	'p',
 	'pre',
-	'script', // special case
-	'select', // special case
+	'script', // special case - src
+	'select', // special case - options
 	'span',
 	'summary',
 	'table',

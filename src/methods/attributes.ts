@@ -1,16 +1,6 @@
-import {
-	NodeDescendant
-} from '../types'
-
-import {
-	runFactory,
-	runAndReturnFactory } from '../utils/run'
-
+import { NodeDescendant } from '../types'
 import { Dom_Element_Definition_Error } from '../utils/errors'
-
 import { isUndefined } from '@t1m0thy_michael/u'
-
-
 
 export const attr = (element: NodeDescendant, attr: string, val: string | number): boolean | string | void => {
 	if (!element.getAttribute || !element.setAttribute) return false
