@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 console.log(path.resolve('./build'))
 module.exports = {
 	entry: {
-		sandbox: './src/sandbox.ts',
+		pptr: './src/pptr.ts',
 	},
 	output: {
 		path: path.resolve('./build'),
@@ -12,7 +12,7 @@ module.exports = {
 		extensions: ['.js', '.ts'],
 		symlinks: false,
 	},
-	devtool: 'inline-source-map', //'cheap-module-eval-source-map'/* 'inline-source-map' */,
+	devtool: 'eval-source-map', //'cheap-module-eval-source-map'/* 'inline-source-map' */,
 	module: {
 		rules: [{
 			test: /\.tsx?$/,
@@ -31,18 +31,11 @@ module.exports = {
 		removeEmptyChunks: false,
 		splitChunks: false,
 	},
-	devServer: {
-		port: 3000,
-		contentBase: './build',
-		historyApiFallback: {
-			index: '/sandbox.html'
-		}
-	},
 	plugins: [
 		new HtmlWebpackPlugin({
 			template: './src/html/template.html',
-			filename: 'sandbox.html',
-			title: 'sandbox',
+			filename: 'pptr.html',
+			title: 'pptr',
 			inject: true,
 			hash: false,
 			assets: {},

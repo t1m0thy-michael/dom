@@ -95,13 +95,13 @@ export type DomObjectPrototype = {
 	parent: (selector: string) => DomObject,
 
 	// attributes
-	attr: (attribute: string, val: string | number) => DomObject | (boolean | string)[],
+	attr: (attribute: string, val?: string | number) => DomObject | (boolean | string)[],
 	data: (key: string, val?: any) => DomObject | (any | boolean)[],
 	disable: () => DomObject,
 	enable: () => DomObject,
-	id: (id: string) => DomObject,
-	innerHTML: (html: string) => DomObject | string[],
-	innerText: (text: string) => DomObject | string[],
+	id: (id?: string) => DomObject | (string | boolean)[],
+	innerHTML: (html?: string) => DomObject | string[],
+	innerText: (text?: string) => DomObject | string[],
 
 	// classes
 	addClass: (className: string | string[]) => DomObject,

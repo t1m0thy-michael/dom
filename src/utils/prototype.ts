@@ -5,7 +5,7 @@ import { event } from '../methods/events'
 import { insertion } from '../methods/insertion'
 import { styles } from '../methods/styles'
 import { viewport } from '../methods/viewport'
-import form from '../methods/form'
+import { form } from '../methods/form'
 
 import { runFactory, runAndReturnFactory } from '../utils/run'
 
@@ -21,7 +21,7 @@ export const DOM = {
 	data: runAndReturnFactory(attribute.data),
 	disable: runFactory(attribute.disable),
 	enable: runFactory(attribute.enable),
-	id: runFactory(attribute.id),
+	id: runAndReturnFactory(attribute.id),
 	innerHTML: runAndReturnFactory(attribute.innerHTML),
 	innerText: runAndReturnFactory(attribute.innerText),
 

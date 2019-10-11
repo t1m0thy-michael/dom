@@ -108,7 +108,7 @@ const formValues = (element: NodeDescendant) => {
 	return output
 }
 
-export default {
+export const form = {
 	deselect,
 	formValues,
 	dflt,
