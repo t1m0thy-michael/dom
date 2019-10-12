@@ -74,7 +74,7 @@ export type DomInitiatorBasic = DomObject
 	| string
 
 export type DomInitiatorArrayLike = HTMLCollectionOf<Element>
-	| (Partial<DomDefinition> | string | NodeDescendant)[]
+	| (Partial<DomDefinition> | string | NodeDescendant | DomObject)[]
 	| Iterable<NodeDescendant>
 	| Iterator<NodeDescendant>
 	| NodeListOf<NodeDescendant>
@@ -89,10 +89,15 @@ export type DomInitiator = DomInitiatorBasic
 
 export type DomObjectPrototype = {
 
+	[index: string]: any,
+
 	// selection
 	child: (selector: string) => DomObject,
-	sibling: (selector: string) => DomObject,
+	isAppended: () => boolean[],
 	parent: (selector: string) => DomObject,
+	selector: (selector: string) => DomObject,
+	not: (selector: string) => DomObject,
+	sibling: (selector: string) => DomObject,
 
 	// attributes
 	attr: (attribute: string, val?: string | number) => DomObject | (boolean | string)[],
@@ -139,8 +144,8 @@ export type DomObjectPrototype = {
 	replace: (initiator: DomInitiator) => DomObject,
 
 	// viewport
-	scrollTop: (px: number) => DomObject | number,
-	scrollMore: (px: number) => DomObject | number,
+	scrollTop: (px: number) => DomObject | number[],
+	scrollMore: (px: number) => DomObject,
 	getBounding: () => (ClientRect | DOMRect)[],
 
 	// forms
@@ -152,10 +157,9 @@ export type DomObjectPrototype = {
 	validate: (extra?: any) => DomObject,
 	value: (val?: any) => DomObject,
 
-	// misc
-	isAppended: () => boolean,
-
 	toString: () => string,
+
+	eventbus: EventBusInterface | null,
 }
 
 export type DomObject = DomObjectPrototype & {
@@ -163,7 +167,6 @@ export type DomObject = DomObjectPrototype & {
 	element: DomElement,
 	initiator: DomInitiator,
 	exists: boolean,
-	eventbus: EventBusInterface,
 }
 
 export interface DomSetter {

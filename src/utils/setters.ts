@@ -37,10 +37,10 @@ export const set_kv_pairs = (prop: keyof typeof DomObjectSetters): DomSetter =>
 		})
 }
 
-export const call_dom_fn = (prop: keyof DomObjectPrototype): DomSetter =>
+export const call_dom_fn = (method: keyof DomObjectPrototype, key?: string): DomSetter =>
 	(o: DomObject, d: Partial<DomDefinition>): void => {
 		// TS insists on 2nd argument to o[prop] - thats just as likley to be wrong as one...
-		(o[prop] as (a: any) => any)(d[prop])
+		(o[method] as (a: any) => any)(d[key || method])
 	}
 
 /*=======================================
@@ -67,7 +67,7 @@ Set using DomObject methods
 
 const attr = set_kv_pairs('attr')
 const background = call_dom_fn('background')
-const classes =  call_dom_fn('addClass')
+const classes =  call_dom_fn('addClass', 'classes')
 const data = set_kv_pairs('data')
 const dflt = call_dom_fn('dflt')
 const id = call_dom_fn('id')

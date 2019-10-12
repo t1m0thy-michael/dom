@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"allowJs": true,
+		"allowJs": false,
 		"lib": ["es7", "dom"],
 		"module": "commonjs",
 		"noImplicitAny": true,

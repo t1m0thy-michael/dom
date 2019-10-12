@@ -7,14 +7,24 @@ import { styles } from '../methods/styles'
 import { viewport } from '../methods/viewport'
 import { form } from '../methods/form'
 
-import { runFactory, runAndReturnFactory } from '../utils/run'
+import { 
+	runFactory, 
+	runAndReturnFactory, 
+	runAndReturnSingleDomObjectFactory,
+	runAndReturnNeverDomObjFactory,
+} from '../utils/run'
 
-export const DOM = {
-	
+import { DomObjectPrototype } from '../types'
+
+export const DOM: DomObjectPrototype = {
+
 	// selection methods
-	child: runAndReturnFactory(selection.child),
-	parent: runAndReturnFactory(selection.parent),
-	sibling: runAndReturnFactory(selection.sibling),
+	child: runAndReturnSingleDomObjectFactory(selection.child),
+	isAppended: runAndReturnNeverDomObjFactory(selection.isAppended),
+	not: runAndReturnSingleDomObjectFactory(selection.not),
+	parent: runAndReturnSingleDomObjectFactory(selection.parent),
+	selector: runAndReturnSingleDomObjectFactory(selection.selector),
+	sibling: runAndReturnSingleDomObjectFactory(selection.sibling),
 
 	// attributes
 	attr: runAndReturnFactory(attribute.attr),
@@ -27,10 +37,10 @@ export const DOM = {
 
 	// classes
 	addClass: runFactory(classes.addClass),
+	hasClass: runFactory(classes.hasClass),
 	removeClass: runFactory(classes.removeClass),
 	replaceClass: runFactory(classes.replaceClass),
 	toggleClass: runFactory(classes.toggleClass),
-	hasClass: runFactory(classes.hasClass),
 
 	// events
 	change: runFactory(event.change),
@@ -67,12 +77,14 @@ export const DOM = {
 
 	// form methods
 	deselect: runFactory(form.deselect),
-	formValues: runFactory(form.formValues),
 	dflt: runFactory(form.dflt),
+	formValues: runFactory(form.formValues),
 	select: runFactory(form.select),
 	updateSelect: runFactory(form.updateSelect),
 	validate: runFactory(form.validate),
 	value: runFactory(form.value),
+
+	eventbus: null,
 
 	toString: function() { return '[object Dom]' },
 }

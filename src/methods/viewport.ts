@@ -2,12 +2,12 @@ import { NodeDescendant } from '../types'
 
 import { isUndefined, isFunction } from '@t1m0thy_michael/u'
 
-const scrollTop = (element: NodeDescendant, px: number): number | undefined => {
-	if (isUndefined(px) || isUndefined(element.scrollTop)) return undefined
+const scrollTop = (element: NodeDescendant, px: number): number | void => {
+	if (isUndefined(px) || isUndefined(element.scrollTop)) return
 	element.scrollTop = px
 }
 
-const scrollMore = (element: NodeDescendant, px: number) => {
+const scrollMore = (element: NodeDescendant, px: number): void => {
 	if (isUndefined(px) || isUndefined(element.scrollTop)) return
 	element.scrollTop = (element.scrollTop || 0) + px
 }

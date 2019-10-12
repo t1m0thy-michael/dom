@@ -56,7 +56,7 @@ export const remove = (element: NodeDescendant, initiator?: DomInitiator) => {
 		// remove event subscriptions
 		if (elem.DOM.event.subscriptions.length) {
 			elem.DOM.event.subscriptions.forEach((evt) => {
-				if (!evt.token) return
+				if (!obj.eventbus || !evt.token) return
 				obj.eventbus.remove(evt.token)
 				delete evt.token
 			})

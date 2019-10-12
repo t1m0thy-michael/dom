@@ -22,8 +22,23 @@ export const parent = (element: NodeDescendant, selector: string): DomObject => 
 	return dom(element.closest(selector))
 }
 
+export const isAppended = (element: NodeDescendant): boolean => document.body.contains(element)
+
+export const selector = (element: NodeDescendant, selector: string): DomObject => {
+	if (!element.matches || !element.matches(selector)) return dom([])
+	return dom(element)
+}
+
+export const not = (element: NodeDescendant, selector: string): DomObject => {
+	if (element.matches && element.matches(selector)) return dom([])
+	return dom(element)
+}
+
 export const selection = {
 	child,
-	sibling,
+	isAppended,
 	parent,
+	selector,
+	not,
+	sibling,
 }

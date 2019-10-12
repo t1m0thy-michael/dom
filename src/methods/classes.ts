@@ -1,11 +1,9 @@
 import { NodeDescendant } from '../types'
 
-import { runFactory, runAndReturnFactory } from '../utils/run'
-
 import u from '@t1m0thy_michael/u'
 
 const addClass = (element: NodeDescendant, className: string | string[]): void => {
-	if (!element.classList) return 
+	if (!element.classList) return
 	element.classList.add(...u.makeSureItsAnArray(className))
 }
 
@@ -19,12 +17,12 @@ const replaceClass = (element: NodeDescendant, oldClass: string, newClass: strin
 	element.classList.replace(oldClass, newClass)
 }
 
-const toggleClass = (element: NodeDescendant, className: string): boolean | void => {
-	if (!element.classList) return false
-	return element.classList.toggle(className)
+const toggleClass = (element: NodeDescendant, className: string): void => {
+	if (!element.classList) return
+	element.classList.toggle(className)
 }
 
-const hasClass = (element: NodeDescendant, className: string): boolean | void => {
+const hasClass = (element: NodeDescendant, className: string): boolean => {
 	if (!element.classList) return false
 	return element.classList.contains(className)
 }

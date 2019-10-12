@@ -2,13 +2,15 @@ import {
 	DomElement, 
 	DomInitiator,
 	DomObject,  
-	DomInitiatorBasic
+	DomInitiatorBasic,
+	EventBusInterface,
 } from './types'
 
 import { DOM } from './utils/prototype'
 import { create } from './utils/create'
 import { isDom, isNode } from './utils/typeChecks'
-import { isString, isObject, isArrayLike, makeSureItsAnArray } from '@t1m0thy_michael/u'
+import { runAndReturnFactory } from './utils/run'
+import { isString, isObject, isArray, isArrayLike, makeSureItsAnArray } from '@t1m0thy_michael/u'
 
 const createDomProperties = () => {
 	return { 
@@ -47,8 +49,10 @@ export const dom = (initiator: DomInitiator): DomObject => {
 			list = makeSureItsAnArray(document.querySelectorAll(initiator)).map(createDomElement)
 
 		} else if (isArrayLike(initiator)) {
-			list = makeSureItsAnArray(initiator as any).map(createDomElement)
-
+			makeSureItsAnArray(initiator as any)
+				.map(dom)
+				.forEach(item => list.push(...item.list))
+			
 		} else if (isObject(initiator)) {
 			list[0] = create(initiator)
 		}
@@ -59,15 +63,19 @@ export const dom = (initiator: DomInitiator): DomObject => {
 		element: { value: list[0], writable: false },
 		initiator: { value: initiator, writable: false },
 		exists: { value: (list.length > 0), writable: false },
-		isAppended: { get: function (this: DomObject) { return document.body.contains(this.element) } },
 	})
 	
 }
 
-// add setup methods directly to dom object
-// dom.registerPlugin = (name, fn) => Dom[name] = fn 
-// dom.registerEventBus = (eb) => eventbus = eb
+dom.text = (txt: string) => dom(document.createTextNode(txt))
 
-// if (typeof window !== 'undefined') (window).dom = dom
+// add setup methods directly to dom object
+dom.registerPlugin = (name: string, fn: (this: DomElement, ...args: any[]) => any) => 
+	(<any>DOM)[name] = runAndReturnFactory(fn)
+
+dom.registerEventbus = (eb: EventBusInterface) => DOM.eventbus = eb
+ 
+declare global { interface Window { dom: typeof dom; } }
+if (window && !window.dom) window.dom = dom
 
 export default dom

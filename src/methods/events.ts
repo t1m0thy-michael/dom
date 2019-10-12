@@ -2,6 +2,8 @@ import {
 	NodeDescendant,
 	DomEventSubscription,
 	DomEvent,
+	DomElement,
+	DomObject,
  } from '../types'
 
 import { dom } from '../dom'
@@ -38,6 +40,52 @@ const sub = (
 	element.DOM.event.subscriptions.push({ subscription, token })
 }
 
+const _addSpecialEvent = (element: DomElement, event: string, fn: EventListener | undefined) => {
+	// TODO: special DOM events
+	// move array of events somewhere else...
+	// this is intended as improvement over Mutation events
+	// will fire when DOM is used to initiate the event
+	/*
+		DOMAttrModified
+		DOMAttributeNameChanged
+		DOMCharacterDataModified
+		DOMElementNameChanged
+		DOMNodeInserted 			** implemented in DOM
+		DOMNodeInsertedIntoDocument
+		DOMNodeRemoved
+		DOMNodeRemovedFromDocument
+		DOMSubtreeModified
+	*/
+	if (isFunction(fn) && ['append'].includes(event.toLowerCase())) {
+		element.DOM.on[event] = fn
+	}
+	return element
+}
+
+const _createEventHandler = (
+	obj: DomObject,
+	{
+		event,
+		topic,
+		data,
+		fn,
+		stopPropagation = false,
+		preventDefault = true,
+		elementAsCtx = true,
+	}: DomEvent) => async function (e: Event) {
+		if (preventDefault) e.preventDefault()
+		if (stopPropagation) e.stopPropagation()
+		if (isFunction(fn)) fn(e)
+		if (topic) {
+			if (!obj.eventbus) throw new Dom_EventBus_Error('Not registered')
+			obj.eventbus.pub({
+				topic: topic,
+				data: isFunction(data) ? data(e) : data,
+				ctx: elementAsCtx ? obj.element : undefined
+			})
+		}
+	}
+
 const onEvent = (
 	element: NodeDescendant,
 	{
@@ -56,42 +104,17 @@ const onEvent = (
 	if (isFunction(fn)) fn = fn.bind(element)
 	if (isFunction(data)) data = data.bind(element)
 
-	// TODO: special DOM events
-	// move array of events somewhere else...
-	// this is intended as improvement over Mutation events
-	// will fire when DOM is used to initiate the event
-	/*
-		DOMAttrModified
-		DOMAttributeNameChanged
-		DOMCharacterDataModified
-		DOMElementNameChanged
-		DOMNodeInserted 			** implemented in DOM
-		DOMNodeInsertedIntoDocument
-		DOMNodeRemoved
-		DOMNodeRemovedFromDocument
-		DOMSubtreeModified
-	*/
-	if (isFunction(fn) && ['append'].includes(event.toLowerCase())) {
-		element.DOM.on[event] = fn
-		return
-	}
+	_addSpecialEvent(obj.element, event, fn)
 
-	const onEventHandler = async function (e: Event) {
-		if (preventDefault) e.preventDefault()
-		if (stopPropagation) e.stopPropagation()
-		if (isFunction(fn)) fn(e)
-		if (topic) {
-			if (obj.eventbus) {
-				obj.eventbus.pub({
-					topic: topic,
-					data: isFunction(data) ? data(e) : data,
-					ctx: elementAsCtx ? element : undefined
-				})
-			} else {
-				if (!obj.eventbus) throw new Dom_EventBus_Error('Not registered')
-			}
-		}
-	}
+	const onEventHandler = _createEventHandler(obj, {
+		event,
+		topic,
+		data,
+		fn,
+		stopPropagation,
+		preventDefault,
+		elementAsCtx,
+	})
 
 	element.DOM.event.onEvent.push(onEventHandler)
 	element.addEventListener(event, onEventHandler)
