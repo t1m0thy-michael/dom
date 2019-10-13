@@ -1,9 +1,8 @@
 import { NodeDescendant, DomSelectDefinition, Scalar, DomElement } from '../types'
 
-import { dom } from '../dom'
 import { isDomElement, isOption, isSelect } from '../utils/typeChecks'
 
-import { isUndefined, isFunction, makeSureItsAnArray} from '@t1m0thy_michael/u'
+import { get, set, isMap, isUndefined, isFunction, makeSureItsAnArray} from '@t1m0thy_michael/u'
 
 const value = (element: NodeDescendant, val: any): any => {
 	if (isUndefined(val)) return element.value
@@ -11,13 +10,13 @@ const value = (element: NodeDescendant, val: any): any => {
 }
 
 const dflt = (element: NodeDescendant, val: any): any => {
-	const obj = dom(element)
-	if (!isUndefined(val)) {
-		obj.data('default', val)
+	const data = get(element, 'DOM.data')
+	if (!isUndefined(val) && isMap(data)) {
+		data.set('dflt', val)
 		element.value = isFunction(val) ? val() : val
 		return element.value
 	}
-	val = obj.data('default')
+	val = data.get('dflt')
 	element.value = isFunction(val) ? val() : val || ''
 	return element.value
 }
@@ -53,7 +52,7 @@ const updateSelect = (element: NodeDescendant, def: DomSelectDefinition) => {
 	let dflt: Scalar
 	if (def.dflt) {
 		dflt = isFunction(def.dflt) ? def.dflt() : def.dflt
-		element.DOM.data['default'] = def.dflt
+		element.DOM.data['dflt'] = def.dflt
 	}
 
 	Object.keys(def.options).forEach((key) => {

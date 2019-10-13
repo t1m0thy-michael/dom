@@ -1,3 +1,6 @@
+/*
+	For quick manual testing and examples...
+*/
 
 import { dom } from './dom'
 
@@ -11,13 +14,14 @@ const test = dom([
 	{ div: [{ span: 'five', classes: ['myClass'] }] },
 ]).appendTo('body')
 
-test.colour('red')
+test.is('textarea').colour('red')
 
+
+// test plugings
 dom.registerPlugin('test', (element, ...args) => {
 	console.log(...args)
 	return element.tagName
 })
-
 console.log(dom('*').test(1,2,3))
 
 let t1 = dom({div: 'from def'})
@@ -40,10 +44,12 @@ console.log(domFromArray.list)
 
 console.log(domFromArray.isAppended())
 
-domFromArray.not('.myClass').appendTo('body')
+domFromArray.not('.myClass').colour('green')
 
-console.log(domFromArray.selector('.myClass').colour('blue'))
+console.log(domFromArray.is('.myClass').colour('blue'))
+
+dom.text('hello world').appendTo('body')
 
 
-
+// domFromArray.click()
 // export default dom

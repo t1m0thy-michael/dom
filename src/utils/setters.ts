@@ -35,7 +35,7 @@ export const set_kv_pairs = (prop: keyof typeof DomObjectSetters): DomSetter =>
 		Object.keys(obj).forEach((key) => {
 			if (isFunction(o[prop])) o[prop](key, obj[key] as any)
 		})
-}
+	}
 
 export const call_dom_fn = (method: keyof DomObjectPrototype, key?: string): DomSetter =>
 	(o: DomObject, d: Partial<DomDefinition>): void => {

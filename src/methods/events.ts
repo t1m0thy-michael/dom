@@ -4,40 +4,37 @@ import {
 	DomEvent,
 	DomElement,
 	DomObject,
- } from '../types'
+} from '../types'
 
-import { dom } from '../dom'
 import { Dom_EventBus_Error } from '../utils/errors'
-import { isFunction }from '@t1m0thy_michael/u'
+import { isFunction, isString }from '@t1m0thy_michael/u'
 
 const sub = (
-	element: NodeDescendant,
+	obj: DomObject,
 	{
 		topic,
 		fn,
-		distinct,
-		once,
-		minInterval,
-		description,
+		distinct = false,
+		once = false,
+		minInterval = 0,
+		description = '',
 	}: DomEventSubscription
 ) => {
 
-	const obj = dom(element)
-
 	if (!obj.eventbus) throw new Dom_EventBus_Error('Not registered')
-	if (!topic || !fn || !isFunction(fn)) return
+	if (!isString(topic) || !isFunction(fn)) throw new Dom_EventBus_Error('Must provide [topic] and [fn]')
 	
 	const subscription = {
 		topic: topic,
-		fn: fn.bind(element),
-		distinct: distinct || false,
-		once: once || false,
-		minInterval: minInterval || 0,
-		description: description || ''
+		fn: fn.bind(obj.element),
+		distinct: distinct,
+		once: once,
+		minInterval: minInterval,
+		description: description,
 	}
 
 	const token = obj.eventbus.sub(subscription)
-	element.DOM.event.subscriptions.push({ subscription, token })
+	obj.element.DOM.event.subscriptions.push({ subscription, token })
 }
 
 const _addSpecialEvent = (element: DomElement, event: string, fn: EventListener | undefined) => {
@@ -72,22 +69,23 @@ const _createEventHandler = (
 		stopPropagation = false,
 		preventDefault = true,
 		elementAsCtx = true,
-	}: DomEvent) => async function (e: Event) {
-		if (preventDefault) e.preventDefault()
-		if (stopPropagation) e.stopPropagation()
-		if (isFunction(fn)) fn(e)
-		if (topic) {
-			if (!obj.eventbus) throw new Dom_EventBus_Error('Not registered')
-			obj.eventbus.pub({
-				topic: topic,
-				data: isFunction(data) ? data(e) : data,
-				ctx: elementAsCtx ? obj.element : undefined
-			})
-		}
+	}: DomEvent
+) => async function (e: Event) {
+	if (preventDefault) e.preventDefault()
+	if (stopPropagation) e.stopPropagation()
+	if (isFunction(fn)) fn(e)
+	if (topic) {
+		if (!obj.eventbus) throw new Dom_EventBus_Error('Not registered')
+		obj.eventbus.pub({
+			topic: topic,
+			data: isFunction(data) ? data(e) : data,
+			ctx: elementAsCtx ? obj.element : undefined
+		})
 	}
+}
 
 const onEvent = (
-	element: NodeDescendant,
+	obj: DomObject,
 	{
 		event,
 		topic,
@@ -99,10 +97,8 @@ const onEvent = (
 	}: DomEvent
 ) => {
 
-	const obj = dom(element)
-
-	if (isFunction(fn)) fn = fn.bind(element)
-	if (isFunction(data)) data = data.bind(element)
+	if (isFunction(fn)) fn = fn.bind(obj.element)
+	if (isFunction(data)) data = data.bind(obj.element)
 
 	_addSpecialEvent(obj.element, event, fn)
 
@@ -116,11 +112,11 @@ const onEvent = (
 		elementAsCtx,
 	})
 
-	element.DOM.event.onEvent.push(onEventHandler)
-	element.addEventListener(event, onEventHandler)
+	obj.element.DOM.event.onEvent.push(onEventHandler)
+	obj.element.addEventListener(event, onEventHandler)
 }
 
-const on = (element: NodeDescendant, evnt: string, fn: EventListener) => onEvent(element, { event: evnt, fn: fn })
+const on = (obj: DomObject, evnt: string, fn: EventListener) => onEvent(obj, { event: evnt, fn: fn })
 
 const fireEvent = (element: NodeDescendant, event: string) => {
 	const evt = document.createEvent('HTMLEvents')
@@ -128,9 +124,13 @@ const fireEvent = (element: NodeDescendant, event: string) => {
 	element.dispatchEvent(evt)
 }
 
+const change = (element: NodeDescendant) => fireEvent(element, 'change')
+
+const click = (element: NodeDescendant) => fireEvent(element, 'click')
+
 export const event = {
-	change: (element: NodeDescendant) => fireEvent(element, 'change'),
-	click: (element: NodeDescendant) => fireEvent(element, 'click'),
+	change,
+	click,
 	fireEvent,
 	on,
 	onEvent,

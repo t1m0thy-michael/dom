@@ -5,40 +5,40 @@ import {
 
 import dom from '../dom'
 
-export const child = (element: NodeDescendant, selector: string): DomObject => {
-	if (!element|| !element.querySelectorAll) return dom([])
-	return dom(element.querySelectorAll(selector))
+export const child = (obj: DomObject, selector: string): DomObject => {
+	if (!obj.element|| !obj.element.querySelectorAll) return dom([])
+	return dom(obj.element.querySelectorAll(selector))
 }
 
-export const sibling = (element: NodeDescendant, selector: string): DomObject => {
-	if (!element.parentNode || !selector) return dom([])
-	const siblings = element.parentNode.querySelectorAll(selector)
+export const sibling = (obj: DomObject, selector: string): DomObject => {
+	if (!obj.element.parentNode || !selector) return dom([])
+	const siblings = obj.element.parentNode.querySelectorAll(selector)
 	const queryResult = Array.from(siblings)
-	return dom(queryResult.filter((elem) => elem !== element))
+	return dom(queryResult.filter((elem) => elem !== obj.element))
 }
 
-export const parent = (element: NodeDescendant, selector: string): DomObject => {
-	if (!element || !element.closest) return dom([])
-	return dom(element.closest(selector))
+export const parent = (obj: DomObject, selector: string): DomObject => {
+	if (!obj.element || !obj.element.closest) return dom([])
+	return dom(obj.element.closest(selector))
 }
 
 export const isAppended = (element: NodeDescendant): boolean => document.body.contains(element)
 
-export const selector = (element: NodeDescendant, selector: string): DomObject => {
-	if (!element.matches || !element.matches(selector)) return dom([])
-	return dom(element)
+export const is = (obj: DomObject, selector: string): DomObject => {
+	if (!obj.element.matches || !obj.element.matches(selector)) return dom([])
+	return dom(obj.element)
 }
 
-export const not = (element: NodeDescendant, selector: string): DomObject => {
-	if (element.matches && element.matches(selector)) return dom([])
-	return dom(element)
+export const not = (obj: DomObject, selector: string): DomObject => {
+	if (obj.element.matches && obj.element.matches(selector)) return dom([])
+	return dom(obj.element)
 }
 
 export const selection = {
 	child,
 	isAppended,
 	parent,
-	selector,
+	is,
 	not,
 	sibling,
 }

@@ -75,7 +75,4 @@ dom.registerPlugin = (name: string, fn: (this: DomElement, ...args: any[]) => an
 
 dom.registerEventbus = (eb: EventBusInterface) => DOM.eventbus = eb
  
-declare global { interface Window { dom: typeof dom; } }
-if (window && !window.dom) window.dom = dom
-
 export default dom

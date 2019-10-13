@@ -1,6 +1,12 @@
+import { EventBusInterface, DomObject } from '../../src/types'
+
 const sinon = require('sinon')
 
-export const getNodeStub = () => ({}) as Node
+
+export const getDocumentStub = () => ({
+	querySelectorAll: sinon.stub()
+} as unknown as Document)
+
 /**
  * Properties and methods available on ANY Node/HTML element descendant 
  * All methods stubbed
@@ -31,6 +37,15 @@ export const getElementStub = () => ({
 	}
 })
 
-export const getDocumentStub = () => ({
-	querySelectorAll: sinon.stub()
-} as unknown as Document)
+export const getEventbusStub = () => ({
+	sub: sinon.stub().returns('a token'),
+	pub: sinon.stub(),
+	remove: sinon.stub(),
+}) as EventBusInterface
+
+export const getNodeStub = () => ({}) as Node
+
+export const getDomObjStub = () => ({
+	eventbus: null,
+	element: getElementStub(),
+}) as unknown as DomObject

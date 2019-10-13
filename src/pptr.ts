@@ -1,11 +1,7 @@
-
+/*
+	entry point for pptr test page
+*/
 import { dom } from './dom'
-
-import { attribute } from './methods/attributes'
-
-declare global {
-	interface Window { dom: typeof dom; }
-}
 (<any>window).dom = dom
 
 let t1 = dom([ 

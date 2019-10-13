@@ -1,8 +1,11 @@
 .eslint*
+.nycrc
 .travis.yml
-mocha.opts
-scripts
+build
+coverage
+nyc_output
 src
 tests
 tsconfig.json
+webpack
 webpack.config.js

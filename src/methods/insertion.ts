@@ -10,8 +10,6 @@ import {
 	makeSureItsAnArray,
 } from '@t1m0thy_michael/u'
 
-import { dom } from '../dom'
-
 export const appendTo = (element: NodeDescendant, initiator: DomInitiator) => {
 	const elem = dom(initiator)
 	if (elem.list.length > 0)  elem.element.appendChild(element)

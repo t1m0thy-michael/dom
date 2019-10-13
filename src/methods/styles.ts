@@ -2,8 +2,6 @@ import {
 	NodeDescendant,
 } from '../types'
 
-import { dom } from '../dom'
-
 import { isUndefined, isFunction, isString } from '@t1m0thy_michael/u'
 import { img } from '../utils/image'
 
@@ -35,8 +33,6 @@ const background = async (
 
 	if (!hasStyleProperty(element)) return
 
-	const obj = dom(element)
-
 	if (path) {
 
 		const image = await img(path, brightness)
@@ -45,11 +41,11 @@ const background = async (
 
 		element.style.backgroundImage = `url("${image.path}")`
 
-		if (brightness) {
+		if (brightness && isFunction(element.setAttribute)) {
 			if (image.brightness && image.brightness < 120) {
-				obj.attr('img_avg_brightness', 'dark')
+				element.setAttribute('img_avg_brightness', 'dark')
 			} else {
-				obj.attr('img_avg_brightness', 'light')
+				element.setAttribute('img_avg_brightness', 'light')
 			}
 		}
 

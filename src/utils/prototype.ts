@@ -1,17 +1,19 @@
-import { selection } from '../methods/selection'
 import { attribute } from '../methods/attributes'
 import { classes } from '../methods/classes'
 import { event } from '../methods/events'
+import { form } from '../methods/form'
 import { insertion } from '../methods/insertion'
+import { selection } from '../methods/selection'
 import { styles } from '../methods/styles'
 import { viewport } from '../methods/viewport'
-import { form } from '../methods/form'
 
-import { 
-	runFactory, 
-	runAndReturnFactory, 
+
+import {
+	runFactory,
+	runAndReturnFactory,
 	runAndReturnSingleDomObjectFactory,
 	runAndReturnNeverDomObjFactory,
+	runWithDomObjFactory,
 } from '../utils/run'
 
 import { DomObjectPrototype } from '../types'
@@ -23,7 +25,7 @@ export const DOM: DomObjectPrototype = {
 	isAppended: runAndReturnNeverDomObjFactory(selection.isAppended),
 	not: runAndReturnSingleDomObjectFactory(selection.not),
 	parent: runAndReturnSingleDomObjectFactory(selection.parent),
-	selector: runAndReturnSingleDomObjectFactory(selection.selector),
+	is: runAndReturnSingleDomObjectFactory(selection.is),
 	sibling: runAndReturnSingleDomObjectFactory(selection.sibling),
 
 	// attributes
@@ -46,10 +48,10 @@ export const DOM: DomObjectPrototype = {
 	change: runFactory(event.change),
 	click: runFactory(event.click),
 	fireEvent: runFactory(event.fireEvent),
-	on: runFactory(event.on),
-	onEvent: runFactory(event.onEvent),
-	sub: runFactory(event.sub),
-	
+	on: runWithDomObjFactory(event.on),
+	onEvent: runWithDomObjFactory(event.onEvent),
+	sub: runWithDomObjFactory(event.sub),
+
 	// style
 	background: runAndReturnFactory(styles.background),
 	backgroundColour: runAndReturnFactory(styles.backgroundColour),
@@ -86,5 +88,5 @@ export const DOM: DomObjectPrototype = {
 
 	eventbus: null,
 
-	toString: function() { return '[object Dom]' },
+	toString: function () { return '[object Dom]' },
 }

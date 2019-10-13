@@ -95,7 +95,7 @@ export type DomObjectPrototype = {
 	child: (selector: string) => DomObject,
 	isAppended: () => boolean[],
 	parent: (selector: string) => DomObject,
-	selector: (selector: string) => DomObject,
+	is: (selector: string) => DomObject,
 	not: (selector: string) => DomObject,
 	sibling: (selector: string) => DomObject,
 
@@ -116,22 +116,22 @@ export type DomObjectPrototype = {
 	hasClass: (className: string) => DomObject,
 
 	// event
-	change: () => DomObject
-	click: () => DomObject
-	fireEvent: (evnt: string) => DomObject
-	on: (evnt: string, fn: EventListener) => DomObject
-	onEvent: (eventDef: DomEvent) => DomObject
-	sub: (subscription: DomEventSubscription) => DomObject
+	change: () => DomObject,
+	click: () => DomObject,
+	fireEvent: (evnt: string) => DomObject,
+	on: (evnt: string, fn: EventListener) => DomObject,
+	onEvent: (eventDef: DomEvent) => DomObject,
+	sub: (subscription: DomEventSubscription) => DomObject,
 
 	// style
-	background: (bgDef: DomBackgroundDefinition) => Promise<boolean | undefined>[]
-	backgroundColour: (color: string) => any[] | DomObject
-	colour: (color: string) => any[] | DomObject
-	height: (h: string | number | ((h?: string | undefined) => string), unit?: string | undefined) => DomObject | number[]
-	hide: () => DomObject
-	show: (showType?: string | undefined) => DomObject
-	style: (key: string, val: string) => any[] | DomObject
-	width: (w: string | number | ((w?: string | undefined) => string), unit?: string | undefined) => DomObject | number[]
+	background: (bgDef: DomBackgroundDefinition) => Promise<boolean | undefined>[],
+	backgroundColour: (color: string) => any[] | DomObject,
+	colour: (color: string) => any[] | DomObject,
+	height: (h: string | number | ((h?: string | undefined) => string), unit?: string | undefined) => DomObject | number[],
+	hide: () => DomObject,
+	show: (showType?: string | undefined) => DomObject,
+	style: (key: string, val: string) => any[] | DomObject,
+	width: (w: string | number | ((w?: string | undefined) => string), unit?: string | undefined) => DomObject | number[],
 
 	// insertion
 	appendAfter: (initiator: DomInitiator) => DomObject,
