@@ -43,7 +43,7 @@ const createDomProperties = () => {
 		def: {},
 		event: { 
 			subscriptions: [], 
-			onEvent: [] 
+			on: [] 
 		},
 		on: {},
 	}

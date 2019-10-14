@@ -111,7 +111,7 @@ describe('attributes', () => {
 			elem.DOM = { 
 				data: new Map(),
 				def: {},
-				event: { subscriptions: [], onEvent: []},
+				event: { subscriptions: [], on: []},
 				on: {}
 			}
 			const value = 123456

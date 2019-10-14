@@ -23,7 +23,7 @@ module.exports = {
 					experimentalWatchApi: false, // ???
 				},
 			},
-			exclude: /node_modules/,
+			exclude: /node_modules|.\.test\./,
 		}]
 	},
 	optimization: {

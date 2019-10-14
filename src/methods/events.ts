@@ -6,16 +6,15 @@ import {
 	DomObject,
 } from '../types'
 
+import { isFunction, isString }from '@t1m0thy_michael/u'
 
-import { runFactory } from '../utils/run'
 import { dom } from '../dom'
+import { runFactory } from '../utils/run'
 import { 
 	Dom_EventBus_Error, 
 	Dom_Missing_Argument
 } from '../utils/errors'
-
-import { isFunction, isString }from '@t1m0thy_michael/u'
-
+ 
 export const sub = (
 	element: DomElement,
 	{
@@ -100,7 +99,7 @@ const _createEventHandler = (
 	}
 }
 
-export const onEvent = (
+export const on = (
 	element: DomElement,
 	{
 		event,
@@ -115,8 +114,8 @@ export const onEvent = (
 
 	const obj = dom(element)
 
-	if (!isString(event) || !event.length) throw new Dom_Missing_Argument('onEvent: invalid [event]')
-	if (!isString(topic) && !isFunction(fn)) throw new Dom_Missing_Argument('onEvent: Must provide [topic | fn]')
+	if (!isString(event) || !event.length) throw new Dom_Missing_Argument('on: invalid [event]')
+	if (!isString(topic) && !isFunction(fn)) throw new Dom_Missing_Argument('on: Must provide [topic | fn]')
 
 	if (isFunction(fn)) fn = fn.bind(obj.element)
 	if (isFunction(data)) data = data.bind(obj.element)
@@ -129,7 +128,7 @@ export const onEvent = (
 		elementAsCtx,
 	})) return
 
-	const onEventHandler = _createEventHandler(obj, {
+	const onHandler = _createEventHandler(obj, {
 		event,
 		topic,
 		data,
@@ -139,11 +138,9 @@ export const onEvent = (
 		elementAsCtx,
 	})
 	
-	obj.element.addEventListener(event, onEventHandler)
-	obj.element.DOM.event.onEvent.push(onEventHandler)
+	obj.element.addEventListener(event, onHandler)
+	obj.element.DOM.event.on.push(onHandler)
 }
-
-export const on = (element: DomElement, evnt: string, fn: EventListener) => onEvent(element, { event: evnt, fn: fn })
 
 export const fireEvent = (element: NodeDescendant, event: string) => {
 	const evt = document.createEvent('HTMLEvents')
@@ -160,6 +157,5 @@ export const event = {
 	click: runFactory(click),
 	fireEvent: runFactory(fireEvent),
 	on: runFactory(on),
-	onEvent: runFactory(onEvent),
 	sub: runFactory(sub),
 }

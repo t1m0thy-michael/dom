@@ -18,7 +18,6 @@ import {
 	click,
 	fireEvent,
 	on,
-	onEvent,
 	sub,
 } from './events'
 
@@ -36,7 +35,7 @@ const getEventbusStub = () => ({
 const getDomElemDomStub = () => ({
 	data: new Map(),
 	def: {},
-	event: { subscriptions: [], onEvent: [] },
+	event: { subscriptions: [], on: [] },
 	on: {}
 })
 
@@ -47,7 +46,7 @@ describe('events', function() {
 		assert.isFunction(click)
 		assert.isFunction(fireEvent)
 		assert.isFunction(on)
-		assert.isFunction(onEvent)
+		assert.isFunction(on)
 		assert.isFunction(sub)
 	})
 
@@ -167,10 +166,10 @@ describe('events', function() {
 	})
 
 	/*=================================
-	  			onEvent()
+	  			on()
 	=================================*/
 
-	describe('onEvent()', () => {
+	describe('on()', () => {
 
 		const sandbox = sinon.createSandbox()
 
@@ -190,9 +189,9 @@ describe('events', function() {
 			const elem = document.createElement('div') as unknown as DomElement
 			elem.DOM = getDomElemDomStub()
 
-			assert.throws(() => { onEvent(elem, { /*no options*/ } as DomEvent) }, Dom_Missing_Argument)
-			assert.throws(() => { onEvent(elem, { event: 'click' } as DomEvent) }, Dom_Missing_Argument)
-			assert.throws(() => { onEvent(elem, { topic: 'topic' } as DomEvent) }, Dom_Missing_Argument)
+			assert.throws(() => { on(elem, { /*no options*/ } as DomEvent) }, Dom_Missing_Argument)
+			assert.throws(() => { on(elem, { event: 'click' } as DomEvent) }, Dom_Missing_Argument)
+			assert.throws(() => { on(elem, { topic: 'topic' } as DomEvent) }, Dom_Missing_Argument)
 		})
 
 		it('event handler is stored & addEventListener is called', () => {
@@ -200,11 +199,11 @@ describe('events', function() {
 			elem.DOM = getDomElemDomStub()
 			sandbox.stub(elem, 'addEventListener')
 
-			onEvent(elem, { event: 'click', topic: 'topic' })
-			assert.ok(elem.DOM.event.onEvent.length > 0, 'event handler stored')
+			on(elem, { event: 'click', topic: 'topic' })
+			assert.ok(elem.DOM.event.on.length > 0, 'event handler stored')
 			sinon.assert.calledOnce(elem.addEventListener)
 
-			onEvent(elem, {
+			on(elem, {
 				event: 'click', 
 				topic: 'topic', 
 				data: function () {},
@@ -212,7 +211,7 @@ describe('events', function() {
 				preventDefault: false,
 				elementAsCtx: false, 
 			})
-			assert.ok(elem.DOM.event.onEvent.length > 0, 'event handler stored')
+			assert.ok(elem.DOM.event.on.length > 0, 'event handler stored')
 			sinon.assert.calledTwice(elem.addEventListener)
 		})
 
@@ -224,16 +223,16 @@ describe('events', function() {
 			elem.DOM = getDomElemDomStub()
 			sandbox.stub(elem, 'addEventListener')
 
-			onEvent(elem, { event: 'append', fn: () => { }, topic: 'topic' })
-			assert.ok(elem.DOM.event.onEvent.length === 0, 'event handler NOT stored')
+			on(elem, { event: 'append', fn: () => { }, topic: 'topic' })
+			assert.ok(elem.DOM.event.on.length === 0, 'event handler NOT stored')
 			sinon.assert.notCalled(elem.addEventListener)
 
-			onEvent(elem, { event: 'append', topic: 'topic' })
-			assert.ok(elem.DOM.event.onEvent.length === 0, 'event handler NOT stored')
+			on(elem, { event: 'append', topic: 'topic' })
+			assert.ok(elem.DOM.event.on.length === 0, 'event handler NOT stored')
 			sinon.assert.notCalled(elem.addEventListener)
 
-			onEvent(elem, { event: 'append', topic: 'topic', elementAsCtx: false })
-			assert.ok(elem.DOM.event.onEvent.length === 0, 'event handler NOT stored')
+			on(elem, { event: 'append', topic: 'topic', elementAsCtx: false })
+			assert.ok(elem.DOM.event.on.length === 0, 'event handler NOT stored')
 			sinon.assert.notCalled(elem.addEventListener)
 		})
 	})

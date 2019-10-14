@@ -36,7 +36,7 @@ export interface DomEventDataProvider {
 export type DomEventData = DomEventDataProvider | any | null | undefined
 
 /*=====================================================
-	onEvent
+	on
 =====================================================*/
 
 export interface DomEvent {
@@ -61,7 +61,7 @@ export type DomElement = NodeDescendant & {
 		def: Partial<DomDefinition>,
 		event: {
 			subscriptions: DomEventSubscriptionDetail[],
-			onEvent: EventListener[]
+			on: EventListener[]
 		},
 		on: { [index: string]: EventListener },
 	}
@@ -119,8 +119,7 @@ export type DomObjectPrototype = {
 	change: () => DomObject,
 	click: () => DomObject,
 	fireEvent: (evnt: string) => DomObject,
-	on: (evnt: string, fn: EventListener) => DomObject,
-	onEvent: (eventDef: DomEvent) => DomObject,
+	on: (eventDef: DomEvent) => DomObject,
 	sub: (subscription: DomEventSubscription) => DomObject,
 
 	// style

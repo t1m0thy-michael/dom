@@ -72,7 +72,7 @@ const classes =  call_dom_fn('addClass', 'classes')
 const data = set_kv_pairs('data')
 const dflt = call_dom_fn('dflt')
 const id = call_dom_fn('id')
-const on: DomSetter = (o, d) => makeSureItsAnArray(d.onEvent).forEach((item) => o.onEvent(item as DomEvent))
+const on: DomSetter = (o, d) => makeSureItsAnArray(d.on).forEach((item) => o.on(item as DomEvent))
 const options: DomSetter = (o, d) => { if (o.element instanceof HTMLSelectElement) { o.updateSelect(d as DomSelectDefinition) } }
 const style: DomSetter = (o, d) => Object.assign(o.element.style, d.style)
 const sub: DomSetter = (o, d) => makeSureItsAnArray(d.sub).forEach((item) => o.sub(item as DomEventSubscription))
