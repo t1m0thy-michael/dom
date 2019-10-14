@@ -6,15 +6,16 @@ import {
 	DomObject,
 } from '../types'
 
-import { isFunction, isString }from '@t1m0thy_michael/u'
 
-import { dom } from '../dom'
 import { runFactory } from '../utils/run'
+import { dom } from '../dom'
 import { 
 	Dom_EventBus_Error, 
 	Dom_Missing_Argument
 } from '../utils/errors'
- 
+
+import { isFunction, isString }from '@t1m0thy_michael/u'
+
 export const sub = (
 	element: DomElement,
 	{

@@ -32,7 +32,7 @@ module.exports = {
 		splitChunks: false,
 	},
 	devServer: {
-		port: 3000,
+		port: 3001,
 		contentBase: './build',
 		historyApiFallback: {
 			index: '/sandbox.html'
