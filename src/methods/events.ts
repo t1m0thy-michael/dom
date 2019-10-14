@@ -6,11 +6,14 @@ import {
 	DomObject,
 } from '../types'
 
-import { Dom_EventBus_Error } from '../utils/errors'
 import { isFunction, isString }from '@t1m0thy_michael/u'
 
-const sub = (
-	obj: DomObject,
+import { dom } from '../dom'
+import { runFactory } from '../utils/run'
+import { Dom_EventBus_Error } from '../utils/errors'
+ 
+export const sub = (
+	element: DomElement,
 	{
 		topic,
 		fn,
@@ -20,6 +23,8 @@ const sub = (
 		description = '',
 	}: DomEventSubscription
 ) => {
+
+	const obj = dom(element)
 
 	if (!obj.eventbus) throw new Dom_EventBus_Error('Not registered')
 	if (!isString(topic) || !isFunction(fn)) throw new Dom_EventBus_Error('Must provide [topic] and [fn]')
@@ -84,8 +89,8 @@ const _createEventHandler = (
 	}
 }
 
-const onEvent = (
-	obj: DomObject,
+export const onEvent = (
+	element: DomElement,
 	{
 		event,
 		topic,
@@ -96,6 +101,8 @@ const onEvent = (
 		elementAsCtx = true,
 	}: DomEvent
 ) => {
+
+	const obj = dom(element)
 
 	if (isFunction(fn)) fn = fn.bind(obj.element)
 	if (isFunction(data)) data = data.bind(obj.element)
@@ -116,23 +123,23 @@ const onEvent = (
 	obj.element.addEventListener(event, onEventHandler)
 }
 
-const on = (obj: DomObject, evnt: string, fn: EventListener) => onEvent(obj, { event: evnt, fn: fn })
+export const on = (element: DomElement, evnt: string, fn: EventListener) => onEvent(element, { event: evnt, fn: fn })
 
-const fireEvent = (element: NodeDescendant, event: string) => {
+export const fireEvent = (element: NodeDescendant, event: string) => {
 	const evt = document.createEvent('HTMLEvents')
 	evt.initEvent(event, false, true)
 	element.dispatchEvent(evt)
 }
 
-const change = (element: NodeDescendant) => fireEvent(element, 'change')
+export const change = (element: NodeDescendant) => fireEvent(element, 'change')
 
-const click = (element: NodeDescendant) => fireEvent(element, 'click')
+export const click = (element: NodeDescendant) => fireEvent(element, 'click')
 
 export const event = {
-	change,
-	click,
-	fireEvent,
-	on,
-	onEvent,
-	sub,
+	change: runFactory(change),
+	click: runFactory(click),
+	fireEvent: runFactory(fireEvent),
+	on: runFactory(on),
+	onEvent: runFactory(onEvent),
+	sub: runFactory(sub),
 }

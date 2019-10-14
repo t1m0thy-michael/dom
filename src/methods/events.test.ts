@@ -1,21 +1,37 @@
-import { DomEventSubscription, EventBusInterface } from '../types'
+// types
+import { DomElement, EventBusInterface, DomEventSubscription } from '../types'
 
+// test utils
+const sinon = require('sinon') // stubs etc...
 import { assert } from 'chai'
-const sinon = require('sinon')
 
-import { getNodeStub, getElementStub, getDomObjStub, getEventbusStub } from '../../tests/utils/sinon_stubs'
-import { event } from './events'
+// under test
 import { Dom_EventBus_Error } from '../utils/errors'
+import { dom } from '../dom'
+import { 
+	change,
+	click,
+	fireEvent,
+	on,
+	onEvent,
+	sub,
+} from './events'
 
-describe('events', () => {
+const getEventbusStub = () => ({
+	sub: sinon.stub().returns('a token'),
+	pub: sinon.stub(),
+	remove: sinon.stub(),
+}) as EventBusInterface
+
+describe('events', function() {
 
 	it('has expected methods', () => {
-		// assert.isFunction(event.change)
-		// assert.isFunction(event.click)
-		assert.isFunction(event.fireEvent)
-		assert.isFunction(event.on)
-		assert.isFunction(event.onEvent)
-		assert.isFunction(event.sub)
+		assert.isFunction(change)
+		assert.isFunction(click)
+		assert.isFunction(fireEvent)
+		assert.isFunction(on)
+		assert.isFunction(onEvent)
+		assert.isFunction(sub)
 	})
 
 	/*=================================
@@ -23,53 +39,60 @@ describe('events', () => {
 	=================================*/
 
 	describe('sub()', () => {
-				
+		
+		before(function () {
+			this.jsdom = require('jsdom-global')()
+		})
+
+		after(function () {
+			this.jsdom()
+		})	
+		
 		it('throws if topic & fn options are missing', () => {
-			const domObj = getDomObjStub()
-			assert.throws(() => event.sub(domObj, {
+			const element = document.createElement('div') as unknown as DomElement
+			assert.throws(() => sub(element, {
 				topic: 'test/topic',
-				fn: () => {},
+				fn: () => { },
 			} as unknown as DomEventSubscription), Dom_EventBus_Error)
 		})
 
 		describe('throws with invalid options', () => {
 			
-			const domObj = getDomObjStub()
-			domObj.eventbus = getEventbusStub()
-
-			// before(() => {
-			// })
-
 			it('throws if topic & fn options are missing', () => {
-				assert.throws(() => event.sub(domObj, {
+				const element = document.createElement('div') as unknown as DomElement
+				assert.throws(() => sub(element, {
 					// topic,
 					// fn,
 				} as unknown as DomEventSubscription), Dom_EventBus_Error)
 			})
-			
+
 			it('throws if topic is missing', () => {
-				assert.throws(() => event.sub(domObj, {
+				const element = document.createElement('div') as unknown as DomElement
+				assert.throws(() => sub(element, {
 					// topic,
-					fn: () => {},
+					fn: () => { },
 				} as unknown as DomEventSubscription), Dom_EventBus_Error)
 			})
-				
+
 			it('throws if fn is missing', () => {
-				assert.throws(() => event.sub(domObj, {
+				const element = document.createElement('div') as unknown as DomElement
+				assert.throws(() => sub(element, {
 					topic: 'str',
 					// fn,
 				} as unknown as DomEventSubscription), Dom_EventBus_Error)
 			})
 
 			it('throws if topic is invalid', () => {
-				assert.throws(() => event.sub(domObj, {
+				const element = document.createElement('div') as unknown as DomElement
+				assert.throws(() => sub(element, {
 					topic: 123,
 					// fn,
 				} as unknown as DomEventSubscription), Dom_EventBus_Error)
 			})
-				
+
 			it('throws if fn is invalid', () => {
-				assert.throws(() => event.sub(domObj, {
+				const element = document.createElement('div') as unknown as DomElement
+				assert.throws(() => sub(element, {
 					// topic,
 					fn: 123,
 				} as unknown as DomEventSubscription), Dom_EventBus_Error)
@@ -77,9 +100,10 @@ describe('events', () => {
 		})
 
 		it('calls eventbus.sub with expected options', () => {
+			const element = document.createElement('div') as unknown as DomElement
+			const eventbus = getEventbusStub()
 
-			const domObj = getDomObjStub()
-			domObj.eventbus = getEventbusStub()
+			dom.registerEventbus(eventbus)
 
 			const testFn = () => { }
 			const testTopic = 'testTopic'
@@ -88,11 +112,11 @@ describe('events', () => {
 				fn: testFn,
 			} as unknown as DomEventSubscription
 
-			event.sub(domObj, subscription)
-
-			sinon.assert.calledOnce(domObj.eventbus.sub)
+			sub(element, subscription)
+			sinon.assert.calledOnce(eventbus.sub)
+			
 			// @ts-ignore
-			const call = domObj.eventbus.sub.getCall(0).args[0]
+			const call = eventbus.sub.getCall(0).args[0]
 
 			assert.isObject(call, 'eventbus.sub called with object')
 			assert.isFunction(call.fn, 'eventbus.sub called with a function')
@@ -101,12 +125,15 @@ describe('events', () => {
 			assert.strictEqual(call.once, false, 'eventbus.sub called with expected default (once)')
 			assert.strictEqual(call.minInterval, 0, 'eventbus.sub called with expected default (minInterval)')
 			assert.strictEqual(call.description, '', 'eventbus.sub called with expected default (description)')
+
+			dom.registerEventbus(null)
 		})
 
-		it('event subscriptions are stored in element.DOM.event.subscriptions', () => {
+		it('event subscriptions are stored in element.DOM.subscriptions', () => {
+			const element = document.createElement('div') as unknown as DomElement
+			const eventbus = getEventbusStub()
 
-			const domObj = getDomObjStub()
-			domObj.eventbus = getEventbusStub()
+			dom.registerEventbus(eventbus)
 
 			const testFn = () => { }
 			const testTopic = 'testTopic'
@@ -115,13 +142,10 @@ describe('events', () => {
 				fn: testFn,
 			} as unknown as DomEventSubscription
 
-			event.sub(domObj, subscription)
+			sub(element, subscription)
 
-			assert.strictEqual(domObj.element.DOM.event.subscriptions[0].token, 'a token', 'token stored in event subscriptions')
-			assert.isObject(domObj.element.DOM.event.subscriptions[0].subscription, 'subscription stored in event subscriptions')
-
+			assert.strictEqual(element.DOM.event.subscriptions[0].token, 'a token', 'token stored in event subscriptions')
+			assert.isObject(element.DOM.event.subscriptions[0].subscription, 'subscription stored in event subscriptions')
 		})
-
 	})
 })
-

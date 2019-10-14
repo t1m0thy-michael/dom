@@ -4,6 +4,9 @@ import {
 	DomElement,
 } from '../types'
 
+import { runFactory } from '../utils/run'
+import { dom } from '../dom'
+
 import { 
 	isString, 
 	isFunction,
@@ -69,12 +72,12 @@ export const replace = (element: NodeDescendant, initiator: DomInitiator) => {
 }
 
 export const insertion = {
-	appendAfter,
-	appendBefore,
-	appendFirstChild,
-	appendLastChild,
-	appendTo,
-	empty,
-	remove,
-	replace,
+	appendAfter: runFactory(appendAfter),
+	appendBefore: runFactory(appendBefore),
+	appendFirstChild: runFactory(appendFirstChild),
+	appendLastChild: runFactory(appendLastChild),
+	appendTo: runFactory(appendTo),
+	empty: runFactory(empty),
+	remove: runFactory(remove),
+	replace: runFactory(replace),
 }

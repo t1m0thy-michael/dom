@@ -1,18 +1,26 @@
 import { assert } from 'chai'
 
 // module under test
-import { form } from './form'
+import { 
+	deselect,
+	formValues,
+	dflt,
+	select,
+	updateSelect,
+	validate,
+	value,
+} from './form'
 
 describe('form', () => {
 
 	it('has expected methods', () => {
-		assert.isFunction(form.deselect)
-		assert.isFunction(form.formValues)
-		assert.isFunction(form.dflt)
-		assert.isFunction(form.select)
-		assert.isFunction(form.updateSelect)
-		assert.isFunction(form.validate)
-		assert.isFunction(form.value)
+		assert.isFunction(deselect)
+		assert.isFunction(formValues)
+		assert.isFunction(dflt)
+		assert.isFunction(select)
+		assert.isFunction(updateSelect)
+		assert.isFunction(validate)
+		assert.isFunction(value)
 	})
 })
 

@@ -93,7 +93,6 @@ const size = set_attr_value('size')
 const src = set_attr_value('src')
 const step = set_attr_value('step')
 const target = set_attr_value('target')
-const tooltip = set_attr_value('tooltip')
 const type = set_attr_value('type')
 const value = set_attr_value('value')
 const width = set_attr_value('width')
@@ -123,7 +122,6 @@ export const setters: DomSetters = {
 	style,
 	sub,
 	target,
-	tooltip,
 	type,
 	value,
 	validate,

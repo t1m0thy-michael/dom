@@ -1,32 +1,34 @@
 import { NodeDescendant, DomSelectDefinition, Scalar, DomElement } from '../types'
 
+import { runFactory } from '../utils/run'
 import { isDomElement, isOption, isSelect } from '../utils/typeChecks'
+import { dom } from '../dom'
 
-import { get, set, isMap, isUndefined, isFunction, makeSureItsAnArray} from '@t1m0thy_michael/u'
+import { isUndefined, isFunction, makeSureItsAnArray} from '@t1m0thy_michael/u'
 
-const value = (element: NodeDescendant, val: any): any => {
+export const value = (element: NodeDescendant, val: any): any => {
 	if (isUndefined(val)) return element.value
 	element.value = val
 }
 
-const dflt = (element: NodeDescendant, val: any): any => {
-	const data = get(element, 'DOM.data')
-	if (!isUndefined(val) && isMap(data)) {
-		data.set('dflt', val)
+export const dflt = (element: NodeDescendant, val: any): any => {
+	const obj = dom(element)
+	if (!isUndefined(val)) {
+		obj.data('default', val)
 		element.value = isFunction(val) ? val() : val
 		return element.value
 	}
-	val = data.get('dflt')
+	val = obj.data('default')
 	element.value = isFunction(val) ? val() : val || ''
 	return element.value
 }
 
-const validate = (element: NodeDescendant, extra: any): boolean => {
+export const validate = (element: NodeDescendant, extra: any): boolean => {
 	if (!isFunction(element.DOM.data.validate)) return true
 	return element.DOM.data.validate(element.value, extra)
 }
 
-const select = (element: NodeDescendant) => {
+export const select = (element: NodeDescendant) => {
 	if (isOption(element)) {
 		element.selected = true
 		if (element.parentNode && isSelect(element.parentNode)) {
@@ -36,7 +38,7 @@ const select = (element: NodeDescendant) => {
 	}
 }
 
-const deselect = (element: NodeDescendant) => {
+export const deselect = (element: NodeDescendant) => {
 	if (isOption(element)) {
 		element.selected = false
 		if (element.parentNode && isSelect(element.parentNode)) {
@@ -46,13 +48,13 @@ const deselect = (element: NodeDescendant) => {
 	}
 }
 
-const updateSelect = (element: NodeDescendant, def: DomSelectDefinition) => {
+export const updateSelect = (element: NodeDescendant, def: DomSelectDefinition) => {
 	if (!isFunction(element.add) || !def.options) return
 
 	let dflt: Scalar
 	if (def.dflt) {
 		dflt = isFunction(def.dflt) ? def.dflt() : def.dflt
-		element.DOM.data['dflt'] = def.dflt
+		element.DOM.data['default'] = def.dflt
 	}
 
 	Object.keys(def.options).forEach((key) => {
@@ -64,7 +66,7 @@ const updateSelect = (element: NodeDescendant, def: DomSelectDefinition) => {
 	})
 }
 
-const formValues = (element: NodeDescendant) => {
+export const formValues = (element: NodeDescendant) => {
 
 	const form = element.form ? element.form : element
 
@@ -108,11 +110,11 @@ const formValues = (element: NodeDescendant) => {
 }
 
 export const form = {
-	deselect,
-	formValues,
-	dflt,
-	select,
-	updateSelect,
-	validate,
-	value,
+	deselect: runFactory(deselect),
+	dflt: runFactory(dflt),
+	formValues: runFactory(formValues),
+	select: runFactory(select),
+	updateSelect: runFactory(updateSelect),
+	validate: runFactory(validate),
+	value: runFactory(value),
 }

@@ -1,8 +1,6 @@
 import { NodeDescendant, DomObject, DomElement } from '../types'
 
-import { DOM } from './prototype'
-
-export const isDom = (obj: any): obj is DomObject => DOM.isPrototypeOf(obj)
+export const isDom = (obj: any): obj is DomObject => obj && obj.toString() === '[object Dom]'
 
 export const isDomElement = (obj: any): obj is DomElement => obj.DOM
 

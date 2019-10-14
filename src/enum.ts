@@ -52,7 +52,6 @@ export enum DomAttributeSetters {
 	'src',
 	'step',
 	'target',
-	'tooltip', // TODO: way to implement this without CSS??
 	'type',
 	'value',
 	'width',

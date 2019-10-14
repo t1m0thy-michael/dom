@@ -6,7 +6,7 @@ const chai = require('chai')
 const assert = chai.assert
 
 let browser
-let page
+let pagez
 
 describe('dom pptr tests', function () {
 

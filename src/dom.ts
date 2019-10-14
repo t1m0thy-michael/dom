@@ -4,13 +4,38 @@ import {
 	DomObject,  
 	DomInitiatorBasic,
 	EventBusInterface,
+	DomObjectPrototype,
 } from './types'
 
-import { DOM } from './utils/prototype'
+// import { DOM } from './utils/prototype'
 import { create } from './utils/create'
 import { isDom, isNode } from './utils/typeChecks'
 import { runAndReturnFactory } from './utils/run'
-import { isString, isObject, isArray, isArrayLike, makeSureItsAnArray } from '@t1m0thy_michael/u'
+import { isString, isObject, isArrayLike, makeSureItsAnArray } from '@t1m0thy_michael/u'
+
+import { attribute } from './methods/attributes'
+import { classes } from './methods/classes'
+import { event } from './methods/events'
+import { form } from './methods/form'
+import { insertion } from './methods/insertion'
+import { selection } from './methods/selection'
+import { styles } from './methods/styles'
+import { viewport } from './methods/viewport'
+
+const DOM: DomObjectPrototype = Object.assign(
+	{
+		eventbus: null,
+		toString: function () { return '[object Dom]' },
+	},
+	attribute,
+	classes,
+	event,
+	form,
+	insertion,
+	selection,
+	styles,
+	viewport,
+)
 
 const createDomProperties = () => {
 	return { 
@@ -24,14 +49,14 @@ const createDomProperties = () => {
 	}
 }
 
-const createDomElement = (node: DomInitiatorBasic): DomElement => {
+const createDomElement = (initiator: DomInitiatorBasic): DomElement => {
 	// Already a node, just add required properties
-	if (node instanceof Node) {
-		const domElem = node as DomElement
+	if (initiator instanceof Node) {
+		const domElem = initiator as DomElement
 		domElem.DOM = domElem.DOM || createDomProperties()
 		return domElem
 	}
-	return dom(node).element
+	return dom(initiator).element
 }
 
 export const dom = (initiator: DomInitiator): DomObject => {
@@ -41,7 +66,7 @@ export const dom = (initiator: DomInitiator): DomObject => {
 	let list = [] as DomElement[]
 	
 	if (initiator) {	
-
+		
 		if (isNode(initiator)) {
 			list[0] = createDomElement(initiator)
 
@@ -73,6 +98,12 @@ dom.text = (txt: string) => dom(document.createTextNode(txt))
 dom.registerPlugin = (name: string, fn: (this: DomElement, ...args: any[]) => any) => 
 	(<any>DOM)[name] = runAndReturnFactory(fn)
 
-dom.registerEventbus = (eb: EventBusInterface) => DOM.eventbus = eb
+dom.registerEventbus = (eb: EventBusInterface | null) => DOM.eventbus = eb
+dom.getEventbus = () => DOM.eventbus
  
+const gbl = (<any>globalThis) || (<any>window) || (<any>self) || (<any>global) // node and browser compatible
+if (!gbl.dom) {
+	gbl.dom = dom
+}
+
 export default dom

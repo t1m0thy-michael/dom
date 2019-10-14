@@ -1,18 +1,24 @@
+import { NodeDescendant } from '../types'
+
 import { assert } from 'chai'
 const sinon = require('sinon')
 
-import { getNodeStub, getElementStub } from '../../tests/utils/sinon_stubs'
-import { classes } from './classes'
-import { NodeDescendant } from '../types'
+import { 
+	addClass,
+	hasClass,
+	removeClass,
+	replaceClass,
+	toggleClass,
+} from './classes'
 
 describe('classes', () => {
 
 	it('has expected methods', () => {
-		assert.isFunction(classes.addClass)
-		assert.isFunction(classes.removeClass)
-		assert.isFunction(classes.replaceClass)
-		assert.isFunction(classes.toggleClass)
-		assert.isFunction(classes.hasClass)
+		assert.isFunction(addClass)
+		assert.isFunction(removeClass)
+		assert.isFunction(replaceClass)
+		assert.isFunction(toggleClass)
+		assert.isFunction(hasClass)
 	})
 
 	/*=================================
@@ -21,51 +27,82 @@ describe('classes', () => {
 
 	describe('addClass()', () => {
 
+		const sandbox = sinon.createSandbox()
+
+		before(function () {
+			this.jsdom = require('jsdom-global')()
+		})
+
+		after(function () {
+			this.jsdom()
+		})
+
+		afterEach(function () {
+			sandbox.restore()
+		})
+
 		it('calls classList.add with correct value', () => {
-			const elem = getElementStub()
+			const elem = document.createElement('div')
+			sandbox.stub(elem.classList, 'add')
 			const myClass = 'myClass'
-			classes.addClass(elem as unknown as NodeDescendant, myClass)
+			addClass(elem as unknown as NodeDescendant, myClass)
 			sinon.assert.calledWith(elem.classList.add, myClass)
 		})
 
 		it('calls classList.add with multiple correct values', () => {
-			const elem = getElementStub()
+			const elem = document.createElement('div')
+			sandbox.stub(elem.classList, 'add')
 			const myClasses = ['myClass1', 'myClass2', 'myClass3']
-			classes.addClass(elem as unknown as NodeDescendant, myClasses)
+			addClass(elem as unknown as NodeDescendant, myClasses)
 			sinon.assert.calledWith(elem.classList.add, ...myClasses)
 		})
 
 		it('does not throw if classList does not exist on element', () => {
-			const elem = getNodeStub()
+			const elem = document.createTextNode('Node without classList')
 			const myClass = 'myClass'
-			assert.doesNotThrow(() => classes.addClass(elem as unknown as NodeDescendant, myClass), Error)
+			assert.doesNotThrow(() => addClass(elem as unknown as NodeDescendant, myClass), Error)
 		})
 	})
-
 	/*=================================
 	  			removeClass()
 	=================================*/
 
 	describe('removeClass()', () => {
 
+		const sandbox = sinon.createSandbox()
+
+		before(function () {
+			this.jsdom = require('jsdom-global')()
+		})
+
+		after(function () {
+			this.jsdom()
+		})
+
+		afterEach(function () {
+			sandbox.restore()
+		})
+
 		it('calls classList.remove with correct value', () => {
-			const elem = getElementStub()
+			const elem = document.createElement('div')
+			sandbox.stub(elem.classList, 'remove')
 			const myClass = 'myClass'
-			classes.removeClass(elem as unknown as NodeDescendant, myClass)
+			removeClass(elem as unknown as NodeDescendant, myClass)
 			sinon.assert.calledWith(elem.classList.remove, myClass)
 		})
 
 		it('calls classList.remove with multiple correct values', () => {
-			const elem = getElementStub()
+			const elem = document.createElement('div')
+			sandbox.stub(elem.classList, 'remove')
 			const myClasses = ['myClass1', 'myClass2', 'myClass3']
-			classes.removeClass(elem as unknown as NodeDescendant, myClasses)
+			removeClass(elem as unknown as NodeDescendant, myClasses)
 			sinon.assert.calledWith(elem.classList.remove, ...myClasses)
 		})
 
 		it('does not throw if classList does not exist on element', () => {
-			const elem = getNodeStub()
+			const elem = document.createTextNode('Node without classList')
 			const myClass = 'myClass'
-			assert.doesNotThrow(() => classes.removeClass(elem as unknown as NodeDescendant, myClass), Error)
+			assert.doesNotThrow(() => removeClass(elem as unknown as NodeDescendant, myClass), Error)
 		})
 	})
 
@@ -75,19 +112,34 @@ describe('classes', () => {
 
 	describe('replaceClass()', () => {
 
+		const sandbox = sinon.createSandbox()
+
+		before(function () {
+			this.jsdom = require('jsdom-global')()
+		})
+
+		after(function () {
+			this.jsdom()
+		})
+
+		afterEach(function () {
+			sandbox.restore()
+		})
+
 		it('calls classList.replace with correct value', () => {
-			const elem = getElementStub()
+			const elem = document.createElement('div')
+			sandbox.stub(elem.classList, 'replace')
 			const myOldClass = 'old'
 			const myNewClass = 'new'
-			classes.replaceClass(elem as unknown as NodeDescendant, myOldClass, myNewClass)
+			replaceClass(elem as unknown as NodeDescendant, myOldClass, myNewClass)
 			sinon.assert.calledWith(elem.classList.replace, myOldClass, myNewClass)
 		})
 
 		it('does not throw if classList does not exist on element', () => {
-			const elem = getNodeStub()
+			const elem = document.createTextNode('Node without classList')
 			const myOldClass = 'old'
 			const myNewClass = 'new'
-			assert.doesNotThrow(() => classes.replaceClass(elem as unknown as NodeDescendant, myOldClass, myNewClass), Error)
+			assert.doesNotThrow(() => replaceClass(elem as unknown as NodeDescendant, myOldClass, myNewClass), Error)
 		})
 	})
 
@@ -97,17 +149,32 @@ describe('classes', () => {
 
 	describe('toggleClass()', () => {
 
+		const sandbox = sinon.createSandbox()
+
+		before(function () {
+			this.jsdom = require('jsdom-global')()
+		})
+
+		after(function () {
+			this.jsdom()
+		})
+
+		afterEach(function () {
+			sandbox.restore()
+		})
+
 		it('calls classList.toggle with correct value', () => {
-			const elem = getElementStub()
+			const elem = document.createElement('div')
+			sandbox.stub(elem.classList, 'toggle')
 			const myClass = 'myClass'
-			classes.toggleClass(elem as unknown as NodeDescendant, myClass)
+			toggleClass(elem as unknown as NodeDescendant, myClass)
 			sinon.assert.calledWith(elem.classList.toggle, myClass)
 		})
 
 		it('does not throw if classList does not exist on element', () => {
-			const elem = getNodeStub()
+			const elem = document.createTextNode('Node without classList')
 			const myClass = 'myClass'
-			assert.doesNotThrow(() => classes.toggleClass(elem as unknown as NodeDescendant, myClass), Error)
+			assert.doesNotThrow(() => toggleClass(elem as unknown as NodeDescendant, myClass), Error)
 		})
 	})
 
@@ -117,19 +184,33 @@ describe('classes', () => {
 
 	describe('hasClass()', () => {
 
+		const sandbox = sinon.createSandbox()
+
+		before(function () {
+			this.jsdom = require('jsdom-global')()
+		})
+
+		after(function () {
+			this.jsdom()
+		})
+
+		afterEach(function () {
+			sandbox.restore()
+		})
+
 		it('calls classList.contains with correct value and returns its response', () => {
-			const elem = getElementStub()
-			elem.classList.contains.returns(true)
+			const elem = document.createElement('div')
+			sandbox.stub(elem.classList, 'contains').returns(true)
 			const myClass = 'myClass'
-			const result = classes.hasClass(elem as unknown as NodeDescendant, myClass)
+			const result = hasClass(elem as unknown as NodeDescendant, myClass)
 			sinon.assert.calledWith(elem.classList.contains, myClass)
 			assert.strictEqual(result, true)
 		})
 
 		it('returns false if classList does not exist on element', () => {
-			const elem = getNodeStub()
+			const elem = document.createTextNode('Node without classList')
 			const myClass = 'myClass'
-			const result = classes.hasClass(elem as unknown as NodeDescendant, myClass)
+			const result = hasClass(elem as unknown as NodeDescendant, myClass)
 			assert.strictEqual(result, false)
 		})
 	})

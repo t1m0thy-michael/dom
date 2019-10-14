@@ -2,35 +2,37 @@ import { NodeDescendant } from '../types'
 
 import u from '@t1m0thy_michael/u'
 
-const addClass = (element: NodeDescendant, className: string | string[]): void => {
+import { runFactory } from '../utils/run'
+
+export const addClass = (element: NodeDescendant, className: string | string[]): void => {
 	if (!element.classList) return
 	element.classList.add(...u.makeSureItsAnArray(className))
 }
 
-const removeClass = (element: NodeDescendant, className: string | string[]): void => {
+export const removeClass = (element: NodeDescendant, className: string | string[]): void => {
 	if (!element.classList) return 
 	element.classList.remove(...u.makeSureItsAnArray(className))
 }
 
-const replaceClass = (element: NodeDescendant, oldClass: string, newClass: string): void => {
+export const replaceClass = (element: NodeDescendant, oldClass: string, newClass: string): void => {
 	if (!element.classList) return 
 	element.classList.replace(oldClass, newClass)
 }
 
-const toggleClass = (element: NodeDescendant, className: string): void => {
+export const toggleClass = (element: NodeDescendant, className: string): void => {
 	if (!element.classList) return
 	element.classList.toggle(className)
 }
 
-const hasClass = (element: NodeDescendant, className: string): boolean => {
+export const hasClass = (element: NodeDescendant, className: string): boolean => {
 	if (!element.classList) return false
 	return element.classList.contains(className)
 }
 
 export const classes = {
-	addClass,
-	removeClass,
-	replaceClass,
-	toggleClass,
-	hasClass,
+	addClass: runFactory(addClass),
+	hasClass: runFactory(hasClass),
+	removeClass: runFactory(removeClass),
+	replaceClass: runFactory(replaceClass),
+	toggleClass: runFactory(toggleClass),
 }
