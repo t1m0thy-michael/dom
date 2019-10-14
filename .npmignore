@@ -1,9 +1,9 @@
 .eslint*
 .nycrc
 .travis.yml
-build
-coverage
-nyc_output
+build/**
+coverage/**
+.nyc_output/**
 src
 tests
 tsconfig.json

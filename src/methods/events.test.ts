@@ -1,13 +1,18 @@
 // types
-import { DomElement, EventBusInterface, DomEventSubscription } from '../types'
+import { 
+	DomElement, 
+	EventBusInterface, 
+	DomEventSubscription, 
+	DomEvent
+} from '../types'
 
 // test utils
 const sinon = require('sinon') // stubs etc...
 import { assert } from 'chai'
 
 // under test
-import { Dom_EventBus_Error } from '../utils/errors'
 import { dom } from '../dom'
+
 import { 
 	change,
 	click,
@@ -17,11 +22,23 @@ import {
 	sub,
 } from './events'
 
+import { 
+	Dom_EventBus_Error, 
+	Dom_Missing_Argument
+} from '../utils/errors'
+
 const getEventbusStub = () => ({
 	sub: sinon.stub().returns('a token'),
 	pub: sinon.stub(),
 	remove: sinon.stub(),
 }) as EventBusInterface
+
+const getDomElemDomStub = () => ({
+	data: new Map(),
+	def: {},
+	event: { subscriptions: [], onEvent: [] },
+	on: {}
+})
 
 describe('events', function() {
 
@@ -146,6 +163,108 @@ describe('events', function() {
 
 			assert.strictEqual(element.DOM.event.subscriptions[0].token, 'a token', 'token stored in event subscriptions')
 			assert.isObject(element.DOM.event.subscriptions[0].subscription, 'subscription stored in event subscriptions')
+		})
+	})
+
+	/*=================================
+	  			onEvent()
+	=================================*/
+
+	describe('onEvent()', () => {
+
+		const sandbox = sinon.createSandbox()
+
+		before(function () {
+			this.jsdom = require('jsdom-global')()
+		})
+
+		after(function () {
+			this.jsdom()
+		})
+
+		afterEach(function () {
+			sandbox.restore()
+		})
+
+		it('throws when it should', () => {
+			const elem = document.createElement('div') as unknown as DomElement
+			elem.DOM = getDomElemDomStub()
+
+			assert.throws(() => { onEvent(elem, { /*no options*/ } as DomEvent) }, Dom_Missing_Argument)
+			assert.throws(() => { onEvent(elem, { event: 'click' } as DomEvent) }, Dom_Missing_Argument)
+			assert.throws(() => { onEvent(elem, { topic: 'topic' } as DomEvent) }, Dom_Missing_Argument)
+		})
+
+		it('event handler is stored & addEventListener is called', () => {
+			const elem = document.createElement('div') as unknown as DomElement
+			elem.DOM = getDomElemDomStub()
+			sandbox.stub(elem, 'addEventListener')
+
+			onEvent(elem, { event: 'click', topic: 'topic' })
+			assert.ok(elem.DOM.event.onEvent.length > 0, 'event handler stored')
+			sinon.assert.calledOnce(elem.addEventListener)
+
+			onEvent(elem, {
+				event: 'click', 
+				topic: 'topic', 
+				data: function () {},
+				stopPropagation: true,
+				preventDefault: false,
+				elementAsCtx: false, 
+			})
+			assert.ok(elem.DOM.event.onEvent.length > 0, 'event handler stored')
+			sinon.assert.calledTwice(elem.addEventListener)
+		})
+
+		//
+		// Dom special events
+		//
+		it('event handler is NOT stored & addEventListener is NOT called when DOM special event name passed', () => {
+			const elem = document.createElement('div') as unknown as DomElement
+			elem.DOM = getDomElemDomStub()
+			sandbox.stub(elem, 'addEventListener')
+
+			onEvent(elem, { event: 'append', fn: () => { }, topic: 'topic' })
+			assert.ok(elem.DOM.event.onEvent.length === 0, 'event handler NOT stored')
+			sinon.assert.notCalled(elem.addEventListener)
+
+			onEvent(elem, { event: 'append', topic: 'topic' })
+			assert.ok(elem.DOM.event.onEvent.length === 0, 'event handler NOT stored')
+			sinon.assert.notCalled(elem.addEventListener)
+
+			onEvent(elem, { event: 'append', topic: 'topic', elementAsCtx: false })
+			assert.ok(elem.DOM.event.onEvent.length === 0, 'event handler NOT stored')
+			sinon.assert.notCalled(elem.addEventListener)
+		})
+	})
+
+
+	/*=================================
+				fireEvent()
+	=================================*/
+	describe('fireEvent()', () => {
+
+		const sandbox = sinon.createSandbox()
+
+		before(function () {
+			this.jsdom = require('jsdom-global')()
+		})
+
+		after(function () {
+			this.jsdom()
+		})
+
+		afterEach(function () {
+			sandbox.restore()
+		})
+
+		it('throws when it should', () => {
+			const elem = document.createElement('div') as unknown as DomElement
+			sandbox.stub(elem, 'dispatchEvent')
+
+			fireEvent(elem, 'click')
+
+			sinon.assert.calledOnce(elem.dispatchEvent)
 		})
 	})
 })

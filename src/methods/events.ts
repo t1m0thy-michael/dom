@@ -10,7 +10,10 @@ import { isFunction, isString }from '@t1m0thy_michael/u'
 
 import { dom } from '../dom'
 import { runFactory } from '../utils/run'
-import { Dom_EventBus_Error } from '../utils/errors'
+import { 
+	Dom_EventBus_Error, 
+	Dom_Missing_Argument
+} from '../utils/errors'
  
 export const sub = (
 	element: DomElement,
@@ -42,26 +45,33 @@ export const sub = (
 	obj.element.DOM.event.subscriptions.push({ subscription, token })
 }
 
-const _addSpecialEvent = (element: DomElement, event: string, fn: EventListener | undefined) => {
-	// TODO: special DOM events
-	// move array of events somewhere else...
-	// this is intended as improvement over Mutation events
-	// will fire when DOM is used to initiate the event
-	/*
-		DOMAttrModified
-		DOMAttributeNameChanged
-		DOMCharacterDataModified
-		DOMElementNameChanged
-		DOMNodeInserted 			** implemented in DOM
-		DOMNodeInsertedIntoDocument
-		DOMNodeRemoved
-		DOMNodeRemovedFromDocument
-		DOMSubtreeModified
-	*/
-	if (isFunction(fn) && ['append'].includes(event.toLowerCase())) {
-		element.DOM.on[event] = fn
+// TODO: more special DOM events
+const _addSpecialEvent = (obj: DomObject, {
+	event,
+	topic,
+	data,
+	fn,
+	elementAsCtx = true
+}: DomEvent) => {
+
+	const e = event.toLowerCase()
+
+	if(['append'].includes(event.toLowerCase())) {
+		if (isFunction(fn) || isString(topic)){
+			obj.element.DOM.on[event] = async function () {
+				if (isFunction(fn)) fn({ target: obj.element} as unknown as Event)
+				if (topic && obj.eventbus) {
+					obj.eventbus.pub({
+						topic: topic,
+						data: isFunction(data) ? data(e) : data,
+						ctx: elementAsCtx ? obj.element : undefined
+					})
+				}
+			}
+		}
+		return true
 	}
-	return element
+	return false
 }
 
 const _createEventHandler = (
@@ -104,10 +114,19 @@ export const onEvent = (
 
 	const obj = dom(element)
 
+	if (!isString(event) || !event.length) throw new Dom_Missing_Argument('onEvent: invalid [event]')
+	if (!isString(topic) && !isFunction(fn)) throw new Dom_Missing_Argument('onEvent: Must provide [topic | fn]')
+
 	if (isFunction(fn)) fn = fn.bind(obj.element)
 	if (isFunction(data)) data = data.bind(obj.element)
 
-	_addSpecialEvent(obj.element, event, fn)
+	if (_addSpecialEvent(obj, {
+		event,
+		topic,
+		data,
+		fn,
+		elementAsCtx,
+	})) return
 
 	const onEventHandler = _createEventHandler(obj, {
 		event,
@@ -118,9 +137,9 @@ export const onEvent = (
 		preventDefault,
 		elementAsCtx,
 	})
-
-	obj.element.DOM.event.onEvent.push(onEventHandler)
+	
 	obj.element.addEventListener(event, onEventHandler)
+	obj.element.DOM.event.onEvent.push(onEventHandler)
 }
 
 export const on = (element: DomElement, evnt: string, fn: EventListener) => onEvent(element, { event: evnt, fn: fn })

@@ -20,7 +20,7 @@ export const runFactory = <T extends any[], R>(fn: (o: DomElement, ...args: T) =
 		return this
 	}
 
-// returns single result, array of results or DomObject (this) if no results. Throws aways undefined.
+// returns single result, array of results (Throws aways undefined) or DomObject (this) if no results.
 export const runAndReturnFactory = <T extends any[], R>(fn: (o: DomElement, ...args: T) => R): ((...args: T) => (R extends void ? DomObject : R[])) =>
 	function (this: DomObject, ...args) {
 		let results = []
@@ -36,19 +36,3 @@ export const runAndReturnFactory = <T extends any[], R>(fn: (o: DomElement, ...a
 		if (results.length === 1) return results[0]
 		return results
 	}
-
-// // returns single result, array of results. Throws aways undefined.
-// export const runAndReturnNeverDomObjFactory = <T extends any[], R>(fn: (o: DomElement, ...args: T) => R): ((...args: T) => R[]) =>
-// 	function (this: DomObject, ...args) {
-// 		let results = []
-// 		for (let i = 0; i < this.list.length; i++) {
-// 			try {
-// 				results.push(fn(this.list[i], ...args))
-// 			} catch (e) {
-// 				console.error(e)
-// 			}
-// 		}
-// 		results = clean(undefined, results)
-// 		if (results.length === 1) return results[0]
-// 		return results
-// 	}
