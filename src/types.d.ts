@@ -26,7 +26,7 @@ export interface DomEventSubscription {
 
 export interface DomEventSubscriptionDetail {
 	subscription: DomEventSubscription,
-	token: any // TODO: DOM.event.subscriptions.token
+	token: any
 }
 
 export interface DomEventDataProvider {

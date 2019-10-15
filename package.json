@@ -11,8 +11,8 @@
     "test:pptr": "webpack --mode development --pptr && cross-env TS_NODE_FILES=true mocha -r esm -r ts-node/register ./tests/pptr.test.js",
     "coverage": "nyc npm test && nyc report --reporter=text && nyc report --reporter=text-lcov | coveralls",
     "coverage:html": "nyc npm test && nyc report --reporter=text && nyc report --reporter=lcov",
-    "build:sandbox": "webpack --mode production --sandbox",
-    "start": "webpack-dev-server --mode production --open --sandbox"
+    "build:sandbox": "webpack --mode development --sandbox",
+    "start": "webpack-dev-server --mode development --open --sandbox"
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/t1m0thy-michael/d#readme",
   "devDependencies": {
+    "@t1m0thy_michael/e": "^0.1.1",
     "@types/chai": "^4.2.2",
     "@types/mocha": "^5.2.7",
     "@types/node": "^12.7.5",

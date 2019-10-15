@@ -64,7 +64,7 @@ const _createEventHandler = (
 		obj.eventbus.pub({
 			topic: topic,
 			data: isFunction(data) ? data(e) : data,
-			ctx: elementAsCtx ? obj.element : undefined
+			ctx: elementAsCtx ? obj : undefined
 		})
 	}
 }
@@ -88,7 +88,7 @@ export const sub = (
 	
 	const subscription = {
 		topic: topic,
-		fn: fn.bind(obj.element),
+		fn: fn.bind(obj),
 		distinct: distinct,
 		once: once,
 		minInterval: minInterval,
@@ -117,8 +117,8 @@ export const on = (
 	if (!isString(event) || !event.length) throw new Dom_Missing_Argument('on: invalid [event]')
 	if (!isString(topic) && !isFunction(fn)) throw new Dom_Missing_Argument('on: Must provide [topic | fn]')
 
-	if (isFunction(fn)) fn = fn.bind(obj.element)
-	if (isFunction(data)) data = data.bind(obj.element)
+	if (isFunction(fn)) fn = fn.bind(obj)
+	if (isFunction(data)) data = data.bind(obj)
 
 	if (_addSpecialEvent(obj, {
 		event,
