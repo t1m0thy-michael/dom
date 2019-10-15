@@ -46,13 +46,13 @@ But what if we want to publish an event to tell anything else that might be list
 on: {
 	event: 'click', 			// when this happens...
 	topic: 'test/topic', 			// ...publish this topic...
-	data:  					// ...with this data.... (can be a static value instead of a function)
+	data: (e) => e				// ...with this data.... (can be a static value instead of a function)
 	fn: function (e) { 			// ... and do this
 		this.colour('green')
 	}
 }
 ```
-What if our element needs to do something if another &lt;p&gt; tag has been clicked? We'd add the ```sub``` property to its definition:
+What if our element needs to do something if another &lt;p&gt; tag has been clicked? We'd add the ```sub``` property to its definition in order to **sub**scribe to a topic: 
 ```js
 sub: {
 	topic: 'test/topic',			// when this topic is published...
