@@ -1,3 +1,9 @@
+![Travis (.com)](https://img.shields.io/travis/com/t1m0thy-michael/d?style=for-the-badge) 
+![Coveralls github](https://img.shields.io/coveralls/github/t1m0thy-michael/d?style=for-the-badge) 
+![GitHub last commit](https://img.shields.io/github/last-commit/t1m0thy-michael/d?style=for-the-badge) 
+![npm](https://img.shields.io/npm/v/@t1m0thy_michael/d?style=for-the-badge&color=informational) 
+![GitHub](https://img.shields.io/github/license/t1m0thy-michael/d?style=for-the-badge&color=informational) 
+
 # d: dom Awesomeness
 
 ## First a warning...
@@ -21,7 +27,7 @@ A way to easily and concisely define and manipulate a UI.
 * You can pass an array of one or more of these items dom(['#myID', { div: 'hi!' }, myElement])
 
 
-#####Lets create a &lt;p&gt; tag that responds to a click event
+##### Lets create a &lt;p&gt; tag that responds to a click event
 ```js
 const myFirstElement = dom({
 	p: 'Hello World',
@@ -111,7 +117,7 @@ dom({
 ```
 ^ **Just because you can, doesn't mean that you should**. Nesting like that can get ugly quickly. It's recommended to define elements separately and then compose larger structures from them afterwards. 
 
-#####An input example
+##### An input example
 ```js
 dom({
 	input: 'initial value',
