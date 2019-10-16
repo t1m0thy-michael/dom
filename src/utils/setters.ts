@@ -20,7 +20,7 @@ import {
 	makeSureItsAnArray 
 } from '@t1m0thy_michael/u'
 
-import dom from '../dom'
+import { dom } from '../dom'
 
 /*=======================================
 	utility factory functions

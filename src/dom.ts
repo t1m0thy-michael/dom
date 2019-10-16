@@ -117,5 +117,3 @@ const gbl = (<any>globalThis) || (<any>window) || (<any>self) || (<any>global) |
 if (!gbl.dom) {
 	gbl.dom = dom
 }
-
-export default dom

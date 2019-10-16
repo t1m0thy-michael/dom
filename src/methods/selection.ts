@@ -4,7 +4,7 @@ import {
 } from '../types'
 
 import { runAndReturnFactory } from '../utils/run'
-import dom from '../dom'
+import { dom } from '../dom'
 
 export const child = (obj: DomObject, selector: string): DomObject => {
 	if (!obj.element|| !obj.element.querySelectorAll) return dom([])
