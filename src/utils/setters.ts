@@ -128,3 +128,5 @@ export const setters: DomSetters = {
 	validate,
 	width,
 }
+
+export const registerSetter = (name: string, fn: DomSetter) => setters[name] = fn

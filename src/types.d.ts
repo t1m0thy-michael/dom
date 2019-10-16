@@ -105,8 +105,8 @@ export type DomObjectPrototype = {
 	disable: () => DomObject,
 	enable: () => DomObject,
 	id: (id?: string) => DomObject | (string | boolean)[],
-	innerHTML: (html?: string) => DomObject | string[],
-	innerText: (text?: string) => DomObject | string[],
+	innerHTML: (html?: string, append?: boolean) => DomObject | string[],
+	innerText: (text?: string, append?: boolean) => DomObject | string[],
 
 	// classes
 	addClass: (className: string | string[]) => DomObject,

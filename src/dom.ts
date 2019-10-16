@@ -7,10 +7,10 @@ import {
 	DomObjectPrototype,
 } from './types'
 
-// import { DOM } from './utils/prototype'
 import { create } from './utils/create'
 import { isDom, isNode } from './utils/typeChecks'
 import { runAndReturnFactory } from './utils/run'
+import { registerSetter } from './utils/setters'
 import { isString, isObject, isArrayLike, makeSureItsAnArray } from '@t1m0thy_michael/u'
 
 import { attribute } from './methods/attributes'
@@ -107,6 +107,8 @@ dom.text = (txt: string) => dom(document.createTextNode(txt))
 dom.registerPlugin = (name: string, fn: (this: DomElement, ...args: any[]) => any) => {
 	getPrototype()[name] = runAndReturnFactory(fn)
 }
+
+dom.registerSetter = registerSetter
 
 dom.setEventbus = (eb: EventBusInterface | null) => getPrototype().eventbus = eb
 dom.getEventbus = () => getPrototype().eventbus

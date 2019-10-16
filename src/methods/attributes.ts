@@ -29,13 +29,15 @@ export const id = (element: NodeDescendant, val?: string) => {
 	element.id = val
 }
 
-export const innerHTML = (element: NodeDescendant, html?: string): string => {
+export const innerHTML = (element: NodeDescendant, html?: string, append?: boolean): string => {
 	if (isUndefined(html)) return element.innerHTML || ''
+	if (append) return element.innerText += html
 	return element.innerHTML = html
 }
 
-export const innerText = (element: NodeDescendant, text?: string): string => {
+export const innerText = (element: NodeDescendant, text?: string, append?: boolean): string => {
 	if (isUndefined(text)) return element.innerText || ''
+	if (append) return element.innerText += text
 	return element.innerText = text
 }
 

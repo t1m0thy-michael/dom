@@ -1,51 +1,40 @@
-import { DomObject } from './types'
+import { DomObject, DomDefinition } from './types'
+
+import event from '@t1m0thy_michael/e'
 
 import { dom } from './dom'
 
-import { event } from '@t1m0thy_michael/e'
 dom.setEventbus(event)
 
-const test = dom([
-	{ h1: ['d: Dom Manipulation Awesomeness'] },
-]).appendTo('body')
-
-// test plugings
-dom.registerPlugin('test', (element, ...args) => {
-	console.log(...args)
-	return element.tagName
-})
-//dom.text('hello world').appendTo('body')
-
-
-
-
-const createThingToClick = (txt: string) => {
-	return dom({
-		p: txt,
-		on: {
-			event: 'click',
-			fn: function (this: DomObject, e: Event) {
-				this.colour('green')
-			},
-			topic: 'test/topic',
+const createThingToClick = (txt: string, cls?: string | string[]) => dom({
+	p: txt,
+	classes: cls,
+	on: {
+		event: 'click',
+		fn: function (e: Event) {
+			this.colour('green')
 		},
-		sub: {
-			topic: 'test/topic',
-			fn: function (this: DomObject, data: any, ctx: any, topic: string) {
-				if (ctx.element !== this.element) {
-					this.colour('red')
-				}
+		topic: 'test/topic',
+	},
+	sub: {
+		topic: 'test/topic',
+		fn: function (data: any, ctx: DomObject, topic: string) {
+			if (ctx.element !== this.element) {
+				this.colour('red')
 			}
 		}
-	})
-}
+	}
+})
 
 const allMyElements = dom([
-	createThingToClick('one'),
-	createThingToClick('two'),
+	createThingToClick('one', 'foo'),
+	createThingToClick('two', 'bar'),
 	createThingToClick('three'),
-	createThingToClick('four'),
+	createThingToClick('four', 'bar'),
 ]).appendTo('body')
+
+allMyElements.is('.foo').colour('blue')
+allMyElements.not('.foo').colour('red')
 
 allMyElements.on({
 	event: 'dblclick',
@@ -53,3 +42,27 @@ allMyElements.on({
 		this.colour('blue')
 	}
 })
+
+// test plugings and dom.text while we're at it
+dom.registerPlugin('test', (element, ...args) => {
+	return element.tagName
+})
+
+dom([
+	{ h3: 'Testing dom.registerPlugin'},
+	{ p: 'This adds a plugin that will return all of the selected tag names. Then we\'ll join them and create a new TextNode and append to the page;' },
+	dom.text(dom('*').test().join(', ')),
+]).appendTo('body')
+
+
+dom.registerSetter('setterTest', (o: DomObject, d: Partial<DomDefinition>) => {
+	if (o.element && o.element.setAttribute){
+		o.element.setAttribute('setterTest', d.setterTest)
+	}
+})
+
+dom([
+	{ h3: 'Testing dom.registerSetter' },
+	{ p: 'We\'ve registered a setter that adds DomDefinition property \'setterTest\' tothe element as an attribute;' },
+	dom({ div: 'This P tag should have the \'setterTest\' attribute', setterTest: 'Hello World' }),
+]).appendTo('body')
