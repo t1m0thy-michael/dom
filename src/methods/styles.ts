@@ -23,12 +23,12 @@ export const show = (element: NodeDescendant, showType = '') => {
 export const background = async (
 	element: NodeDescendant,
 	{
-		color,
+		colour,
 		path,
 		brightness = false,
 		position = '',
 	}: {
-		color?: string,
+		colour?: string,
 		path?: string,
 		brightness?: boolean,
 		position?: string,
@@ -57,7 +57,7 @@ export const background = async (
 		if (position) element.style.backgroundPosition = position
 	}
 
-	if (color) backgroundColour(element, color)
+	if (colour) backgroundColour(element, colour)
 
 	return true
 }
@@ -68,10 +68,10 @@ export const colour = (element: NodeDescendant, color: string) => {
 	element.style.color = color
 }
 
-export const backgroundColour = (element: NodeDescendant, color: string) => {
+export const backgroundColour = (element: NodeDescendant, colour: string) => {
 	if (!hasStyleProperty(element)) return
-	if (isUndefined(color)) return element.style.backgroundColor
-	element.style.backgroundColor = color
+	if (isUndefined(colour)) return element.style.backgroundColor
+	element.style.backgroundColor = colour
 }
 
 export enum Dimension {

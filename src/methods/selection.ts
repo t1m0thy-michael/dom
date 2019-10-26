@@ -1,20 +1,20 @@
 import {
 	NodeDescendant,
 	DomObject,
+	DomInitiator,
 } from '../types'
 
 import { runAndReturnFactory } from '../utils/run'
 import dom from '../dom'
 
-export const child = (obj: DomObject, selector: string): DomObject => {
+export const child = (obj: DomObject, selector: DomInitiator): DomObject => {
 	if (!obj.element|| !obj.element.querySelectorAll) return dom([])
-	return dom(obj.element.querySelectorAll(selector))
+	return dom(selector)
 }
 
-export const sibling = (obj: DomObject, selector: string): DomObject => {
+export const sibling = (obj: DomObject, selector: DomInitiator): DomObject => {
 	if (!obj.element.parentNode || !selector) return dom([])
-	const siblings = obj.element.parentNode.querySelectorAll(selector)
-	const queryResult = Array.from(siblings)
+	const queryResult = dom(selector).list
 	return dom(queryResult.filter((elem) => elem !== obj.element))
 }
 
