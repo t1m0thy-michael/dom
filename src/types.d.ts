@@ -92,12 +92,12 @@ export type DomObjectPrototype = {
 	[index: string]: any,
 
 	// selection
-	child: (selector: string) => DomObject,
+	child: (selector: DomInitiator) => DomObject,
 	isAppended: () => boolean[],
-	parent: (selector: string) => DomObject,
+	parent: (selector: DomInitiator) => DomObject,
 	is: (selector: string) => DomObject,
 	not: (selector: string) => DomObject,
-	sibling: (selector: string) => DomObject,
+	sibling: (selector: DomInitiator) => DomObject,
 
 	// attributes
 	attr: (attribute: string, val?: string | number) => DomObject | (boolean | string)[],

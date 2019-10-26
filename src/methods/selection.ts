@@ -8,6 +8,7 @@ import { runAndReturnFactory } from '../utils/run'
 import dom from '../dom'
 
 export const child = (obj: DomObject, selector: DomInitiator): DomObject => {
+	console.log(selector)
 	if (!obj.element|| !obj.element.querySelectorAll) return dom([])
 	return dom(selector)
 }
@@ -18,9 +19,13 @@ export const sibling = (obj: DomObject, selector: DomInitiator): DomObject => {
 	return dom(queryResult.filter((elem) => elem !== obj.element))
 }
 
-export const parent = (obj: DomObject, selector: string): DomObject => {
+export const parent = (obj: DomObject, selector: DomInitiator): DomObject => {
 	if (!obj.element || !obj.element.closest) return dom([])
-	return dom(obj.element.closest(selector))
+	if (typeof selector === 'string') return dom(obj.element.closest(selector))
+	console.log('not astring')
+	const theDaddy = dom(selector).list.filter((elem) => !!dom(elem).child(obj).length)
+	console.log('the daddy', theDaddy)
+	return dom(theDaddy)
 }
 
 export const isAppended = (element: NodeDescendant): boolean => document.body.contains(element)
