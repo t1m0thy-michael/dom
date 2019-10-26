@@ -11,7 +11,7 @@ import { create } from './utils/create'
 import { isDom, isNode } from './utils/typeChecks'
 import { runAndReturnFactory } from './utils/run'
 import { registerSetter } from './utils/setters'
-import { isString, isObject, isArrayLike, makeSureItsAnArray } from '@t1m0thy_michael/u'
+import { isString, isObject, isArrayLike, makeSureItsAnArray, times } from '@t1m0thy_michael/u'
 
 import { attribute } from './methods/attributes'
 import { classes } from './methods/classes'
@@ -22,7 +22,7 @@ import { selection } from './methods/selection'
 import { styles } from './methods/styles'
 import { viewport } from './methods/viewport'
 
-// dynamic getter - deals with circular deps within method modules
+// dynamic getter - required to deal with circular deps within method modules
 export const getPrototype = (()=> {
 	let DOM = false as unknown as DomObjectPrototype
 	return (): DomObjectPrototype => {
@@ -99,23 +99,35 @@ export const dom = (initiator: DomInitiator): DomObject => {
 	
 }
 
-dom.br = { br: 1 }
+/*=======================================
+Utility functions
+=======================================*/
+
+dom.isDom = isDom
+
+dom.br = (n = 1) => dom([times({ br: [] }, n)])
 
 dom.text = (txt: string) => dom(document.createTextNode(txt))
 
-// add setup methods directly to dom object
+/*=======================================
+Extending functionality
+=======================================*/
+
 dom.registerPlugin = (name: string, fn: (this: DomElement, ...args: any[]) => any) => {
 	getPrototype()[name] = runAndReturnFactory(fn)
 }
 
 dom.registerSetter = registerSetter
 
+/*=======================================
+Settings / setup
+=======================================*/
+
 dom.setEventbus = (eb: EventBusInterface | null) => getPrototype().eventbus = eb
+
 dom.getEventbus = () => getPrototype().eventbus
 
-dom.isDom = isDom
-
- 
+// enforce singleton 
 const gbl = (<any>globalThis) || (<any>window) || (<any>self) || (<any>global) || {} // node and browser compatible
 if (!gbl.dom) {
 	gbl.dom = dom

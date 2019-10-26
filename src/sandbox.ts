@@ -67,17 +67,32 @@ dom([
 	dom({ div: 'This P tag should have the \'setterTest\' attribute', setterTest: 'Hello World' }),
 ]).appendTo('body')
 
+dom.br(3).appendTo('body')
 
-dom([
-	{ span: 'line of text!' },
-	dom.br,
-	{ span: 'line of text!' },
-	dom.br,
-	{ span: 'line of text!' },
-	dom.br,
-	{ span: 'line of text!' },
-	dom.br,
-	{ span: 'line of text!' },
-	dom.br,
-	{ span: 'line of text!' },
-]).appendLastChild('body')
+let p1 = dom({ span: 'one' })
+let p2 = dom({ span: 'two' })
+let p3 = dom({ span: 'three' })
+let p4 = dom({ span: 'four' })
+
+let all4 = dom([p1, p2, p3, p4])
+
+let p0 = dom([
+	{ div: ['a'] },
+	{ div: [{ div: 'Boomy McBoom', classes: ['testclass'] }] },
+	{ div: [{ div: 'Titty McBoob', classes: ['testclass'] }] },
+	{ div: [p1] },
+	{ div: [p2] },
+	{ div: [{div: 'Cockface Cuntington', classes: ['testclass']}] },
+	{ div: [p3] },
+	{ div: ['c'] },
+]).appendTo('body')
+
+//append one of set outside of p0
+dom(p4).appendTo('body')
+
+// dom(all4).parent(p0).colour('red')
+// dom(p2).parent(p0).colour('green')
+
+p0.child(all4).colour('blue')
+
+// dom('body').child(p5).colour('yellow')

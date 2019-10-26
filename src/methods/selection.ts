@@ -1,26 +1,41 @@
 import {
 	NodeDescendant,
 	DomObject,
+	DomInitiator,
+	DomElement
 } from '../types'
 
+import { isString, makeID, unique } from '@t1m0thy_michael/u'
 import { runAndReturnFactory } from '../utils/run'
 import { dom } from '../dom'
 
-export const child = (obj: DomObject, selector: string): DomObject => {
+// adds classes to the elements we're searching for then uses querySelectorAll
+export const child = (obj: DomObject, needle: DomInitiator | DomObject): DomObject => {
 	if (!obj.element|| !obj.element.querySelectorAll) return dom([])
-	return dom(obj.element.querySelectorAll(selector))
+	const identifier = makeID(10,'_')
+	needle = dom(needle)
+	needle.addClass(identifier)
+	const result = dom(obj.element.querySelectorAll(`.${identifier}`))
+	needle.removeClass(identifier)
+	return result
 }
 
-export const sibling = (obj: DomObject, selector: string): DomObject => {
-	if (!obj.element.parentNode || !selector) return dom([])
-	const siblings = obj.element.parentNode.querySelectorAll(selector)
-	const queryResult = Array.from(siblings)
+export const sibling = (obj: DomObject, needle: DomInitiator | DomObject): DomObject => {
+	if (!obj.element.parentNode || !needle) return dom([])
+	const queryResult = dom(needle).list
 	return dom(queryResult.filter((elem) => elem !== obj.element))
 }
 
-export const parent = (obj: DomObject, selector: string): DomObject => {
+export const parent = (obj: DomObject, needle: DomInitiator | DomObject): DomObject => {
 	if (!obj.element || !obj.element.closest) return dom([])
-	return dom(obj.element.closest(selector))
+	if (isString(needle)) return dom(obj.element.closest(needle))
+
+	needle = dom(needle)
+	const results = [] as DomElement[]
+	needle.list.forEach((n:  DomElement) => {
+		if (dom(n).child(obj).list.length) results.push(n)
+	})
+	return dom(results)
 }
 
 export const isAppended = (element: NodeDescendant): boolean => document.body.contains(element)
@@ -47,7 +62,7 @@ export const runAndReturnSingleDomObjectFactory = <T extends any[]>(fn: (o: DomO
 				console.error(e)
 			}
 		}
-		return dom(results)
+		return dom(unique(results))
 	}
 
 export const selection = {

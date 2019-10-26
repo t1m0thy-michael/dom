@@ -70,6 +70,7 @@ Set using DomObject methods
 
 const attr = set_kv_pairs('attr')
 const background = call_dom_fn('background')
+const backgroundColour = call_dom_fn('backgroundColour')
 const classes =  call_dom_fn('addClass', 'classes')
 const data = set_kv_pairs('data')
 const dflt = call_dom_fn('dflt')
