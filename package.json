@@ -7,7 +7,7 @@
   "scripts": {
     "build": "webpack --mode production",
     "lint": "eslint \"./src/**\"",
-    "test": "cross-env TS_NODE_FILES=true mocha -r ts-node/register ./**/*.test.ts",
+    "test": "cross-env TS_NODE_FILES=true mocha -r ts-node/register **/*.test.ts",
     "test:pptr": "webpack --mode development --pptr && cross-env TS_NODE_FILES=true mocha -r esm -r ts-node/register ./tests/pptr.test.js",
     "coverage": "nyc npm test && nyc report --reporter=text && nyc report --reporter=text-lcov | coveralls",
     "coverage:html": "nyc npm test && nyc report --reporter=text && nyc report --reporter=lcov",

@@ -1,7 +1,7 @@
 import { DomDefinition, DomElement } from '../types'
 import { HTMLTag } from '../enum'
 
-import dom from '../dom'
+import { dom } from '../dom'
 import { setters } from './setters'
 
 export const create = (d: Partial<DomDefinition> = {}): DomElement => {
@@ -24,6 +24,9 @@ export const create = (d: Partial<DomDefinition> = {}): DomElement => {
 					}
 					case 'select': {
 						d.options = d[tag]
+						break
+					}
+					case 'br':{
 						break
 					}
 					default: {

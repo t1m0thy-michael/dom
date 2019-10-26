@@ -67,36 +67,32 @@ dom([
 	dom({ div: 'This P tag should have the \'setterTest\' attribute', setterTest: 'Hello World' }),
 ]).appendTo('body')
 
+dom.br(3).appendTo('body')
 
-let s0 = dom([
-		{ h1: 'h1', classes: ['selectorTest'] },
-		{ h2: 'h2', classes: ['selectorTest'] },
-		{ h3: 'h3', classes: ['selectorTest'] },
-		{ h4: 'h4', classes: ['selectorTest'] },
-		{ h5: 'h5', classes: ['selectorTest'] },
-	]
-).appendTo('body')
+let p1 = dom({ span: 'one' })
+let p2 = dom({ span: 'two' })
+let p3 = dom({ span: 'three' })
+let p4 = dom({ span: 'four' })
 
-let s1 = dom('h1.selectorTest')
-let s2 = dom('h2.selectorTest')
-
-let s2a = s1.sibling(s2).colour('red')
-let s3 = s1.sibling('h3').colour('green')
-let s4 = s1.sibling(['h4','h5']).colour('blue')
-
-// dom('body').child(s0).colour('pink')
-
-let p1 = dom({span: 'hello world'})
+let all4 = dom([p1, p2, p3, p4])
 
 let p0 = dom([
 	{ div: ['a'] },
-	{ div: ['b'] },
-	{ div: ['c'] },
+	{ div: [{ div: 'Boomy McBoom', classes: ['testclass'] }] },
+	{ div: [{ div: 'Titty McBoob', classes: ['testclass'] }] },
 	{ div: [p1] },
-	{ div: ['d'] },
-	{ div: ['e'] },
-	{ div: ['f'] },
-	{ div: ['g'] },
+	{ div: [p2] },
+	{ div: [{div: 'Cockface Cuntington', classes: ['testclass']}] },
+	{ div: [p3] },
+	{ div: ['c'] },
 ]).appendTo('body')
 
-p1.parent(p0).colour('red')
+//append one of set outside of p0
+dom(p4).appendTo('body')
+
+// dom(all4).parent(p0).colour('red')
+// dom(p2).parent(p0).colour('green')
+
+p0.child(all4).colour('blue')
+
+// dom('body').child(p5).colour('yellow')

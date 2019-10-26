@@ -6,7 +6,6 @@
 import { DomElement, DomObject } from '../types'
 import { clean } from '@t1m0thy_michael/u'
 
-
 // always returns DomObject (this)
 export const runFactory = <T extends any[], R>(fn: (o: DomElement, ...args: T) => R): ((...args: T) => DomObject) =>
 	function (this: DomObject, ...args) {
