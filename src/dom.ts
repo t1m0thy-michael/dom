@@ -73,23 +73,21 @@ export const dom = (initiator: DomInitiator): DomObject => {
 	if (isDom(initiator)) return initiator
 	
 	let list = [] as DomElement[]
-	
-	if (initiator) {	
-		
-		if (isNode(initiator)) {
-			list[0] = createDomElement(initiator)
-
-		} else if (isString(initiator)) {
-			list = makeSureItsAnArray(document.querySelectorAll(initiator)).map(createDomElement)
-
-		} else if (isArrayLike(initiator)) {
-			makeSureItsAnArray(initiator as any)
-				.map(dom)
-				.forEach(item => list.push(...item.list))
 			
-		} else if (isObject(initiator)) {
-			list[0] = create(initiator)
-		}
+	if (isNode(initiator)) {
+		list[0] = createDomElement(initiator)
+
+	} else if (isString(initiator)) {
+		list = makeSureItsAnArray(document.querySelectorAll(initiator))
+			.map(createDomElement)
+
+	} else if (isArrayLike(initiator)) {
+		makeSureItsAnArray(initiator as any)
+			.map(dom)
+			.forEach(item => list.push(...item.list))
+		
+	} else if (isObject(initiator)) {
+		list[0] = create(initiator)
 	}
 
 	return Object.create(getPrototype(), {
@@ -100,6 +98,8 @@ export const dom = (initiator: DomInitiator): DomObject => {
 	})
 	
 }
+
+dom.br = { br: 1 }
 
 dom.text = (txt: string) => dom(document.createTextNode(txt))
 
@@ -112,10 +112,11 @@ dom.registerSetter = registerSetter
 
 dom.setEventbus = (eb: EventBusInterface | null) => getPrototype().eventbus = eb
 dom.getEventbus = () => getPrototype().eventbus
+
+dom.isDom = isDom
+
  
 const gbl = (<any>globalThis) || (<any>window) || (<any>self) || (<any>global) || {} // node and browser compatible
 if (!gbl.dom) {
 	gbl.dom = dom
 }
-
-export default dom

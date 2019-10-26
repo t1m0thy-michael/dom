@@ -20,14 +20,16 @@ import {
 	makeSureItsAnArray 
 } from '@t1m0thy_michael/u'
 
-import dom from '../dom'
+import { dom } from '../dom'
 
 /*=======================================
 	utility factory functions
 =======================================*/
 
 export const set_attr_value = (prop: keyof typeof DomAttributeSetters): DomSetter => 
-	(o: DomObject, d: Partial<DomDefinition>): void => o.element[prop] = d[prop]
+	(o: DomObject, d: Partial<DomDefinition>): void => {
+		if (typeof o.element[prop] !== 'undefined')	o.element[prop] = d[prop]
+	}
 
 export const set_kv_pairs = (prop: keyof typeof DomObjectSetters): DomSetter => 
 	(o: DomObject, d: Partial<DomDefinition>): void => {
