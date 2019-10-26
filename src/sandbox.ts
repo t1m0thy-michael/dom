@@ -66,3 +66,18 @@ dom([
 	{ p: 'We\'ve registered a setter that adds DomDefinition property \'setterTest\' tothe element as an attribute;' },
 	dom({ div: 'This P tag should have the \'setterTest\' attribute', setterTest: 'Hello World' }),
 ]).appendTo('body')
+
+
+dom([
+	{ span: 'line of text!' },
+	dom.br,
+	{ span: 'line of text!' },
+	dom.br,
+	{ span: 'line of text!' },
+	dom.br,
+	{ span: 'line of text!' },
+	dom.br,
+	{ span: 'line of text!' },
+	dom.br,
+	{ span: 'line of text!' },
+]).appendLastChild('body')
