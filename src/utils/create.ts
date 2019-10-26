@@ -26,6 +26,9 @@ export const create = (d: Partial<DomDefinition> = {}): DomElement => {
 						d.options = d[tag]
 						break
 					}
+					case 'br':{
+						break
+					}
 					default: {
 						d.content = d[tag]
 					}
