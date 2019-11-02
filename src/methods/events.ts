@@ -6,13 +6,17 @@ import {
 	DomObject,
 } from '../types'
 
+import { EventTypes} from '../enum'
+
 import { isFunction, isString }from '@t1m0thy_michael/u'
 
 import { runFactory } from '../utils/run'
 import { 
+	DOM_Dont_Be_Stupid,
 	Dom_EventBus_Error, 
-	Dom_Missing_Argument
+	Dom_Missing_Argument,
 } from '../utils/errors'
+
 import { dom } from '../dom'
  
 // TODO: more special DOM events
@@ -114,12 +118,16 @@ export const on = (
 
 	const obj = dom(element)
 
+	// confirm passed options
 	if (!isString(event) || !event.length) throw new Dom_Missing_Argument('on: invalid [event]')
 	if (!isString(topic) && !isFunction(fn)) throw new Dom_Missing_Argument('on: Must provide [topic | fn]')
+	if (event === topic) throw new DOM_Dont_Be_Stupid('event === topic will lead to infinite loop.')
 
+	// bind dom OBJECT to all functions
 	if (isFunction(fn)) fn = fn.bind(obj)
 	if (isFunction(data)) data = data.bind(obj)
 
+	// dom special events (append, etc...)
 	if (_addSpecialEvent(obj, {
 		event,
 		topic,
@@ -128,18 +136,33 @@ export const on = (
 		elementAsCtx,
 	})) return
 
-	const onHandler = _createEventHandler(obj, {
-		event,
-		topic,
-		data,
-		fn,
-		stopPropagation,
-		preventDefault,
-		elementAsCtx,
-	})
+	// standard event types
+	if (event in EventTypes){
+		const onHandler = _createEventHandler(obj, {
+			event,
+			topic,
+			data,
+			fn,
+			stopPropagation,
+			preventDefault,
+			elementAsCtx,
+		})
+		
+		obj.element.addEventListener(event, onHandler)
+		obj.element.DOM.event.on.push(onHandler)
+
+		return
+	} 
 	
-	obj.element.addEventListener(event, onHandler)
-	obj.element.DOM.event.on.push(onHandler)
+	// not a standard event, assume event is an eventbs topic
+	if (isFunction(fn)){
+		sub( element, {
+			topic: event,
+			fn,
+		})
+
+		return
+	}
 }
 
 export const fireEvent = (element: NodeDescendant, event: string) => {
