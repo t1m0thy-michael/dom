@@ -2,7 +2,7 @@ import {
 	HTMLTag, 
 	DomAttributeSetters, 
 	DomObjectSetters 
-} from './enum'
+} from './utils/enum'
 
 /*=====================================================
 	Event Bus Types
@@ -14,10 +14,14 @@ export interface EventBusInterface {
 	remove: Function,
 }
 
+export interface DomEventSubscriber {
+	(data?: any, ctx?: any, topic?: string): any
+}
+
 export interface DomEventSubscription {
 	[index: string]: any,
 	topic: string,
-	fn: Function,
+	fn: DomEventSubscriber,
 	distinct?: boolean,
 	once?: boolean,
 	minInterval?: number,
@@ -43,7 +47,7 @@ export interface DomEvent {
 	event: string,
 	topic?: string,
 	data?: any | Function,
-	fn?: EventListener,
+	fn?: EventListener | DomEventSubscriber,
 	stopPropagation?: boolean,
 	preventDefault?: boolean,
 	elementAsCtx?: boolean,
@@ -61,9 +65,9 @@ export type DomElement = NodeDescendant & {
 		def: Partial<DomDefinition>,
 		event: {
 			subscriptions: DomEventSubscriptionDetail[],
-			on: EventListener[]
+			on: (EventListener)[]
 		},
-		on: { [index: string]: EventListener },
+		on: { [index: string]: (EventListener) },
 	}
 }
 
@@ -211,7 +215,7 @@ export type DomDefinition = { [index: string]: any }
 	classes: string | string[],
 	content: DomInitiator | DomInitiator[],
 	data: KeyValuePair,
-	on: DomEvent | DomEvent[],
+	on: (DomEvent | DomEvent) | (DomEvent | DomEvent)[],
 	style: Partial<CSSStyleDeclaration>,
 	sub: DomEventSubscription,
 	tag: string,
