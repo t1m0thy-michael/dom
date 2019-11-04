@@ -6,7 +6,7 @@ import {
 	DomObject,
 } from '../types'
 
-import { EventTypes} from '../enum'
+import { EventTypes} from '../utils/enum'
 
 import { isFunction, isString }from '@t1m0thy_michael/u'
 
