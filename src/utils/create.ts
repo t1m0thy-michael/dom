@@ -1,6 +1,6 @@
 import { DomDefinition, DomElement } from '../types'
-import { HTMLTag } from '../enum'
-
+import { HTMLTag, SVGElements } from './enum'
+import { CONST } from './const'
 import { dom } from '../dom'
 import { setters } from './setters'
 
@@ -9,15 +9,16 @@ export const create = (d: Partial<DomDefinition> = {}): DomElement => {
 		for (let tag in HTMLTag) {
 			if (d[tag] !== undefined) {
 				d.tag = tag
-				switch(d.tag){
-					case 'img': {
-						d.src = d[tag]
+				switch (d.tag) {
+					case 'br': {
 						break
 					}
 					case 'input': {
 						d.value = d[tag]
 						break
 					}
+					case 'iframe':
+					case 'img':
 					case 'script': {
 						d.src = d[tag]
 						break
@@ -26,22 +27,26 @@ export const create = (d: Partial<DomDefinition> = {}): DomElement => {
 						d.options = d[tag]
 						break
 					}
-					case 'br':{
-						break
+					case 'svg': {
+						if (Object.values(SVGElements).includes(d[tag])) {
+							d.tag = d[tag]
+						} else {
+							d.namespace = d.namespace || CONST.NAMESPACE_SVG
+							d.content = d[tag]
+						}
 					}
 					default: {
 						d.content = d[tag]
 					}
 				}
 				delete d[tag]
-				break
 			}
 		}
 		d.tag = d.tag || 'div'
 	}
 
 	d.tag = d.tag.toLowerCase()
-	const elem = document.createElement(d.tag)
+	const elem = d.namespace ? document.createElementNS(d.namespace, d.tag) : document.createElement(d.tag)
 	const obj = dom(elem)
 
 	for (let prop in d) {
