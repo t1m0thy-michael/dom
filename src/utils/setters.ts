@@ -12,7 +12,7 @@ import {
 import { 
 	DomAttributeSetters,
 	DomObjectSetters,
-} from '../enum'
+} from './enum'
 
 import { 
 	isFunction, 
@@ -92,6 +92,7 @@ const htmlFor = set_attr_value('htmlFor')
 const max = set_attr_value('max')
 const min = set_attr_value('min')
 const name = set_attr_value('name')
+const namespace = set_attr_value('xmlns')
 const placeholder = set_attr_value('placeholder')
 const size = set_attr_value('size')
 const src = set_attr_value('src')
@@ -100,23 +101,26 @@ const target = set_attr_value('target')
 const type = set_attr_value('type')
 const value = set_attr_value('value')
 const width = set_attr_value('width')
+const xmlns = set_attr_value('xmlns')
 
 
 export const setters: DomSetters = {
 	attr,
-	content,
-	id,
-	disabled,
 	background,
+	backgroundColour,
 	classes,
+	content,
 	data,
 	dflt,
+	disabled,
 	height,
 	href,
 	htmlFor,
+	id,
 	max,
 	min,
 	name,
+	namespace,
 	on,
 	options,
 	placeholder,
@@ -127,9 +131,10 @@ export const setters: DomSetters = {
 	sub,
 	target,
 	type,
-	value,
 	validate,
+	value,
 	width,
+	xmlns,
 }
 
 export const registerSetter = (name: string, fn: DomSetter) => setters[name] = fn
