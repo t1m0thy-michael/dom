@@ -1,18 +1,16 @@
-import { DomObject, DomDefinition } from './types'
-
 import event from '@t1m0thy_michael/e'
 
 import { dom } from './dom'
 
 dom.setEventbus(event)
 
-const createThingToClick = (txt: string, cls?: string | string[]) => dom({
+const createThingToClick = (txt, cls) => dom({
 	p: txt,
 	classes: cls,
 	on: [
 		{
 			event: 'test/topic',
-			fn: function (this: DomObject, data: any, ctx: DomObject/* , topic: string */) {
+			fn: function (data, ctx/* , topic */) {
 				if (ctx.element !== this.element) {
 					this.colour('red')
 				}
@@ -20,7 +18,7 @@ const createThingToClick = (txt: string, cls?: string | string[]) => dom({
 		},
 		{
 			event: 'click',
-			fn: function (this: DomObject, e: Event) {
+			fn: function (e) {
 				this.colour('green')
 			},
 			topic: 'test/topic',
@@ -40,7 +38,7 @@ allMyElements.not('.foo').colour('red')
 
 allMyElements.on({
 	event: 'dblclick',
-	fn: function (this: DomObject) {
+	fn: function () {
 		this.colour('blue')
 	}
 })
@@ -57,7 +55,7 @@ dom([
 ]).appendTo('body')
 
 
-dom.registerSetter('setterTest', (o: DomObject, d: Partial<DomDefinition>) => {
+dom.registerSetter('setterTest', (o, d) => {
 	if (o.element && o.element.setAttribute){
 		o.element.setAttribute('setterTest', d.setterTest)
 	}

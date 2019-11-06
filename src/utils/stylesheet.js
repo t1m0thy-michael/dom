@@ -1,4 +1,4 @@
-export const stylesheet = (path: string) => new Promise((resolve) => {
+export const stylesheet = (path) => new Promise((resolve) => {
 
 	// check if already loaded / don't load again
 	const elem = document.querySelectorAll(`link[href="${path}"]`)

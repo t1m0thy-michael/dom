@@ -1,12 +1,3 @@
-import { 
-	DomElement, 
-	DomInitiator,
-	DomObject,  
-	DomInitiatorBasic,
-	EventBusInterface,
-	DomObjectPrototype,
-} from './types'
-
 import { create } from './utils/create'
 import { isDom, isNode } from './utils/typeChecks'
 import { runAndReturnFactory } from './utils/run'
@@ -24,8 +15,8 @@ import { viewport } from './methods/viewport'
 
 // dynamic getter - required to deal with circular deps within method modules
 export const getPrototype = (()=> {
-	let DOM = false as unknown as DomObjectPrototype
-	return (): DomObjectPrototype => {
+	let DOM = false
+	return () => {
 		if(!DOM){
 			DOM = Object.assign(
 				{
@@ -58,21 +49,21 @@ export const createDomProperties = () => {
 	}
 }
 
-export const createDomElement = (initiator: DomInitiatorBasic): DomElement => {
+export const createDomElement = (initiator) => {
 	// Already a node, just add required properties
 	if (initiator instanceof Node) {
-		const domElem = initiator as DomElement
+		const domElem = initiator
 		domElem.DOM = domElem.DOM || createDomProperties()
 		return domElem
 	}
 	return dom(initiator).element
 }
 
-export const dom = (initiator: DomInitiator): DomObject => {
+export const dom = (initiator) => {
 
 	if (isDom(initiator)) return initiator
 	
-	let list = [] as DomElement[]
+	let list = []
 			
 	if (isNode(initiator)) {
 		list[0] = createDomElement(initiator)
@@ -82,7 +73,7 @@ export const dom = (initiator: DomInitiator): DomObject => {
 			.map(createDomElement)
 
 	} else if (isArrayLike(initiator)) {
-		makeSureItsAnArray(initiator as any)
+		makeSureItsAnArray(initiator)
 			.map(dom)
 			.forEach(item => list.push(...item.list))
 		
@@ -108,13 +99,13 @@ dom.isDom = isDom
 dom.br = (n = 1) => dom([times({ br: [] }, n)])
 dom.hr = (width = '95%') => dom({ hr: [], width })
 
-dom.text = (txt: string) => dom(document.createTextNode(txt))
+dom.text = (txt) => dom(document.createTextNode(txt))
 
 /*=======================================
 Extending functionality
 =======================================*/
 
-dom.registerPlugin = (name: string, fn: (this: DomElement, ...args: any[]) => any) => {
+dom.registerPlugin = (name, fn) => {
 	getPrototype()[name] = runAndReturnFactory(fn)
 }
 
@@ -124,12 +115,12 @@ dom.registerSetter = registerSetter
 Settings / setup
 =======================================*/
 
-dom.setEventbus = (eb: EventBusInterface | null) => getPrototype().eventbus = eb
+dom.setEventbus = (eb) => getPrototype().eventbus = eb
 
 dom.getEventbus = () => getPrototype().eventbus
 
 // enforce singleton 
-const gbl = (<any>globalThis) || (<any>window) || (<any>self) || (<any>global) || {} // node and browser compatible
+const gbl = globalThis || window || self || global || {} // node and browser compatible
 if (!gbl.dom) {
 	gbl.dom = dom
 }

@@ -1,14 +1,8 @@
-/*
-	Run factories are duplicated with minor changes for specific use cases.
-	This is to simplify TS annotations and make code more readable.
-*/
-
-import { DomElement, DomObject } from '../types'
 import { clean } from '@t1m0thy_michael/u'
 
 // always returns DomObject (this)
-export const runFactory = <T extends any[], R>(fn: (o: DomElement, ...args: T) => R): ((...args: T) => DomObject) =>
-	function (this: DomObject, ...args) {
+export const runFactory = (fn) =>
+	function (...args) {
 		for (let i = 0; i < this.list.length; i++) {
 			try {
 				fn(this.list[i], ...args)
@@ -20,8 +14,8 @@ export const runFactory = <T extends any[], R>(fn: (o: DomElement, ...args: T) =
 	}
 
 // returns single result, array of results (Throws aways undefined) or DomObject (this) if no results.
-export const runAndReturnFactory = <T extends any[], R>(fn: (o: DomElement, ...args: T) => R): ((...args: T) => (R extends void ? DomObject : R[])) =>
-	function (this: DomObject, ...args) {
+export const runAndReturnFactory = (fn) =>
+	function (...args) {
 		let results = []
 		for (let i = 0; i < this.list.length; i++) {
 			try {

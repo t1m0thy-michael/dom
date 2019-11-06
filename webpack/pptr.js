@@ -3,28 +3,18 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 console.log(path.resolve('./build'))
 module.exports = {
 	entry: {
-		pptr: './src/pptr.ts',
+		pptr: './src/pptr.js',
 	},
 	output: {
 		path: path.resolve('./build'),
 	},
 	resolve: {
-		extensions: ['.js', '.ts'],
+		extensions: ['.js'],
 		symlinks: false,
 	},
 	devtool: 'eval-source-map', //'cheap-module-eval-source-map'/* 'inline-source-map' */,
 	module: {
-		rules: [{
-			test: /\.tsx?$/,
-			use: {
-				loader: 'ts-loader',
-				options: {
-					transpileOnly: false, // true == FAST build, false == slow, fail on TS errors
-					experimentalWatchApi: false, // ???
-				},
-			},
-			exclude: /node_modules/,
-		}]
+		rules: []
 	},
 	optimization: {
 		removeAvailableModules: false,

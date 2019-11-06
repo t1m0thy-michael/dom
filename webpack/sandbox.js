@@ -4,7 +4,7 @@ const CircularDependencyPlugin = require('circular-dependency-plugin')
 
 module.exports = {
 	entry: {
-		sandbox: './src/sandbox.ts',
+		sandbox: './src/sandbox.js',
 	},
 	output: {
 		path: path.resolve('./build'),
@@ -15,17 +15,7 @@ module.exports = {
 	},
 	devtool: 'eval-source-map', //'cheap-module-eval-source-map'/* 'inline-source-map' */,
 	module: {
-		rules: [{
-			test: /\.tsx?$/,
-			use: {
-				loader: 'ts-loader',
-				options: {
-					transpileOnly: false, // true == FAST build, false == slow, fail on TS errors
-					experimentalWatchApi: false, // ???
-				},
-			},
-			exclude: /node_modules|.\.test\./,
-		}]
+		rules: []
 	},
 	optimization: {
 		removeAvailableModules: false,

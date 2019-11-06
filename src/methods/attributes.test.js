@@ -106,7 +106,7 @@ describe('attributes', () => {
 
 
 		it('sets and gets correct data', () => {
-			const elem = document.createElement('div') as unknown as DomElement
+			const elem = document.createElement('div')
 			// DOM info object
 			elem.DOM = { 
 				data: new Map(),

@@ -1,10 +1,10 @@
-import { DomDefinition, DomElement } from '../types'
+
 import { HTMLTag, SVGElements } from './enum'
 import { CONST } from './const'
 import { dom } from '../dom'
 import { setters } from './setters'
 
-export const create = (d: Partial<DomDefinition> = {}): DomElement => {
+export const create = (d = {}) => {
 	if (d.tag === undefined) {
 		for (let tag in HTMLTag) {
 			if (d[tag] !== undefined) {

@@ -1,5 +1,3 @@
-import { NodeDescendant } from '../types'
-
 import { assert } from 'chai'
 const sinon = require('sinon')
 
@@ -45,7 +43,7 @@ describe('classes', () => {
 			const elem = document.createElement('div')
 			sandbox.stub(elem.classList, 'add')
 			const myClass = 'myClass'
-			addClass(elem as unknown as NodeDescendant, myClass)
+			addClass(elem, myClass)
 			sinon.assert.calledWith(elem.classList.add, myClass)
 		})
 
@@ -53,14 +51,14 @@ describe('classes', () => {
 			const elem = document.createElement('div')
 			sandbox.stub(elem.classList, 'add')
 			const myClasses = ['myClass1', 'myClass2', 'myClass3']
-			addClass(elem as unknown as NodeDescendant, myClasses)
+			addClass(elem, myClasses)
 			sinon.assert.calledWith(elem.classList.add, ...myClasses)
 		})
 
 		it('does not throw if classList does not exist on element', () => {
 			const elem = document.createTextNode('Node without classList')
 			const myClass = 'myClass'
-			assert.doesNotThrow(() => addClass(elem as unknown as NodeDescendant, myClass), Error)
+			assert.doesNotThrow(() => addClass(elem, myClass), Error)
 		})
 	})
 	/*=================================
@@ -87,7 +85,7 @@ describe('classes', () => {
 			const elem = document.createElement('div')
 			sandbox.stub(elem.classList, 'remove')
 			const myClass = 'myClass'
-			removeClass(elem as unknown as NodeDescendant, myClass)
+			removeClass(elem, myClass)
 			sinon.assert.calledWith(elem.classList.remove, myClass)
 		})
 
@@ -95,14 +93,14 @@ describe('classes', () => {
 			const elem = document.createElement('div')
 			sandbox.stub(elem.classList, 'remove')
 			const myClasses = ['myClass1', 'myClass2', 'myClass3']
-			removeClass(elem as unknown as NodeDescendant, myClasses)
+			removeClass(elem, myClasses)
 			sinon.assert.calledWith(elem.classList.remove, ...myClasses)
 		})
 
 		it('does not throw if classList does not exist on element', () => {
 			const elem = document.createTextNode('Node without classList')
 			const myClass = 'myClass'
-			assert.doesNotThrow(() => removeClass(elem as unknown as NodeDescendant, myClass), Error)
+			assert.doesNotThrow(() => removeClass(elem, myClass), Error)
 		})
 	})
 
@@ -131,7 +129,7 @@ describe('classes', () => {
 			sandbox.stub(elem.classList, 'replace')
 			const myOldClass = 'old'
 			const myNewClass = 'new'
-			replaceClass(elem as unknown as NodeDescendant, myOldClass, myNewClass)
+			replaceClass(elem, myOldClass, myNewClass)
 			sinon.assert.calledWith(elem.classList.replace, myOldClass, myNewClass)
 		})
 
@@ -139,7 +137,7 @@ describe('classes', () => {
 			const elem = document.createTextNode('Node without classList')
 			const myOldClass = 'old'
 			const myNewClass = 'new'
-			assert.doesNotThrow(() => replaceClass(elem as unknown as NodeDescendant, myOldClass, myNewClass), Error)
+			assert.doesNotThrow(() => replaceClass(elem, myOldClass, myNewClass), Error)
 		})
 	})
 
@@ -167,14 +165,14 @@ describe('classes', () => {
 			const elem = document.createElement('div')
 			sandbox.stub(elem.classList, 'toggle')
 			const myClass = 'myClass'
-			toggleClass(elem as unknown as NodeDescendant, myClass)
+			toggleClass(elem, myClass)
 			sinon.assert.calledWith(elem.classList.toggle, myClass)
 		})
 
 		it('does not throw if classList does not exist on element', () => {
 			const elem = document.createTextNode('Node without classList')
 			const myClass = 'myClass'
-			assert.doesNotThrow(() => toggleClass(elem as unknown as NodeDescendant, myClass), Error)
+			assert.doesNotThrow(() => toggleClass(elem, myClass), Error)
 		})
 	})
 
@@ -202,7 +200,7 @@ describe('classes', () => {
 			const elem = document.createElement('div')
 			sandbox.stub(elem.classList, 'contains').returns(true)
 			const myClass = 'myClass'
-			const result = hasClass(elem as unknown as NodeDescendant, myClass)
+			const result = hasClass(elem, myClass)
 			sinon.assert.calledWith(elem.classList.contains, myClass)
 			assert.strictEqual(result, true)
 		})
@@ -210,7 +208,7 @@ describe('classes', () => {
 		it('returns false if classList does not exist on element', () => {
 			const elem = document.createTextNode('Node without classList')
 			const myClass = 'myClass'
-			const result = hasClass(elem as unknown as NodeDescendant, myClass)
+			const result = hasClass(elem, myClass)
 			assert.strictEqual(result, false)
 		})
 	})

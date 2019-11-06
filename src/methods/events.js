@@ -1,11 +1,3 @@
-import { 
-	NodeDescendant,
-	DomEventSubscription,
-	DomEvent,
-	DomElement,
-	DomObject,
-} from '../types'
-
 import { EventTypes} from '../utils/enum'
 
 import { isFunction, isString }from '@t1m0thy_michael/u'
@@ -20,20 +12,20 @@ import {
 import { dom } from '../dom'
  
 // TODO: more special DOM events
-const _addSpecialEvent = (obj: DomObject, {
+const _addSpecialEvent = (obj, {
 	event,
 	topic,
 	data,
 	fn,
 	elementAsCtx = true
-}: DomEvent) => {
+}) => {
 
 	const e = event.toLowerCase()
 
 	if (['append'].includes(event.toLowerCase())) {
 		if (isFunction(fn) || isString(topic)) {
 			obj.element.DOM.on[event] = async function () {
-				if (isFunction(fn)) fn({ target: obj.element } as unknown as Event)
+				if (isFunction(fn)) fn({ target: obj.element })
 				if (topic && obj.eventbus) {
 					obj.eventbus.pub({
 						topic: topic,
@@ -49,7 +41,7 @@ const _addSpecialEvent = (obj: DomObject, {
 }
 
 const _createEventHandler = (
-	obj: DomObject,
+	obj,
 	{
 		event,
 		topic,
@@ -58,8 +50,8 @@ const _createEventHandler = (
 		stopPropagation = false,
 		preventDefault = true,
 		elementAsCtx = true,
-	}: DomEvent
-) => async function (e: Event) {
+	}
+) => async function (e) {
 	if (preventDefault) e.preventDefault()
 	if (stopPropagation) e.stopPropagation()
 	if (isFunction(fn)) fn(e)
@@ -74,7 +66,7 @@ const _createEventHandler = (
 }
 
 export const sub = (
-	element: DomElement,
+	element,
 	{
 		topic,
 		fn,
@@ -82,7 +74,7 @@ export const sub = (
 		once = false,
 		minInterval = 0,
 		description = '',
-	}: DomEventSubscription
+	}
 ) => {
 
 	const obj = dom(element)
@@ -104,7 +96,7 @@ export const sub = (
 }
 
 export const on = (
-	element: DomElement,
+	element,
 	{
 		event,
 		topic,
@@ -113,7 +105,7 @@ export const on = (
 		stopPropagation = false,
 		preventDefault = true,
 		elementAsCtx = true,
-	}: DomEvent
+	}
 ) => {
 
 	const obj = dom(element)
@@ -165,15 +157,15 @@ export const on = (
 	}
 }
 
-export const fireEvent = (element: NodeDescendant, event: string) => {
+export const fireEvent = (element, event) => {
 	const evt = document.createEvent('HTMLEvents')
 	evt.initEvent(event, false, true)
 	element.dispatchEvent(evt)
 }
 
-export const change = (element: NodeDescendant) => fireEvent(element, 'change')
+export const change = (element) => fireEvent(element, 'change')
 
-export const click = (element: NodeDescendant) => fireEvent(element, 'click')
+export const click = (element) => fireEvent(element, 'click')
 
 export const event = {
 	change: runFactory(change),
