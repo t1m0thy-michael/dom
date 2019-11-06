@@ -10,7 +10,8 @@ export const create = (d: Partial<DomDefinition> = {}): DomElement => {
 			if (d[tag] !== undefined) {
 				d.tag = tag
 				switch (d.tag) {
-					case 'br': {
+					case 'br': 
+					case 'hr': {
 						break
 					}
 					case 'input': {
@@ -28,12 +29,7 @@ export const create = (d: Partial<DomDefinition> = {}): DomElement => {
 						break
 					}
 					case 'svg': {
-						if (Object.values(SVGElements).includes(d[tag])) {
-							d.tag = d[tag]
-						} else {
-							d.namespace = d.namespace || CONST.NAMESPACE_SVG
-							d.content = d[tag]
-						}
+						d.namespace = d.namespace || CONST.NAMESPACE_SVG
 					}
 					default: {
 						d.content = d[tag]
