@@ -30,6 +30,7 @@ export const create = (d: Partial<DomDefinition> = {}): DomElement => {
 					}
 					case 'svg': {
 						d.namespace = d.namespace || CONST.NAMESPACE_SVG
+						break
 					}
 					default: {
 						d.content = d[tag]
