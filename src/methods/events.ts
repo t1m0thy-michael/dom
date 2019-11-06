@@ -6,7 +6,7 @@ import {
 	DomObject,
 } from '../types'
 
-import { EventTypes} from '../enum'
+import { EventTypes} from '../utils/enum'
 
 import { isFunction, isString }from '@t1m0thy_michael/u'
 
@@ -180,5 +180,4 @@ export const event = {
 	click: runFactory(click),
 	fireEvent: runFactory(fireEvent),
 	on: runFactory(on),
-	sub: runFactory(sub),
 }

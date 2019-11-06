@@ -48,9 +48,9 @@ export const background = async (
 
 		if (brightness) {
 			if (image.brightness && image.brightness < 120) {
-				obj.attr('img_avg_brightness', 'dark')
+				obj.attr('avg_brightness', 'dark')
 			} else {
-				obj.attr('img_avg_brightness', 'light')
+				obj.attr('avg_brightness', 'light')
 			}
 		}
 

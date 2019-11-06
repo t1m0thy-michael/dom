@@ -9,21 +9,23 @@ dom.setEventbus(event)
 const createThingToClick = (txt: string, cls?: string | string[]) => dom({
 	p: txt,
 	classes: cls,
-	on: {
-		event: 'click',
-		fn: function (e: Event) {
-			this.colour('green')
-		},
-		topic: 'test/topic',
-	},
-	sub: {
-		topic: 'test/topic',
-		fn: function (data: any, ctx: DomObject, topic: string) {
-			if (ctx.element !== this.element) {
-				this.colour('red')
+	on: [
+		{
+			event: 'test/topic',
+			fn: function (this: DomObject, data: any, ctx: DomObject/* , topic: string */) {
+				if (ctx.element !== this.element) {
+					this.colour('red')
+				}
 			}
+		},
+		{
+			event: 'click',
+			fn: function (this: DomObject, e: Event) {
+				this.colour('green')
+			},
+			topic: 'test/topic',
 		}
-	}
+	]
 })
 
 const allMyElements = dom([
@@ -96,3 +98,19 @@ dom(p4).appendTo('body')
 p0.child(all4).colour('blue')
 
 // dom('body').child(p5).colour('yellow')
+
+dom.hr().appendTo('body')
+
+dom([
+	{ span: 'hello' },
+	dom.br(2),
+	{ del: 'hello' },
+	dom.br(2),
+	{ ins: 'hello' },
+]).appendTo('body')
+
+// dom([
+// 	{ svg: [
+// 		{ polygon:  }
+// 	]}
+// ])

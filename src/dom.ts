@@ -106,6 +106,7 @@ Utility functions
 dom.isDom = isDom
 
 dom.br = (n = 1) => dom([times({ br: [] }, n)])
+dom.hr = (width = '95%') => dom({ hr: [], width })
 
 dom.text = (txt: string) => dom(document.createTextNode(txt))
 
