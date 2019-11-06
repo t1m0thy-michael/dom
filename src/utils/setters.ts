@@ -78,7 +78,6 @@ const id = call_dom_fn('id')
 const on: DomSetter = (o, d) => makeSureItsAnArray(d.on).forEach((item) => o.on(item as DomEvent))
 const options: DomSetter = (o, d) => { if (o.element instanceof HTMLSelectElement) { o.updateSelect(d as DomSelectDefinition) } }
 const style: DomSetter = (o, d) => Object.assign(o.element.style, d.style)
-const sub: DomSetter = (o, d) => makeSureItsAnArray(d.sub).forEach((item) => o.sub(item as DomEventSubscription))
 const validate: DomSetter = (o, d) => o.data('validate', d.validate)
 
 /*=======================================
@@ -128,7 +127,6 @@ export const setters: DomSetters = {
 	src,
 	step,
 	style,
-	sub,
 	target,
 	type,
 	validate,

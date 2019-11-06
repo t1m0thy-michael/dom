@@ -124,7 +124,6 @@ export type DomObjectPrototype = {
 	click: () => DomObject,
 	fireEvent: (evnt: string) => DomObject,
 	on: (eventDef: DomEvent) => DomObject,
-	sub: (subscription: DomEventSubscription) => DomObject,
 
 	// style
 	background: (bgDef: DomBackgroundDefinition) => Promise<boolean | undefined>[],

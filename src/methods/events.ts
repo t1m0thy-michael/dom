@@ -180,5 +180,4 @@ export const event = {
 	click: runFactory(click),
 	fireEvent: runFactory(fireEvent),
 	on: runFactory(on),
-	sub: runFactory(sub),
 }
