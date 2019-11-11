@@ -2,7 +2,7 @@
 	entry point for pptr test page
 */
 import { dom } from './dom'
-(<any>window).dom = dom
+(window).dom = dom
 
 let t1 = dom([ 
 	{ h1: 'd: Dom Manipulation Awesomeness' },

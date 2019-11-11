@@ -1,17 +1,10 @@
-import {
-	NodeDescendant,
-	DomObject,
-	DomInitiator,
-	DomElement
-} from '../types'
-
 import { isString, makeID, unique } from '@t1m0thy_michael/u'
 import { runAndReturnFactory } from '../utils/run'
 import { dom } from '../dom'
 
 // adds classes to the elements we're searching for then uses querySelectorAll
-export const child = (element: DomElement, needle: DomInitiator | DomObject): DomObject => {
-	if (!element|| !element.querySelectorAll) return dom([])
+export const child = (element, needle) => {
+	if (!element || !element.querySelectorAll) return dom([])
 	const identifier = makeID(10,'_')
 	needle = dom(needle)
 	needle.addClass(identifier)
@@ -20,40 +13,40 @@ export const child = (element: DomElement, needle: DomInitiator | DomObject): Do
 	return result
 }
 
-export const sibling = (element: DomElement, needle: DomInitiator | DomObject): DomObject => {
+export const sibling = (element, needle) => {
 	if (!element.parentNode || !needle) return dom([])
 	const queryResult = dom(needle).list
 	return dom(queryResult.filter((elem) => elem !== element))
 }
 
-export const parent = (element: DomElement, needle: DomInitiator | DomObject): DomObject => {
+export const parent = (element, needle) => {
 	if (!element || !element.closest) return dom([])
 	if (isString(needle)) return dom(element.closest(needle))
 
 	needle = dom(needle)
-	const results = [] as DomElement[]
-	needle.list.forEach((n:  DomElement) => {
+	const results = []
+	needle.list.forEach((n) => {
 		if (dom(n).child(element).list.length) results.push(n)
 	})
 	return dom(results)
 }
 
-export const isAppended = (element: NodeDescendant): boolean => document.body.contains(element)
+export const isAppended = (element) => document.body.contains(element)
 
-export const is = (element: DomElement, selector: string): DomObject => {
+export const is = (element, selector) => {
 	if (!element.matches || !element.matches(selector)) return dom([])
 	return dom(element)
 }
 
-export const not = (element: DomElement, selector: string): DomObject => {
+export const not = (element, selector) => {
 	if (element.matches && element.matches(selector)) return dom([])
 	return dom(element)
 }
 
 // Returns single new DomObject created from result.list arrays
 // only for use with methods that always return DomObjects
-export const runAndReturnSingleDomObjectFactory = <T extends any[]>(fn: (o: DomElement, ...args: T) => DomObject): ((...args: T) => DomObject) =>
-	function (this: DomObject, ...args) {
+export const runAndReturnSingleDomObjectFactory = (fn) =>
+	function (...args) {
 		let results = []
 		for (let i = 0; i < this.list.length; i++) {
 			try {
@@ -73,3 +66,5 @@ export const selection = {
 	is: runAndReturnSingleDomObjectFactory(is),
 	sibling: runAndReturnSingleDomObjectFactory(sibling),
 }
+
+export default selection

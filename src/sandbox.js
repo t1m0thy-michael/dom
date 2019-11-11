@@ -1,18 +1,15 @@
-import { DomObject, DomDefinition } from './types'
-
 import event from '@t1m0thy_michael/e'
-
 import { dom } from './dom'
 
 dom.setEventbus(event)
 
-const createThingToClick = (txt: string, cls?: string | string[]) => dom({
+const createThingToClick = (txt, cls) => dom({
 	p: txt,
 	classes: cls,
 	on: [
 		{
 			event: 'test/topic',
-			fn: function (this: DomObject, data: any, ctx: DomObject/* , topic: string */) {
+			fn: function (data, ctx/* , topic */) {
 				if (ctx.element !== this.element) {
 					this.colour('red')
 				}
@@ -20,7 +17,7 @@ const createThingToClick = (txt: string, cls?: string | string[]) => dom({
 		},
 		{
 			event: 'click',
-			fn: function (this: DomObject, e: Event) {
+			fn: function (e) {
 				this.colour('green')
 			},
 			topic: 'test/topic',
@@ -29,10 +26,10 @@ const createThingToClick = (txt: string, cls?: string | string[]) => dom({
 })
 
 const allMyElements = dom([
-	createThingToClick('one', 'foo'),
-	createThingToClick('two', 'bar'),
-	createThingToClick('three'),
-	createThingToClick('four', 'bar'),
+	createThingToClick('one - blue', 'foo'),
+	createThingToClick('two - red', 'bar'),
+	createThingToClick('three - red'),
+	createThingToClick('four - red', 'bar'),
 ]).appendTo('body')
 
 allMyElements.is('.foo').colour('blue')
@@ -40,7 +37,7 @@ allMyElements.not('.foo').colour('red')
 
 allMyElements.on({
 	event: 'dblclick',
-	fn: function (this: DomObject) {
+	fn: function () {
 		this.colour('blue')
 	}
 })
@@ -57,7 +54,7 @@ dom([
 ]).appendTo('body')
 
 
-dom.registerSetter('setterTest', (o: DomObject, d: Partial<DomDefinition>) => {
+dom.registerSetter('setterTest', (o, d) => {
 	if (o.element && o.element.setAttribute){
 		o.element.setAttribute('setterTest', d.setterTest)
 	}
@@ -101,16 +98,24 @@ p0.child(all4).colour('blue')
 
 dom.hr().appendTo('body')
 
+
 dom([
-	{ span: 'hello' },
-	dom.br(2),
-	{ del: 'hello' },
-	dom.br(2),
-	{ ins: 'hello' },
+	{ svg: []}
 ]).appendTo('body')
 
-// dom([
-// 	{ svg: [
-// 		{ polygon:  }
-// 	]}
-// ])
+// dom({
+// 	img: 'fakepath'
+// }).appendTo('body')
+
+// dom({
+// 	tag: 'blockquote',
+// 	content: 'some text here'
+// }).appendTo('body')
+
+dom({
+	select: {
+		test1: 123,
+		test2: 'str',
+		test3: 3234342
+	}
+}).appendTo('body')

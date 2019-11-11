@@ -1,11 +1,3 @@
-// types
-import { 
-	DomElement, 
-	EventBusInterface, 
-	DomEventSubscription, 
-	DomEvent
-} from '../types'
-
 // test utils
 const sinon = require('sinon') // stubs etc...
 import { assert } from 'chai'
@@ -30,7 +22,7 @@ const getEventbusStub = () => ({
 	sub: sinon.stub().returns('a token'),
 	pub: sinon.stub(),
 	remove: sinon.stub(),
-}) as EventBusInterface
+})
 
 const getDomElemDomStub = () => ({
 	data: new Map(),
@@ -65,58 +57,58 @@ describe('events', function() {
 		})	
 		
 		it('throws if topic & fn options are missing', () => {
-			const element = document.createElement('div') as unknown as DomElement
+			const element = document.createElement('div')
 			assert.throws(() => sub(element, {
 				topic: 'test/topic',
 				fn: () => { },
-			} as unknown as DomEventSubscription), Dom_EventBus_Error)
+			}), Dom_EventBus_Error)
 		})
 
 		describe('throws with invalid options', () => {
 			
 			it('throws if topic & fn options are missing', () => {
-				const element = document.createElement('div') as unknown as DomElement
+				const element = document.createElement('div')
 				assert.throws(() => sub(element, {
 					// topic,
 					// fn,
-				} as unknown as DomEventSubscription), Dom_EventBus_Error)
+				}), Dom_EventBus_Error)
 			})
 
 			it('throws if topic is missing', () => {
-				const element = document.createElement('div') as unknown as DomElement
+				const element = document.createElement('div')
 				assert.throws(() => sub(element, {
 					// topic,
 					fn: () => { },
-				} as unknown as DomEventSubscription), Dom_EventBus_Error)
+				}), Dom_EventBus_Error)
 			})
 
 			it('throws if fn is missing', () => {
-				const element = document.createElement('div') as unknown as DomElement
+				const element = document.createElement('div')
 				assert.throws(() => sub(element, {
 					topic: 'str',
 					// fn,
-				} as unknown as DomEventSubscription), Dom_EventBus_Error)
+				}), Dom_EventBus_Error)
 			})
 
 			it('throws if topic is invalid', () => {
-				const element = document.createElement('div') as unknown as DomElement
+				const element = document.createElement('div')
 				assert.throws(() => sub(element, {
 					topic: 123,
 					// fn,
-				} as unknown as DomEventSubscription), Dom_EventBus_Error)
+				}), Dom_EventBus_Error)
 			})
 
 			it('throws if fn is invalid', () => {
-				const element = document.createElement('div') as unknown as DomElement
+				const element = document.createElement('div')
 				assert.throws(() => sub(element, {
 					// topic,
 					fn: 123,
-				} as unknown as DomEventSubscription), Dom_EventBus_Error)
+				}), Dom_EventBus_Error)
 			})
 		})
 
 		it('calls eventbus.sub with expected options', () => {
-			const element = document.createElement('div') as unknown as DomElement
+			const element = document.createElement('div')
 			const eventbus = getEventbusStub()
 
 			dom.setEventbus(eventbus)
@@ -126,7 +118,7 @@ describe('events', function() {
 			const subscription = {
 				topic: testTopic,
 				fn: testFn,
-			} as unknown as DomEventSubscription
+			}
 
 			sub(element, subscription)
 			sinon.assert.calledOnce(eventbus.sub)
@@ -146,7 +138,7 @@ describe('events', function() {
 		})
 
 		it('event subscriptions are stored in element.DOM.subscriptions', () => {
-			const element = document.createElement('div') as unknown as DomElement
+			const element = document.createElement('div')
 			const eventbus = getEventbusStub()
 
 			dom.setEventbus(eventbus)
@@ -156,7 +148,7 @@ describe('events', function() {
 			const subscription = {
 				topic: testTopic,
 				fn: testFn,
-			} as unknown as DomEventSubscription
+			}
 
 			sub(element, subscription)
 
@@ -186,16 +178,16 @@ describe('events', function() {
 		})
 
 		it('throws when it should', () => {
-			const elem = document.createElement('div') as unknown as DomElement
+			const elem = document.createElement('div')
 			elem.DOM = getDomElemDomStub()
 
-			assert.throws(() => { on(elem, { /*no options*/ } as DomEvent) }, Dom_Missing_Argument)
-			assert.throws(() => { on(elem, { event: 'click' } as DomEvent) }, Dom_Missing_Argument)
-			assert.throws(() => { on(elem, { topic: 'topic' } as DomEvent) }, Dom_Missing_Argument)
+			assert.throws(() => { on(elem, { /*no options*/ }) }, Dom_Missing_Argument)
+			assert.throws(() => { on(elem, { event: 'click' }) }, Dom_Missing_Argument)
+			assert.throws(() => { on(elem, { topic: 'topic' }) }, Dom_Missing_Argument)
 		})
 
 		it('event handler is stored & addEventListener is called', () => {
-			const elem = document.createElement('div') as unknown as DomElement
+			const elem = document.createElement('div')
 			elem.DOM = getDomElemDomStub()
 			sandbox.stub(elem, 'addEventListener')
 
@@ -219,7 +211,7 @@ describe('events', function() {
 		// Dom special events
 		//
 		it('event handler is NOT stored & addEventListener is NOT called when DOM special event name passed', () => {
-			const elem = document.createElement('div') as unknown as DomElement
+			const elem = document.createElement('div')
 			elem.DOM = getDomElemDomStub()
 			sandbox.stub(elem, 'addEventListener')
 
@@ -258,7 +250,7 @@ describe('events', function() {
 		})
 
 		it('throws when it should', () => {
-			const elem = document.createElement('div') as unknown as DomElement
+			const elem = document.createElement('div')
 			sandbox.stub(elem, 'dispatchEvent')
 
 			fireEvent(elem, 'click')

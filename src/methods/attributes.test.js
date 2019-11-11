@@ -1,7 +1,7 @@
-import { DomElement } from '../types'
-
 import { assert } from 'chai'
 const sinon = require('sinon')
+
+require('jsdom-global')() // doing this here seems to stop jsdom from timing out n the before() calls.
 
 import { Dom_Element_Definition_Error } from '../utils/errors'
 
@@ -15,7 +15,7 @@ import {
 	innerText,
 } from './attributes'
 
-describe('attributes', () => {
+describe('attributes', function() {
 
 	it('has expected methods', () => {
 		assert.isFunction(attr)
@@ -106,7 +106,7 @@ describe('attributes', () => {
 
 
 		it('sets and gets correct data', () => {
-			const elem = document.createElement('div') as unknown as DomElement
+			const elem = document.createElement('div')
 			// DOM info object
 			elem.DOM = { 
 				data: new Map(),

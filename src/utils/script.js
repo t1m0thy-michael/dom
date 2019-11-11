@@ -1,4 +1,4 @@
-export const script = (path: string) => new Promise((resolve) => {
+export const script = (path) => new Promise((resolve) => {
 
 	// check if already loaded / don't load again
 	const elem = document.querySelectorAll(`[src="${path}"]`)

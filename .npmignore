@@ -1,13 +1,13 @@
 .coveralls.yml
 .eslint*
-.gitattributes
+.git*
 .nyc_output/**
 .nycrc
 .travis.yml
+mocha.opts
 build/**
 coverage/**
 src
 tests
-tsconfig.json
 webpack
 webpack.config.js

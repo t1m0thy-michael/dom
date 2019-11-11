@@ -1,9 +1,3 @@
-import {
-	NodeDescendant,
-	DomInitiator,
-	DomElement,
-} from '../types'
-
 import { runFactory } from '../utils/run'
 import { dom } from '../dom'
 
@@ -13,40 +7,40 @@ import {
 	makeSureItsAnArray,
 } from '@t1m0thy_michael/u'
 
-export const appendTo = (element: NodeDescendant, initiator: DomInitiator) => {
+export const appendTo = (element, initiator) => {
 	const elem = dom(initiator)
 	if (elem.list.length > 0)  elem.element.appendChild(element)
-	if (isFunction(element.DOM.on.append)) element.DOM.on.append({} as Event)
+	if (isFunction(element.DOM.on.append)) element.DOM.on.append({})
 }
 
-export const insert = (element: NodeDescendant, pos: InsertPosition, initiator: DomInitiator) => {
+export const insert = (element, pos, initiator) => {
 	let e2 = dom(initiator)
-	if (e2.element && e2.element.insertAdjacentElement) e2.element.insertAdjacentElement(pos, element as Element)
-	if (isFunction(element.DOM.on.append)) element.DOM.on.append({} as Event)
+	if (e2.element && e2.element.insertAdjacentElement) e2.element.insertAdjacentElement(pos, element)
+	if (isFunction(element.DOM.on.append)) element.DOM.on.append({})
 }
 
-export const appendAfter = (element: NodeDescendant, initiator: DomInitiator) => insert(element, 'afterend', initiator)
+export const appendAfter = (element, initiator) => insert(element, 'afterend', initiator)
 
-export const appendBefore = (element: NodeDescendant, initiator: DomInitiator) => insert(element, 'beforebegin', initiator)
+export const appendBefore = (element, initiator) => insert(element, 'beforebegin', initiator)
 
-export const appendFirstChild = (element: NodeDescendant, initiator: DomInitiator) => insert(element, 'afterbegin', initiator)
+export const appendFirstChild = (element, initiator) => insert(element, 'afterbegin', initiator)
 
-export const appendLastChild = (element: NodeDescendant, initiator: DomInitiator) => insert(element, 'beforeend', initiator)
+export const appendLastChild = (element, initiator) => insert(element, 'beforeend', initiator)
 
-export const empty = (element: NodeDescendant) => {
-	Array.from(element.children as HTMLCollection).forEach((node) => {
+export const empty = (element) => {
+	Array.from(element.children).forEach((node) => {
 		dom(node).remove()
 	})
 }
 
-export const remove = (element: NodeDescendant, initiator?: DomInitiator) => {
+export const remove = (element, initiator) => {
 
 	const obj = dom(element)
 
 	// initiator will remove specified child of selected element if given
 	const elems = isString(initiator) ? obj.child(initiator).list : obj.list
 	// element to be removed
-	elems.forEach((elem: DomElement) => {
+	elems.forEach((elem) => {
 
 		// first remove all children. this is to clean up event stuff
 		let childNodeArr = makeSureItsAnArray(elem.children)
@@ -67,7 +61,7 @@ export const remove = (element: NodeDescendant, initiator?: DomInitiator) => {
 	})
 }
 
-export const replace = (element: NodeDescendant, initiator: DomInitiator) => {
+export const replace = (element, initiator) => {
 	if (element.parentNode) element.parentNode.replaceChild(dom(initiator).element, element)
 }
 
@@ -81,3 +75,5 @@ export const insertion = {
 	remove: runFactory(remove),
 	replace: runFactory(replace),
 }
+
+export default insertion
