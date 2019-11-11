@@ -11,10 +11,11 @@
     "coverage/**",
     "node_modules/**",
     "**/*.test.js",
-    "tests/utils/*.*"
+    "src/sandbox.js",
+    "src/pptr.js"
   ],
   "sourceMap": true,
   "reporter": [],
-  "all": false,
+  "all": true,
   "instrument": true
 }

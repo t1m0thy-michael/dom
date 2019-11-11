@@ -22,3 +22,5 @@ export const viewport = {
 	scrollMore: runFactory(scrollMore),
 	scrollTop: runAndReturnFactory(scrollTop),
 }
+
+export default viewport

@@ -3,6 +3,5 @@ node_modules/*
 proj.code-workspace
 src/html/*
 webpack/*
-types/*
 tests/*
 **/*.test.ts

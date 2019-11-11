@@ -34,3 +34,5 @@ export const classes = {
 	replaceClass: runFactory(replaceClass),
 	toggleClass: runFactory(toggleClass),
 }
+
+export default classes

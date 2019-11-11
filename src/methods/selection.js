@@ -66,3 +66,5 @@ export const selection = {
 	is: runAndReturnSingleDomObjectFactory(is),
 	sibling: runAndReturnSingleDomObjectFactory(sibling),
 }
+
+export default selection

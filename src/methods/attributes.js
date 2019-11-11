@@ -48,3 +48,5 @@ export const attribute = {
 	innerHTML: runAndReturnFactory(innerHTML),
 	innerText: runAndReturnFactory(innerText),
 }
+
+export default attribute

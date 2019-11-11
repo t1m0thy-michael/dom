@@ -1,9 +1,4 @@
 import { 
-	DomAttributeSetters,
-	DomObjectSetters,
-} from './enum'
-
-import { 
 	isFunction, 
 	isString, 
 	makeSureItsAnArray 
@@ -30,10 +25,7 @@ export const set_kv_pairs = (prop) =>
 	}
 
 export const call_dom_fn = (method, key) =>
-	(o, d) => {
-		// TS insists on 2nd argument to o[prop] - thats just as likley to be wrong as one...
-		(o[method])(d[key || method])
-	}
+	(o, d) => o[method](d[key || method])
 
 /*=======================================
 	DOM Defnition Only Method
@@ -65,7 +57,7 @@ const data = set_kv_pairs('data')
 const dflt = call_dom_fn('dflt')
 const id = call_dom_fn('id')
 const on = (o, d) => makeSureItsAnArray(d.on).forEach((item) => o.on(item))
-const options = (o, d) => { if (o.element instanceof HTMLSelectElement) { o.updateSelect(d) } }
+const options = (o, d) => o.updateSelect(d)
 const style = (o, d) => Object.assign(o.element.style, d.style)
 const validate = (o, d) => o.data('validate', d.validate)
 
@@ -89,7 +81,6 @@ const target = set_attr_value('target')
 const type = set_attr_value('type')
 const value = set_attr_value('value')
 const width = set_attr_value('width')
-const xmlns = set_attr_value('xmlns')
 
 
 export const setters = {
@@ -121,7 +112,6 @@ export const setters = {
 	validate,
 	value,
 	width,
-	xmlns,
 }
 
 export const registerSetter = (name, fn) => setters[name] = fn

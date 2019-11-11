@@ -110,3 +110,5 @@ export const styles = {
 	style: runAndReturnFactory(style),
 	width: runAndReturnFactory(width),
 }
+
+export default styles

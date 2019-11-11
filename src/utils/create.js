@@ -1,48 +1,28 @@
-
-import { HTMLTag, SVGElements } from './enum'
-import { CONST } from './const'
+import { isFunction } from '@t1m0thy_michael/u'
+import { Tags } from './tags'
 import { dom } from '../dom'
 import { setters } from './setters'
 
 export const create = (d = {}) => {
+
+	// make sure we have a 'tag' property
 	if (d.tag === undefined) {
-		for (let tag in HTMLTag) {
+		for (let tag in Tags) {
 			if (d[tag] !== undefined) {
 				d.tag = tag
-				switch (d.tag) {
-					case 'br': 
-					case 'hr': {
-						break
-					}
-					case 'input': {
-						d.value = d[tag]
-						break
-					}
-					case 'iframe':
-					case 'img':
-					case 'script': {
-						d.src = d[tag]
-						break
-					}
-					case 'select': {
-						d.options = d[tag]
-						break
-					}
-					case 'svg': {
-						d.namespace = d.namespace || CONST.NAMESPACE_SVG
-						break
-					}
-					default: {
-						d.content = d[tag]
-					}
-				}
-				delete d[tag]
 			}
 		}
 		d.tag = d.tag || 'div'
 	}
 
-	d.tag = d.tag.toLowerCase()
+	// modify definition to fix shorthand props
+	if (isFunction(Tags[d.tag].beforeCreate)) {
+		Tags[d.tag].beforeCreate(d)
+	} else if (d[d.tag]) {
+		d.content = d.content || d[d.tag]
+		delete d[d.tag]
+	}
+
 	const elem = d.namespace ? document.createElementNS(d.namespace, d.tag) : document.createElement(d.tag)
 	const obj = dom(elem)
 

@@ -2,7 +2,7 @@ import { runFactory } from '../utils/run'
 import { isDomElement, isOption, isSelect } from '../utils/typeChecks'
 import { dom } from '../dom'
 
-import { isUndefined, isFunction, makeSureItsAnArray} from '@t1m0thy_michael/u'
+import { isUndefined, isFunction, isObject, makeSureItsAnArray} from '@t1m0thy_michael/u'
 
 export const value = (element, val) => {
 	if (isUndefined(val)) return element.value
@@ -46,22 +46,29 @@ export const deselect = (element) => {
 	}
 }
 
-export const updateSelect = (element, def) => {
-	if (!isFunction(element.add) || !def.options) return
+export const updateSelect = (element, d) => {
+	console.log('updateselect', d)
+	if (!isFunction(element.add)) return
+
+	dom(element).empty()
 
 	let dflt
-	if (def.dflt) {
-		dflt = isFunction(def.dflt) ? def.dflt() : def.dflt
-		element.DOM.data['default'] = def.dflt
+	if (d.dflt) {
+		console.log('dflt')
+		dflt = isFunction(d.dflt) ? d.dflt() : d.dflt
+		element.DOM.data['dault'] = d.dflt
 	}
 
-	Object.keys(def.options).forEach((key) => {
-		const opt = document.createElement('option')
-		opt.text = String(def.options[key])
-		opt.value = String(key)
-		if (dflt === opt.value)	opt.selected = true
-		element.add(opt, null)
-	})
+	if (isObject(d.options)) {
+		console.log('options')
+		Object.keys(d.options).forEach((key) => {
+			const opt = document.createElement('option')
+			opt.value = String(d.options[key])
+			opt.text = String(key)
+			if (dflt === opt.value)	opt.selected = true
+			element.add(opt, null)
+		})
+	}
 }
 
 export const formValues = (element) => {
@@ -116,3 +123,5 @@ export const form = {
 	validate: runFactory(validate),
 	value: runFactory(value),
 }
+
+export default form

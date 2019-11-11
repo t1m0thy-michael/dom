@@ -1,4 +1,4 @@
-import { EventTypes} from '../utils/enum'
+import { EventTypes} from '../utils/eventTypes'
 
 import { isFunction, isString }from '@t1m0thy_michael/u'
 
@@ -173,3 +173,5 @@ export const event = {
 	fireEvent: runFactory(fireEvent),
 	on: runFactory(on),
 }
+
+export default event

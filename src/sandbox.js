@@ -1,5 +1,4 @@
 import event from '@t1m0thy_michael/e'
-
 import { dom } from './dom'
 
 dom.setEventbus(event)
@@ -27,10 +26,10 @@ const createThingToClick = (txt, cls) => dom({
 })
 
 const allMyElements = dom([
-	createThingToClick('one', 'foo'),
-	createThingToClick('two', 'bar'),
-	createThingToClick('three'),
-	createThingToClick('four', 'bar'),
+	createThingToClick('one - blue', 'foo'),
+	createThingToClick('two - red', 'bar'),
+	createThingToClick('three - red'),
+	createThingToClick('four - red', 'bar'),
 ]).appendTo('body')
 
 allMyElements.is('.foo').colour('blue')
@@ -99,16 +98,24 @@ p0.child(all4).colour('blue')
 
 dom.hr().appendTo('body')
 
+
 dom([
-	{ span: 'hello' },
-	dom.br(2),
-	{ del: 'hello' },
-	dom.br(2),
-	{ ins: 'hello' },
+	{ svg: []}
 ]).appendTo('body')
 
-// dom([
-// 	{ svg: [
-// 		{ polygon:  }
-// 	]}
-// ])
+// dom({
+// 	img: 'fakepath'
+// }).appendTo('body')
+
+// dom({
+// 	tag: 'blockquote',
+// 	content: 'some text here'
+// }).appendTo('body')
+
+dom({
+	select: {
+			test1: 123,
+			test2: 'str',
+			test3: 3234342
+		}
+}).appendTo('body')

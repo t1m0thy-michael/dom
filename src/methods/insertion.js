@@ -75,3 +75,5 @@ export const insertion = {
 	remove: runFactory(remove),
 	replace: runFactory(replace),
 }
+
+export default insertion

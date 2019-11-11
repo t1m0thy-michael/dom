@@ -1,6 +1,5 @@
 
 import { assert } from 'chai'
-const sinon = require('sinon')
 
 require('jsdom-global')()
 
