@@ -114,8 +114,8 @@ dom([
 
 dom({
 	select: {
-			test1: 123,
-			test2: 'str',
-			test3: 3234342
-		}
+		test1: 123,
+		test2: 'str',
+		test3: 3234342
+	}
 }).appendTo('body')
