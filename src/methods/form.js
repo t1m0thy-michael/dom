@@ -1,4 +1,4 @@
-import { runFactory } from '../utils/run'
+import { runFactory, runAndReturnFactory } from '../utils/run'
 import { isDomElement, isOption, isSelect } from '../utils/typeChecks'
 import { dom } from '../dom'
 
@@ -117,7 +117,7 @@ export const formValues = (element) => {
 export const form = {
 	deselect: runFactory(deselect),
 	dflt: runFactory(dflt),
-	formValues: runFactory(formValues),
+	formValues: runAndReturnFactory(formValues),
 	select: runFactory(select),
 	updateSelect: runFactory(updateSelect),
 	validate: runFactory(validate),
