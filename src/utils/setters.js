@@ -12,7 +12,7 @@ import { dom } from '../dom'
 
 export const set_attr_value = (prop) => 
 	(o, d) => {
-		if (typeof o.element[prop] !== 'undefined')	o.element[prop] = d[prop]
+		o.element[prop] = d[prop] || ''
 	}
 
 export const set_kv_pairs = (prop) => 
