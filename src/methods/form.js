@@ -121,7 +121,7 @@ export const form = {
 	select: runFactory(select),
 	updateSelect: runFactory(updateSelect),
 	validate: runFactory(validate),
-	value: runFactory(value),
+	value: runAndReturnFactory(value),
 }
 
 export default form
