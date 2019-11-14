@@ -47,20 +47,17 @@ export const deselect = (element) => {
 }
 
 export const updateSelect = (element, d) => {
-	console.log('updateselect', d)
 	if (!isFunction(element.add)) return
 
 	dom(element).empty()
 
 	let dflt
 	if (d.dflt) {
-		console.log('dflt')
 		dflt = isFunction(d.dflt) ? d.dflt() : d.dflt
 		element.DOM.data['dault'] = d.dflt
 	}
 
 	if (isObject(d.options)) {
-		console.log('options')
 		Object.keys(d.options).forEach((key) => {
 			const opt = document.createElement('option')
 			opt.value = String(d.options[key])
@@ -72,14 +69,8 @@ export const updateSelect = (element, d) => {
 }
 
 export const formValues = (element) => {
-
-	const form = element.form ? element.form : element
-
-	if (!(form instanceof HTMLInputElement) ) return
-
-	const filteredForm = makeSureItsAnArray(form).filter((itm) =>
-		['INPUT', 'TEXTAREA', 'SELECT'].includes(itm.tagName.toLowerCase())
-	)
+	
+	const form = (element.form ? dom(element.form) : dom(element))
 
 	const output = {
 		form: form,
@@ -92,17 +83,19 @@ export const formValues = (element) => {
 		failedValidation: {}
 	}
 
-	filteredForm.forEach((item) => {
-		if (!item.name) return
+	const filteredForm = form.child('input, select, textarea')
 
+	filteredForm.list.forEach((item) => {
+		if (!item.name) return
 		if (isDomElement(item)) {
-			const validateFn = item.DOM.data.get('validate')
-			if (!isFunction(validateFn) || !validateFn()) {
+			const validateFn = item.DOM.data.validate
+			if (isFunction(validateFn) && !validateFn()) {
 				output.failedValidation[item.name] = item.value
 			}
 		} 
 
 		output.all[item.name] = item.value
+
 		switch (item.tagName) {
 			case 'INPUT': output['input'][item.name] = item.value; break
 			case 'SELECT': output['select'][item.name] = item.value; break
