@@ -59,7 +59,7 @@ const id = call_dom_fn('id')
 const on = (o, d) => makeSureItsAnArray(d.on).forEach((item) => o.on(item))
 const options = (o, d) => o.updateSelect(d)
 const style = (o, d) => Object.assign(o.element.style, d.style)
-const validate = (o, d) => o.data('validate', d.validate)
+const validate = (o, d) => o.data('validate', d.validate.bind(o))
 
 /*=======================================
 	Attributes

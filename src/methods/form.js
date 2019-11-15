@@ -22,8 +22,10 @@ export const dflt = (element, val) => {
 }
 
 export const validate = (element, extra) => {
-	if (!isFunction(element.DOM.data.validate)) return true
-	return element.DOM.data.validate(element.value, extra)
+	const dElement = dom(element)
+	const fn = dElement.data('validate')
+	if (!isFunction(fn)) return true
+	return fn(element.value, extra)
 }
 
 export const select = (element) => {
@@ -108,11 +110,11 @@ export const formValues = (element) => {
 
 export const form = {
 	deselect: runFactory(deselect),
-	dflt: runFactory(dflt),
+	dflt: runAndReturnFactory(dflt),
 	formValues: runAndReturnFactory(formValues),
 	select: runFactory(select),
 	updateSelect: runFactory(updateSelect),
-	validate: runFactory(validate),
+	validate: runAndReturnFactory(validate),
 	value: runAndReturnFactory(value),
 }
 
