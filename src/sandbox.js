@@ -81,7 +81,7 @@ let p0 = dom([
 	{ div: [{ div: 'Titty McBoob', classes: ['testclass'] }] },
 	{ div: [p1] },
 	{ div: [p2] },
-	{ div: [{div: 'Cockface Cuntington', classes: ['testclass']}] },
+	{ div: [{div: 'Boaty McBoatface', classes: ['testclass']}] },
 	{ div: [p3] },
 	{ div: ['c'] },
 ]).appendTo('body')
@@ -112,10 +112,33 @@ dom([
 // 	content: 'some text here'
 // }).appendTo('body')
 
-dom({
-	select: {
-		test1: 123,
-		test2: 'str',
-		test3: 3234342
-	}
+dom({ 
+	form: [
+		{
+			input: '',
+			validate: function (val) {
+				console.log(this, val)
+				return true
+			},
+			name: 'test1'
+		},
+		{
+			input: '',
+			validate: function (val) {
+				console.log(this, val)
+				return false
+			},
+			name: 'test2'
+		},
+		{
+			input: 'Submit',
+			type: 'submit',
+			on: {
+				event: 'click',
+				fn: function () {
+					console.log(this.formValues())
+				}
+			}
+		}
+	]
 }).appendTo('body')

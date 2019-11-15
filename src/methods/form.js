@@ -87,12 +87,11 @@ export const formValues = (element) => {
 
 	filteredForm.list.forEach((item) => {
 		if (!item.name) return
-		if (isDomElement(item)) {
-			const validateFn = item.DOM.data.validate
-			if (isFunction(validateFn) && !validateFn()) {
-				output.failedValidation[item.name] = item.value
-			}
-		} 
+		const dItem = dom(item)
+		const validateFn = dItem.data('validate')
+		if (isFunction(validateFn) && !validateFn.bind(dItem)(item.value)) {
+			output.failedValidation[item.name] = item.value
+		}
 
 		output.all[item.name] = item.value
 
