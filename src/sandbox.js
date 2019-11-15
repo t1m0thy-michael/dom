@@ -120,7 +120,11 @@ dom({
 				console.log(this, val)
 				return true
 			},
-			name: 'test1'
+			name: 'test1',
+			on: {
+				event: 'click',
+				fn: function () { console.log(this.validate() ? 'true' : 'false') }
+			}
 		},
 		{
 			input: '',
@@ -128,7 +132,11 @@ dom({
 				console.log(this, val)
 				return false
 			},
-			name: 'test2'
+			name: 'test2',
+			on: {
+				event: 'click',
+				fn: function () { console.log(this.validate() ? 'true' : 'false') }
+			}
 		},
 		{
 			input: 'Submit',
