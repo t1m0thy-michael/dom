@@ -1,6 +1,4 @@
-import {
-	CONST
-} from './const'
+import { CONST } from './const'
 
 // bitwise
 // tag definitions
@@ -25,8 +23,8 @@ const beforeCreateFactory = (prop1, prop2) => (d) => {
  * t: type
  * beforeCreate: fn recieves domDefinition
  */
-export const Tags = {
-	a: { t: HTML | SVG },
+export const tags = {
+	a: { t: HTML }, // also SVG
 	abbr: { t: HTML },
 	address: { t: HTML },
 	altGlyph: { t: SVG },
@@ -162,7 +160,10 @@ export const Tags = {
 	path: { t: SVG },
 	pattern: { t: SVG },
 	picture: { t: HTML },
-	polygon: { t: SVG },
+	polygon: {
+		t: SVG,
+		beforeCreate: beforeCreateFactory('polygon', 'points')
+	},
 	polyline: { t: SVG },
 	pre: { t: HTML },
 	progress: { t: HTML },
@@ -176,7 +177,7 @@ export const Tags = {
 	ruby: { t: HTML },
 	s: { t: HTML },
 	samp: { t: HTML },
-	script: { t: HTML | SVG, beforeCreate: beforeCreateFactory('src', 'script')	},
+	script: { t: HTML, beforeCreate: beforeCreateFactory('src', 'script') }, // also SVG
 	select: { t: HTML, beforeCreate: beforeCreateFactory('options', 'select') },
 	selection: { t: HTML },
 	set: { t: SVG },
@@ -185,17 +186,11 @@ export const Tags = {
 	span: { t: HTML },
 	stop: { t: SVG },
 	strong: { t: HTML },
-	style: { t: HTML | SVG },
+	style: { t: HTML }, // also SVG
 	sub: { t: HTML },
 	summary: { t: HTML },
 	sup: { t: HTML },
-	svg: { 
-		t: SVG,	 
-		beforeCreate: (d) => {
-			d.namespace = d.namespace || CONST.NAMESPACE_SVG
-			return d
-		}
-	},
+	svg: { t: SVG },
 	switch: { t: SVG },
 	symbol: { t: SVG },
 	table: { t: HTML },
@@ -207,7 +202,7 @@ export const Tags = {
 	tfoot: { t: HTML },
 	th: { t: HTML },
 	thead: { t: HTML },
-	title: { t: HTML | SVG },
+	title: { t: HTML }, // also SVG
 	tr: { t: HTML },
 	track: { t: HTML },
 	tref: { t: SVG },
