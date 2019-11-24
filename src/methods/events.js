@@ -11,6 +11,8 @@ import {
 
 import { dom } from '../dom'
  
+const domSpecialEvents = ['append']
+
 // TODO: more special DOM events
 const _addSpecialEvent = (obj, {
 	event,
@@ -22,7 +24,7 @@ const _addSpecialEvent = (obj, {
 
 	const e = event.toLowerCase()
 
-	if (['append'].includes(event.toLowerCase())) {
+	if (domSpecialEvents.includes(event.toLowerCase())) {
 		if (isFunction(fn) || isString(topic)) {
 			obj.element.DOM.on[event] = async function () {
 				if (isFunction(fn)) fn({ target: obj.element })
@@ -111,7 +113,7 @@ export const on = (
 	const obj = dom(element)
 
 	// confirm passed options
-	if (!isString(event) || !event.length) throw new Dom_Missing_Argument('on: invalid [event]')
+	if (!isString(event) || !event.length) throw new Dom_Missing_Argument(`on: invalid [${event}]`)
 	if (!isString(topic) && !isFunction(fn)) throw new Dom_Missing_Argument('on: Must provide [topic | fn]')
 	if (event === topic) throw new DOM_Dont_Be_Stupid('event === topic will lead to infinite loop.')
 
