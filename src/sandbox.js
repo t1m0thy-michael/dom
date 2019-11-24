@@ -103,19 +103,19 @@ dom([
 	{ svg: []}
 ]).appendTo('body')
 
-// dom({
-// 	img: 'fakepath'
-// }).appendTo('body')
+dom({
+	img: 'fakepath'
+}).appendTo('body')
 
-// dom({
-// 	tag: 'blockquote',
-// 	content: 'some text here'
-// }).appendTo('body')
+dom({
+	tag: 'blockquote',
+	content: 'some text here'
+}).appendTo('body')
 
 dom({ 
 	form: [
 		{
-			input: '',
+			input: 'hello?',
 			validate: function (val) {
 				console.log(this, val)
 				return true
@@ -123,7 +123,7 @@ dom({
 			name: 'test1'
 		},
 		{
-			input: '',
+			input: 'world?',
 			validate: function (val) {
 				console.log(this, val)
 				return false
@@ -141,4 +141,27 @@ dom({
 			}
 		}
 	]
+}).appendTo('body')
+
+dom.svg({
+	svg: [
+		{
+			polygon: '100,100 150,25 150,75 200,0',
+			// attr: {
+			// 	fill: '#f00',
+			// 	stroke: '#00f',
+			// 	'stroke-width': 2
+			// },
+			style: {
+				strokeWidth: 2,
+				fill: '#0f0',
+				stroke: '#00f',
+			}
+		}
+	],
+	attr: {
+		viewBox: '0 0 200 100'
+	},
+	width: '800px',
+	height: '800px'
 }).appendTo('body')
