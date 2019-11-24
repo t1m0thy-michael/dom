@@ -1,3 +1,4 @@
 --require esm
+-r jsdom-global/register
 --recursive
 ./src/**/*.test.js

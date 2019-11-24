@@ -8,8 +8,8 @@
     "lint": "eslint \"./src/**\"",
     "test": "mocha --opts \"./mocha.opts\"",
     "test:pptr": "webpack --mode development --pptr && mocha -r esm ./tests/pptr.test.js",
-    "coverage": "nyc npm test && nyc report --reporter=text && nyc report --reporter=text-lcov | coveralls",
-    "coverage:html": "nyc npm test && nyc report --reporter=text && nyc report --reporter=lcov",
+    "test:cover": "nyc npm test && nyc report --reporter=text && nyc report --reporter=text-lcov | coveralls",
+    "test:cover:html": "nyc npm test && nyc report --reporter=text && nyc report --reporter=lcov",
     "build:sandbox": "webpack --mode development --sandbox",
     "start": "webpack-dev-server --mode development --open --sandbox"
   },
