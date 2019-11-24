@@ -1,16 +1,15 @@
 import { get, set, isUndefined } from '@t1m0thy_michael/u'
-
 import { runFactory, runAndReturnFactory } from '../utils/run'
 import { Dom_Element_Definition_Error } from '../utils/errors'
 
 export const attr = (element, attr, val) => {
-	if (!element.getAttribute || !element.setAttribute) return false
-	if (isUndefined(val)) return element.getAttribute(attr) || false
-	element.setAttribute(attr, String(val))
+	if (!element.setAttribute) return undefined
+	if (isUndefined(val)) return element.getAttribute(attr) || undefined
+	element.setAttribute(attr, val || '')
 }
 
 export const data = (element, key, val) => {
-	if (isUndefined(val)) return get(element, ['DOM', 'data', key]) || false
+	if (isUndefined(val)) return get(element, ['DOM', 'data', key])
 	set(element, ['DOM', 'data', key], val)
 	return val
 }
@@ -20,7 +19,7 @@ export const enable = (element) => element.disabled = false
 
 export const id = (element, val) => {
 	if (!val) return element.id || false
-	val = val.replace('#', '')
+	if (val.substring(0, 1) === '#') val = val.substring(1)
 	if (document.querySelectorAll(`#${val}`).length) {
 		throw new Dom_Element_Definition_Error(`ID [${val}] already exists in document.`)
 	}
@@ -29,7 +28,7 @@ export const id = (element, val) => {
 
 export const innerHTML = (element, html, append) => {
 	if (isUndefined(html)) return element.innerHTML || ''
-	if (append) return element.innerText += html
+	if (append) return element.innerHTML += html
 	return element.innerHTML = html
 }
 

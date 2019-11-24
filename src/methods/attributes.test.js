@@ -76,11 +76,20 @@ describe('attributes', function() {
 			sinon.assert.calledWith(elem.setAttribute, attributeKey, attributeValue)
 		})
 
-		it('returns false if Element does not have get/setAttribute methods', () => {
+		it('calls element.setAttribute when passed an empty string', () => {
+			const elem = document.createElement('div')
+			elem.setAttribute = sinon.stub()
+			const attributeKey = 'key'
+			const attributeValue = ''
+			attr(elem, attributeKey, attributeValue)
+			sinon.assert.calledWith(elem.setAttribute, attributeKey, attributeValue)
+		})
+
+		it('returns undefined if Element does not have get/setAttribute methods', () => {
 			const elem = document.createTextNode('div')
 			const attributeKey = 'key'
 			const result = attr(elem, attributeKey)
-			assert.strictEqual(result, false)
+			assert.strictEqual(result, undefined)
 		})
 	})
 
@@ -98,10 +107,10 @@ describe('attributes', function() {
 			this.jsdom()
 		})
 
-		it('returns false when value has not been set', () => {
+		it('returns undefined when value has not been set', () => {
 			const elem = document.createElement('div')
 			const result = data(elem, 'key')
-			assert.strictEqual(result, false)
+			assert.strictEqual(result, undefined)
 		})
 
 
@@ -261,6 +270,19 @@ describe('attributes', function() {
 			const result = innerHTML(elem)
 			assert.equal(result, expectedResult)
 		})
+
+		it('appends value when flag set', () => {
+			const expectedResult = 'qwerty'
+			const elem = document.createElement('div')
+			innerHTML(elem, expectedResult)
+			const result = innerHTML(elem)
+			assert.equal(result, expectedResult)
+
+			innerHTML(elem, expectedResult, true) // append
+			const result2 = innerHTML(elem)
+			assert.equal(result2, expectedResult+expectedResult)
+
+		})
 	})
 
 	/*=================================
@@ -290,6 +312,19 @@ describe('attributes', function() {
 			assert.equal(elem.innerText, expectedResult)
 			const result = innerText(elem)
 			assert.equal(result, expectedResult)
+		})
+
+		it('appends value when flag set', () => {
+			const expectedResult = 'qwerty'
+			const elem = document.createElement('div')
+			innerText(elem, expectedResult)
+			const result = innerText(elem)
+			assert.equal(result, expectedResult)
+
+			innerText(elem, expectedResult, true) // append
+			const result2 = innerText(elem)
+			assert.equal(result2, expectedResult + expectedResult)
+
 		})
 	})
 })
