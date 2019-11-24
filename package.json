@@ -1,6 +1,6 @@
 {
   "name": "@t1m0thy_michael/d",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "description": "d: [dom] Define and manipulate DOM elements to easily create user interfaces",
   "main": "index.js",
   "scripts": {
