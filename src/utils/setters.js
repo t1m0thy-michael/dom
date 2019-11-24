@@ -5,14 +5,15 @@ import {
 } from '@t1m0thy_michael/u'
 
 import { dom } from '../dom'
+import { CONST } from './const'
 
 /*=======================================
 	utility factory functions
 =======================================*/
 
-export const set_attr_value = (prop) => 
-	(o, d) => {
-		o.element[prop] = d[prop] || ''
+export const set_attr_value = (prop, dProp) => 
+	(o, d, ns = CONST.NAMESPACE_HTML) => {
+		o.element.setAttribute(prop, d[dProp || prop])
 	}
 
 export const set_kv_pairs = (prop) => 
@@ -31,7 +32,7 @@ export const call_dom_fn = (method, key) =>
 	DOM Defnition Only Method
 =======================================*/
 
-export const content = (o, d) => {
+export const content = (o, d, ns = CONST.NAMESPACE_HTML) => {
 	const arr = makeSureItsAnArray(d.content)
 	for (let i = 0; i < arr.length; i++) {
 		const item = arr[i]
@@ -40,7 +41,7 @@ export const content = (o, d) => {
 		} else if (item instanceof Node) {
 			o.element.appendChild(item)
 		} else {
-			o.element.appendChild(dom(item).element)
+			o.element.appendChild(dom(item, ns).element)
 		}
 	}
 }
@@ -55,33 +56,31 @@ const backgroundColour = call_dom_fn('backgroundColour')
 const classes =  call_dom_fn('addClass', 'classes')
 const data = set_kv_pairs('data')
 const dflt = call_dom_fn('dflt')
+const height = call_dom_fn('height')
 const id = call_dom_fn('id')
 const on = (o, d) => makeSureItsAnArray(d.on).forEach((item) => o.on(item))
 const options = (o, d) => o.updateSelect(d)
 const style = (o, d) => Object.assign(o.element.style, d.style)
 const validate = (o, d) => o.data('validate', d.validate.bind(o))
+const width = call_dom_fn('width')
 
 /*=======================================
 	Attributes
 =======================================*/
 
 const disabled = set_attr_value('disabled')
-const height = set_attr_value('height')
 const href = set_attr_value('href')
 const htmlFor = set_attr_value('htmlFor')
 const max = set_attr_value('max')
 const min = set_attr_value('min')
 const name = set_attr_value('name')
-const namespace = set_attr_value('xmlns')
+const namespace = set_attr_value('xmlns', 'namespace')
 const placeholder = set_attr_value('placeholder')
-const size = set_attr_value('size')
 const src = set_attr_value('src')
 const step = set_attr_value('step')
 const target = set_attr_value('target')
 const type = set_attr_value('type')
 const value = set_attr_value('value')
-const width = set_attr_value('width')
-
 
 export const setters = {
 	attr,
@@ -103,7 +102,6 @@ export const setters = {
 	on,
 	options,
 	placeholder,
-	size,
 	src,
 	step,
 	style,
