@@ -1,6 +1,6 @@
 import { 
 	isFunction, 
-	isString, 
+	isScalar,
 	makeSureItsAnArray 
 } from '@t1m0thy_michael/u'
 
@@ -36,7 +36,7 @@ export const content = (o, d, ns = CONST.NAMESPACE_HTML) => {
 	const arr = makeSureItsAnArray(d.content)
 	for (let i = 0; i < arr.length; i++) {
 		const item = arr[i]
-		if (isString(item)) {
+		if (isScalar(item)) { 
 			o.element.appendChild(document.createTextNode(item))
 		} else if (item instanceof Node) {
 			o.element.appendChild(item)

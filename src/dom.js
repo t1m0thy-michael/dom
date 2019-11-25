@@ -1,4 +1,11 @@
-import { isString, isObject, isArrayLike, makeSureItsAnArray, times } from '@t1m0thy_michael/u'
+import {
+	isString,
+	isObject,
+	isArrayLike,
+	isScalar,
+	makeSureItsAnArray,
+	times
+} from '@t1m0thy_michael/u'
 import { create } from './utils/create'
 import { isDom, isNode } from './utils/typeChecks'
 import { runAndReturnFactory } from './utils/run'
@@ -70,7 +77,7 @@ export const dom = (initiator, namespace = CONST.NAMESPACE_HTML) => {
 	if (isNode(initiator)) {
 		list[0] = createDomElement(initiator)
 
-	} else if (isString(initiator)) {
+	} else if (isString(initiator)) { // treat strings at top level as selectors
 		list = makeSureItsAnArray(document.querySelectorAll(initiator))
 			.map(createDomElement)
 
@@ -79,15 +86,21 @@ export const dom = (initiator, namespace = CONST.NAMESPACE_HTML) => {
 			.map((item) => dom(item, namespace))
 			.forEach(item => list.push(...item.list))
 		
-	} else if (isObject(initiator)) {
+	} else if (isObject(initiator)) { // [object Object]
 		list[0] = create(initiator, namespace)
+		
+	} else if (isScalar(initiator)){
+		list[0] = createDomElement(document.createTextNode(initiator))
+
 	}
 
 	return Object.create(getPrototype(), {
 		list: { value: list, writable: false },
 		element: { value: list[0], writable: false },
 		initiator: { value: initiator, writable: false },
-		exists: { value: (list.length > 0), writable: false },
+		exists: { 
+			get: function () { return !!this.list.length }	
+		},
 	})
 	
 }

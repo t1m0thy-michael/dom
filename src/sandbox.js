@@ -42,7 +42,7 @@ allMyElements.on({
 	}
 })
 
-// test plugings and dom.text while we're at it
+// test plugins and dom.text while we're at it
 dom.registerPlugin('test', (element, ...args) => {
 	return element.tagName
 })
@@ -77,7 +77,7 @@ let all4 = dom([p1, p2, p3, p4])
 
 let p0 = dom([
 	{ div: ['a'] },
-	{ div: [{ div: 'Boomy McBoom', classes: ['testclass'] }] },
+	{ div: [{ div: 'Boomy McBoom', classes: ['testclass'], id: 'boomy' }] },
 	{ div: [{ div: 'Titty McBoob', classes: ['testclass'] }] },
 	{ div: [p1] },
 	{ div: [p2] },
@@ -160,8 +160,26 @@ dom.svg({
 		}
 	],
 	attr: {
-		viewBox: '0 0 200 100'
+		viewBox: '0 0 300 300'
 	},
-	width: '800px',
-	height: '800px'
+	width: '200px',
+	height: '200px'
 }).appendTo('body')
+
+console.log(dom([
+	'#boomy',
+	123,
+	true,
+	{
+		div: [
+			{ span: 123 },
+			{ span: '#boomy'},
+			{ span: { span: [
+				321,
+				'#boomy',
+				{ a: 'click here', href: '/some/path/goes/here' },
+			] } },
+
+		]
+	}
+]).appendTo('body'))
