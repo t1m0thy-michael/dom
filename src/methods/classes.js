@@ -1,6 +1,9 @@
 import u from '@t1m0thy_michael/u'
 
-import { runFactory, runAndReturnFactory } from '../utils/run'
+import {
+	runFactory,
+	runAndReturnFirst
+} from '../utils/run'
 
 export const addClass = (element, className) => {
 	if (!element.classList) return
@@ -29,7 +32,7 @@ export const hasClass = (element, className) => {
 
 export const classes = {
 	addClass: runFactory(addClass),
-	hasClass: runAndReturnFactory(hasClass),
+	hasClass: runAndReturnFirst(hasClass),
 	removeClass: runFactory(removeClass),
 	replaceClass: runFactory(replaceClass),
 	toggleClass: runFactory(toggleClass),
