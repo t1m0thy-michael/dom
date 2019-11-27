@@ -29,14 +29,3 @@ export const runAndReturnFactory = (fn) =>
 		if (results.length === 1) return results[0]
 		return results
 	}
-
-export const runAndReturnFirst = (fn) =>
-	function (...args) {
-		let results = []
-		try {
-			results.push(fn(this.list[0], ...args))
-		} catch (e) {
-			console.error(e)
-		}
-		return results
-	}

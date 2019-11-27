@@ -13,7 +13,6 @@ import { CONST } from './const'
 
 export const set_attr_value = (prop, dProp) => 
 	(o, d, ns = CONST.NAMESPACE_HTML) => {
-		console.log('set att', dProp, prop, d[dProp || prop] || '')
 		o.element.setAttribute(prop, d[dProp || prop] || '')
 	}
 

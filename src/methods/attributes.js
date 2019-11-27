@@ -2,8 +2,6 @@ import { get, set, isUndefined } from '@t1m0thy_michael/u'
 import {
 	runFactory,
 	runAndReturnFactory,
-	runAndReturnArrayFactory,
-	runAndReturnFirst,
 } from '../utils/run'
 import { Dom_Element_Definition_Error } from '../utils/errors'
 
