@@ -115,10 +115,8 @@ dom.setEventbus(event)
 dom({ 
 	form: [
 		{
-			tag: 'input',
-			type: 'text',
-			value: '',
-			//input: 'hello?',
+			dflt: 'Hello Ellie',
+			input: 'hello?',
 			validate: function (val) {
 				console.log(this, val)
 				return true
@@ -132,14 +130,21 @@ dom({
 				return false
 			},
 			name: 'test2'
-		},
-		{
-			input: 'Submit',
-			type: 'submit',
+		}, {
+			button: 'Submit',
 			on: {
 				event: 'click',
 				fn: function () {
 					console.log(this.formValues())
+				}
+			}
+		},
+		{
+			button: 'Reset',
+			on: {
+				event: 'click',
+				fn: function () {
+					dom(this.element.form).child('input').not().dflt()
 				}
 			}
 		}
