@@ -1,15 +1,20 @@
-import u from '@t1m0thy_michael/u'
+import {
+	makeSureItsAnArray
+} from '@t1m0thy_michael/u'
 
-import { runFactory, runAndReturnFactory } from '../utils/run'
+import {
+	runFactory,
+	runAndReturnFactory
+} from '../utils/run'
 
 export const addClass = (element, className) => {
 	if (!element.classList) return
-	element.classList.add(...u.makeSureItsAnArray(className))
+	element.classList.add(...makeSureItsAnArray(className))
 }
 
 export const removeClass = (element, className) => {
 	if (!element.classList) return 
-	element.classList.remove(...u.makeSureItsAnArray(className))
+	element.classList.remove(...makeSureItsAnArray(className))
 }
 
 export const replaceClass = (element, oldClass, newClass) => {
