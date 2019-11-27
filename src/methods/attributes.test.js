@@ -89,7 +89,7 @@ describe('attributes', function() {
 			const elem = document.createTextNode('div')
 			const attributeKey = 'key'
 			const result = attr(elem, attributeKey)
-			assert.strictEqual(result, undefined)
+			assert.strictEqual(result, null)
 		})
 	})
 
@@ -107,10 +107,10 @@ describe('attributes', function() {
 			this.jsdom()
 		})
 
-		it('returns undefined when value has not been set', () => {
+		it('returns null when value has not been set', () => {
 			const elem = document.createElement('div')
 			const result = data(elem, 'key')
-			assert.strictEqual(result, undefined)
+			assert.strictEqual(result, null)
 		})
 
 
@@ -133,7 +133,7 @@ describe('attributes', function() {
 			const elem = document.createElement('div')
 			data(elem, 'key', 'value')
 			const result = data(elem, 'key', 'value')
-			assert.equal(result, 'value')
+			assert.equal(result, undefined)
 		})
 	})
 
@@ -213,11 +213,10 @@ describe('attributes', function() {
 			assert.equal(result, expectedResult)
 		})
 
-		it('returns false if val not passed and id not set', () => {
-			const expectedResult = false
+		it('returns undefined if val not passed and id not set', () => {
 			const elem = document.createElement('div')
 			const result = id(elem)
-			assert.equal(result, expectedResult)
+			assert.equal(result, undefined)
 		})
 
 		it('sets ID', () => {
