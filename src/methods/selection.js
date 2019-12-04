@@ -33,13 +33,25 @@ export const parent = (element, needle) => {
 
 export const isAppended = (element) => document.body.contains(element)
 
+const isKeywords = {
+	':visible': (element) => (element.offsetWidth > 0 && element.offsetHeight > 0),
+}
+
 export const is = (element, selector) => {
-	if (!element.matches || !element.matches(selector)) return dom([])
+	if (selector in isKeywords) {
+		if (!isKeywords[selector](element)) return dom([])
+	} else {
+		if (!element.matches || !element.matches(selector)) return dom([])
+	}
 	return dom(element)
 }
 
 export const not = (element, selector) => {
-	if (element.matches && element.matches(selector)) return dom([])
+	if (selector in isKeywords) {
+		if (isKeywords[selector](element)) return dom([])
+	} else {
+		if (element.matches && element.matches(selector)) return dom([])
+	}
 	return dom(element)
 }
 
