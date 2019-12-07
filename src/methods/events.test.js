@@ -184,6 +184,10 @@ describe('events', function() {
 			assert.throws(() => { on(elem, { /*no options*/ }) }, Dom_Missing_Argument)
 			assert.throws(() => { on(elem, { event: 'click' }) }, Dom_Missing_Argument)
 			assert.throws(() => { on(elem, { topic: 'topic' }) }, Dom_Missing_Argument)
+			assert.throws(() => { on(elem, { topic: 'topic', event: [] }) }, Dom_Missing_Argument)
+			assert.throws(() => { on(elem, { topic: 'topic', event: [123] }) }, Dom_Missing_Argument)
+			assert.throws(() => { on(elem, { topic: 'topic', event: [''] }) }, Dom_Missing_Argument)
+			assert.throws(() => { on(elem, { topic: 'topic', event: '' }) }, Dom_Missing_Argument)
 		})
 
 		it('event handler is stored & addEventListener is called', () => {

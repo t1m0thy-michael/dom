@@ -137,7 +137,13 @@ dom({
 				console.log(this, val)
 				return false
 			},
-			name: 'test2'
+			name: 'test2',
+			on:[
+				{
+					event: ['keydown', 'keyup', 'click'],
+					fn: (...args) => console.log(...args)
+				}
+			]
 		}, {
 			button: 'Submit',
 			on: {
@@ -159,10 +165,7 @@ dom({
 	]
 }).appendTo('body')
 
-dom('#test2').attr('test', 'test')
-dom('#test2').attr('zero', 0)
-dom('#test2').attr('null', null)
-dom('#test2').attr('undef', undefined)
+
 
 // dom.svg({
 // 	svg: [
