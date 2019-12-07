@@ -11,7 +11,7 @@ export const attr = (element, attr, val) => {
 		const rtn = element.getAttribute(attr)
 		return isUndefined(rtn) ? null : rtn
 	}
-	element.setAttribute(attr, val || '')
+	element.setAttribute(attr, String(val))
 }
 
 export const data = (element, key, val) => {

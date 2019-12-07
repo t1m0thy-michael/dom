@@ -116,15 +116,23 @@ dom({
 	form: [
 		{
 			dflt: 'Hello Ellie',
+			id: 'test',
 			input: 'hello?',
 			validate: function (val) {
 				console.log(this, val)
 				return true
 			},
-			name: 'test1'
+			name: 'test1',
+			attr: {
+				test: 'test',
+				zero: 0,
+				'null': null,
+				'undef': undefined,
+			},
 		},
 		{
 			input: 'world?',
+			id: 'test2',
 			validate: function (val) {
 				console.log(this, val)
 				return false
@@ -150,6 +158,11 @@ dom({
 		}
 	]
 }).appendTo('body')
+
+dom('#test2').attr('test', 'test')
+dom('#test2').attr('zero', 0)
+dom('#test2').attr('null', null)
+dom('#test2').attr('undef', undefined)
 
 // dom.svg({
 // 	svg: [
