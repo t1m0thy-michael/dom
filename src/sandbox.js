@@ -1,11 +1,11 @@
 import e from '@t1m0thy_michael/e'
-import { dom } from './dom'
+import d from './index'
 
-dom.setEventbus(e)
+d.setEventbus(e)
 window.e = e
 
 
-const createThingToClick = (txt, cls) => dom({
+const createThingToClick = (txt, cls) => d({
 	p: txt,
 	classes: cls,
 	on: [
@@ -28,7 +28,7 @@ const createThingToClick = (txt, cls) => dom({
 	]
 })
 
-const allMyElements = dom([
+const allMyElements = d([
 	createThingToClick('one - blue', 'foo'),
 	createThingToClick('two - red', 'bar'),
 	createThingToClick('three - red'),
@@ -45,40 +45,40 @@ allMyElements.on({
 	}
 })
 
-// test plugins and dom.text while we're at it
-dom.registerPlugin('test', (element, ...args) => {
+// test plugins and d.text while we're at it
+d.registerPlugin('test', (element, ...args) => {
 	return element.tagName
 })
 
-dom([
-	{ h3: 'Testing dom.registerPlugin'},
+d([
+	{ h3: 'Testing d.registerPlugin'},
 	{ p: 'This adds a plugin that will return all of the selected tag names. Then we\'ll join them and create a new TextNode and append to the page;' },
-	dom.text(dom('*').test().join(', ')),
+	d.text(d('*').test().join(', ')),
 ]).appendTo('body')
 
 
-dom.registerSetter('setterTest', (o, d) => {
+d.registerSetter('setterTest', (o, d) => {
 	if (o.element && o.element.setAttribute){
 		o.element.setAttribute('setterTest', d.setterTest)
 	}
 })
 
-dom([
-	{ h3: 'Testing dom.registerSetter' },
-	{ p: 'We\'ve registered a setter that adds DomDefinition property \'setterTest\' tothe element as an attribute;' },
-	dom({ div: 'This P tag should have the \'setterTest\' attribute', setterTest: 'Hello World' }),
+d([
+	{ h3: 'Testing d.registerSetter' },
+	{ p: 'We\'ve registered a setter that adds dDefinition property \'setterTest\' tothe element as an attribute;' },
+	d({ div: 'This P tag should have the \'setterTest\' attribute', setterTest: 'Hello World' }),
 ]).appendTo('body')
 
-dom.br(3).appendTo('body')
+d.br(3).appendTo('body')
 
-let p1 = dom({ span: 'one' })
-let p2 = dom({ span: 'two' })
-let p3 = dom({ span: 'three' })
-let p4 = dom({ span: 'four' })
+let p1 = d({ span: 'one' })
+let p2 = d({ span: 'two' })
+let p3 = d({ span: 'three' })
+let p4 = d({ span: 'four' })
 
-let all4 = dom([p1, p2, p3, p4])
+let all4 = d([p1, p2, p3, p4])
 
-let p0 = dom([
+let p0 = d([
 	{ div: ['a'] },
 	{ div: [{ div: 'Boomy McBoom', classes: ['testclass'], id: 'boomy' }] },
 	{ div: [{ div: 'Titty McBoob', classes: ['testclass'] }] },
@@ -90,32 +90,32 @@ let p0 = dom([
 ]).appendTo('body')
 
 //append one of set outside of p0
-dom(p4).appendTo('body')
+d(p4).appendTo('body')
 
-// dom(all4).parent(p0).colour('red')
-// dom(p2).parent(p0).colour('green')
+// d(all4).parent(p0).colour('red')
+// d(p2).parent(p0).colour('green')
 
 p0.child(all4).colour('blue')
 
-// dom('body').child(p5).colour('yellow')
+// d('body').child(p5).colour('yellow')
 
-dom.hr().appendTo('body')
+d.hr().appendTo('body')
 
 
-dom([
+d([
 	{ svg: []}
 ]).appendTo('body')
 
-dom({
+d({
 	img: 'fakepath'
 }).appendTo('body')
 
-dom({
+d({
 	tag: 'blockquote',
 	content: 'some text here'
 }).appendTo('body')
 
-dom({ 
+d({ 
 	form: [
 		{
 			dflt: 'Hello Ellie',
@@ -161,7 +161,7 @@ dom({
 			on: {
 				event: 'click',
 				fn: function () {
-					dom(this.element.form).child('input').not().dflt()
+					d(this.element.form).child('input').not().dflt()
 				}
 			}
 		}
@@ -170,7 +170,7 @@ dom({
 
 
 
-dom.svg({
+d.svg({
 	svg: [
 		{
 			polygon: '100,100 150,25 150,75 200,0',
@@ -193,7 +193,7 @@ dom.svg({
 	height: '200px'
 }).appendTo('body')
 
-console.log(dom([
+console.log(d([
 	'#boomy',
 	123,
 	true,

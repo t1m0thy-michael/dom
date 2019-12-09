@@ -31,6 +31,7 @@ export const empty = (element) => {
 	Array.from(element.children).forEach((node) => {
 		dom(node).remove()
 	})
+	element.innerHTML = ''
 }
 
 export const remove = (element, initiator) => {
