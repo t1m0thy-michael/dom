@@ -72,6 +72,7 @@ export const sub = (
 	{
 		topic,
 		fn,
+		uid,
 		distinct = false,
 		once = false,
 		minInterval = 0,
@@ -86,6 +87,7 @@ export const sub = (
 	
 	const subscription = {
 		topic: topic,
+		uid: uid,
 		fn: fn.bind(obj),
 		distinct: distinct,
 		once: once,
@@ -102,6 +104,7 @@ export const on = (
 	{
 		event,
 		topic,
+		uid,
 		data,
 		fn,
 		stopPropagation = false,
@@ -152,11 +155,12 @@ export const on = (
 			return
 		} 
 	
-		// not a standard event, assume event is an eventbs topic
+		// not a standard event, assume event is an eventbus topic
 		if (isFunction(fn)){
 			sub( element, {
 				topic: event,
 				fn,
+				uid,
 			})
 
 			return
