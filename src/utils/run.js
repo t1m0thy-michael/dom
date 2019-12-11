@@ -4,11 +4,7 @@ import { clean } from '@t1m0thy_michael/u'
 export const runFactory = (fn) =>
 	function (...args) {
 		for (let i = 0; i < this.list.length; i++) {
-			try {
-				fn(this.list[i], ...args)
-			} catch (e) {
-				console.error(e)
-			}
+			fn(this.list[i], ...args)
 		}
 		return this
 	}
@@ -18,11 +14,7 @@ export const runAndReturnFactory = (fn) =>
 	function (...args) {
 		let results = []
 		for (let i = 0; i < this.list.length; i++) {
-			try {
-				results.push(fn(this.list[i], ...args))
-			} catch (e) {
-				console.error(e)
-			}
+			results.push(fn(this.list[i], ...args))
 		}
 		results = clean(undefined, results)
 		if (results.length === 0) return this

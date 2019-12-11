@@ -8,7 +8,7 @@ export class Dom_EventBus_Error extends Error {
 	}
 }
 
-export class Dom_Element_Definition_Error extends Error {
+export class DOM_WONT_SET extends Error {
 	constructor(message) {
 		super(message)
 		this.name = this.constructor.name

@@ -137,8 +137,8 @@ dom.getEventbus = () => getPrototype().eventbus
 
 // enforce singleton 
 const gbl = globalThis || window || self || global || {} // node and browser compatible
-if (!gbl.dom) {
-	gbl.dom = dom
+if (!gbl.d) {
+	gbl.d = dom
 }
 
-export default dom
+export default gbl.d

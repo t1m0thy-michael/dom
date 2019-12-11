@@ -1,6 +1,7 @@
 import { 
 	isFunction, 
 	isScalar,
+	isObject,
 	makeSureItsAnArray 
 } from '@t1m0thy_michael/u'
 
@@ -25,7 +26,7 @@ export const set_kv_pairs = (prop) =>
 		})
 	}
 
-export const call_dom_fn = (method, key) =>
+export const call_dom_fn = (method, key) => 
 	(o, d) => o[method](d[key || method])
 
 /*=======================================
@@ -40,7 +41,7 @@ export const content = (o, d, ns = CONST.NAMESPACE_HTML) => {
 			o.element.appendChild(document.createTextNode(item))
 		} else if (item instanceof Node) {
 			o.element.appendChild(item)
-		} else {
+		} else if (isObject(item)) {
 			o.element.appendChild(dom(item, ns).element)
 		}
 	}

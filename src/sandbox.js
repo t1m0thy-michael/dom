@@ -87,6 +87,31 @@ let p0 = d([
 	{ div: [{div: 'Boaty McBoatface', classes: ['testclass']}] },
 	{ div: [p3] },
 	{ div: ['c'] },
+	{
+		div: (new Date()),
+		classes: ['date']
+	},
+	 {
+	 	div: function () {},
+	 	classes: ['function']
+	 },
+	{
+		div: undefined,
+		classes: ['undefined']
+	},
+	{
+		div: null,
+		classes: ['null']
+	},
+	{
+		div: 123,
+		classes: ['123']
+	},
+	{
+		div: NaN,
+		classes: ['NaN']
+	},
+	{ div: ['d'] }
 ]).appendTo('body')
 
 //append one of set outside of p0
@@ -210,3 +235,21 @@ console.log(d([
 		]
 	}
 ]).appendTo('body'))
+
+d({ div: { div: [{ span: 'with ID', id: 'testDuplicateId' }, {span: 'also' }]}}).appendTo('body')
+try {
+	d({
+		div: {
+			div: [{
+				span: 'with ID',
+				id: 'testDuplicateId',
+			}, {
+				span: 'also'
+			}]
+		}
+	}).appendTo('body')
+} catch (e) {
+
+	console.log('Error caught!')
+
+}

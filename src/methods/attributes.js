@@ -3,7 +3,7 @@ import {
 	runFactory,
 	runAndReturnFactory,
 } from '../utils/run'
-import { Dom_Element_Definition_Error } from '../utils/errors'
+import { DOM_WONT_SET } from '../utils/errors'
 
 export const attr = (element, attr, val) => {
 	if (!element.setAttribute) return null
@@ -29,7 +29,7 @@ export const id = (element, val) => {
 	if (!val) return element.id || null
 	if (val.substring(0, 1) === '#') val = val.substring(1)
 	if (document.querySelectorAll(`#${val}`).length) {
-		throw new Dom_Element_Definition_Error(`ID [${val}] already exists in document.`)
+		throw new DOM_WONT_SET(`ID [${val}] already exists in document.`)
 	}
 	element.id = val
 }

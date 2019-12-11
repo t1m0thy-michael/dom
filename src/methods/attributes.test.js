@@ -3,7 +3,7 @@ const sinon = require('sinon')
 
 require('jsdom-global')() // doing this here seems to stop jsdom from timing out n the before() calls.
 
-import { Dom_Element_Definition_Error } from '../utils/errors'
+import { DOM_WONT_SET } from '../utils/errors'
 
 import {
 	attr,
@@ -238,7 +238,7 @@ describe('attributes', function() {
 			sandbox.stub(document, 'querySelectorAll').returns({ length: 1 })
 			const myID = '#myID'
 			const elem = document.createElement('div')
-			assert.throws(() => id(elem, myID), Dom_Element_Definition_Error)
+			assert.throws(() => id(elem, myID), DOM_WONT_SET)
 		})
 	})
 
