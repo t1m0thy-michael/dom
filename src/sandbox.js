@@ -91,10 +91,10 @@ let p0 = d([
 		div: (new Date()),
 		classes: ['date']
 	},
-	 {
-	 	div: function () {},
-	 	classes: ['function']
-	 },
+	{
+		div: function () {},
+		classes: ['function']
+	},
 	{
 		div: undefined,
 		classes: ['undefined']
