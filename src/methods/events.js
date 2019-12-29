@@ -19,7 +19,7 @@ const _addSpecialEvent = (obj, {
 	topic,
 	data,
 	fn,
-	elementAsCtx = true
+	ctx,
 }) => {
 
 	const e = event.toLowerCase()
@@ -32,7 +32,7 @@ const _addSpecialEvent = (obj, {
 					obj.eventbus.pub({
 						topic: topic,
 						data: isFunction(data) ? data(e) : data,
-						ctx: elementAsCtx ? obj.element : undefined
+						ctx: ctx || obj.element
 					})
 				}
 			}
@@ -45,24 +45,22 @@ const _addSpecialEvent = (obj, {
 const _createEventHandler = (
 	obj,
 	{
-		event,
 		topic,
+		ctx,
 		data,
 		fn,
 		stopPropagation = false,
 		preventDefault = true,
-		elementAsCtx = true,
 	}
 ) => async function (e) {
 	if (preventDefault) e.preventDefault()
 	if (stopPropagation) e.stopPropagation()
 	if (isFunction(fn)) fn(e)
 	if (topic) {
-		if (!obj.eventbus) throw new Dom_EventBus_Error('Not registered')
 		obj.eventbus.pub({
 			topic: topic,
 			data: isFunction(data) ? data(e) : data,
-			ctx: elementAsCtx ? obj : undefined
+			ctx: ctx || obj,
 		})
 	}
 }
@@ -82,8 +80,7 @@ export const sub = (
 
 	const obj = dom(element)
 
-	if (!obj.eventbus) throw new Dom_EventBus_Error('Not registered')
-	if (!isString(topic) || !isFunction(fn)) throw new Dom_EventBus_Error('Must provide [topic] and [fn]')
+	if (!isString(topic) || !isFunction(fn)) throw new Dom_EventBus_Error(`Must provide topic [${topic}] and fn [${(fn || {}).name}]`)
 	
 	const subscription = {
 		topic: topic,
@@ -104,16 +101,16 @@ export const on = (
 	{
 		event,
 		topic,
+		ctx,
 		uid,
 		data,
 		fn,
 		stopPropagation = false,
 		preventDefault = true,
-		elementAsCtx = true,
 	}
 ) => {
 	
-	if (!isString(topic) && !isFunction(fn)) throw new Dom_Missing_Argument('on: Must provide [topic | fn]')
+	if (!isString(topic) && !isFunction(fn)) throw new Dom_Missing_Argument(`on: Must provide topic [${topic}] OR fn [${(fn || {}).name}]`)
 	if (!event || !event.length) throw new Dom_Missing_Argument(`on: invalid event [${event}] (1)`)
 
 	const obj = dom(element)
@@ -134,7 +131,7 @@ export const on = (
 			topic,
 			data,
 			fn,
-			elementAsCtx,
+			ctx,
 		})) return
 
 		// standard event types
@@ -146,7 +143,7 @@ export const on = (
 				fn,
 				stopPropagation,
 				preventDefault,
-				elementAsCtx,
+				ctx,
 			})
 		
 			obj.element.addEventListener(event, onHandler)

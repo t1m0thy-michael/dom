@@ -56,14 +56,6 @@ describe('events', function() {
 			this.jsdom()
 		})	
 		
-		it('throws if topic & fn options are missing', () => {
-			const element = document.createElement('div')
-			assert.throws(() => sub(element, {
-				topic: 'test/topic',
-				fn: () => { },
-			}), Dom_EventBus_Error)
-		})
-
 		describe('throws with invalid options', () => {
 			
 			it('throws if topic & fn options are missing', () => {

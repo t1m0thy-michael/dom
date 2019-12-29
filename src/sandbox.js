@@ -13,6 +13,7 @@ const createThingToClick = (txt, cls) => d({
 			event: 'test/topic',
 			uid: `test_TOPIC_${txt}`,
 			fn: function (data, ctx/* , topic */) {
+				console.log(data, ctx)
 				if (ctx.element !== this.element) {
 					this.colour('red')
 				}
@@ -24,6 +25,7 @@ const createThingToClick = (txt, cls) => d({
 				this.colour('green')
 			},
 			topic: 'test/topic',
+			//ctx: 123
 		}
 	]
 })
