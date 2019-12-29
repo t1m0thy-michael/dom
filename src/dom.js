@@ -10,6 +10,8 @@ import { create } from './utils/create'
 import { isDom, isNode } from './utils/typeChecks'
 import { runAndReturnFactory } from './utils/run'
 import { registerSetter } from './utils/setters'
+import { script } from './utils/script'
+import { img } from './utils/image'
 
 import { attribute } from './methods/attributes'
 import { classes } from './methods/classes'
@@ -116,6 +118,9 @@ dom.svg = (d = {}) => dom(d, CONST.NAMESPACE_SVG)
 dom.br = (n = 1) => dom([times({ br: [] }, n)])
 dom.hr = (width = '95%') => dom({ hr: [], width })
 dom.text = (txt) => dom(document.createTextNode(txt))
+
+dom.script = script
+dom.img = img
 
 /*=======================================
 Extending functionality
