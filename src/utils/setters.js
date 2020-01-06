@@ -1,4 +1,5 @@
 import { 
+	isArray,
 	isFunction, 
 	isScalar,
 	isObject,
@@ -36,11 +37,17 @@ export const call_dom_fn = (method, key) =>
 export const content = (o, d, ns = CONST.NAMESPACE_HTML) => {
 	const arr = makeSureItsAnArray(d.content)
 	for (let i = 0; i < arr.length; i++) {
-		const item = arr[i]
+		
+		let item = arr[i]
+
 		if (isScalar(item)) { 
 			o.element.appendChild(document.createTextNode(item))
 		} else if (item instanceof Node) {
 			o.element.appendChild(item)
+		} else if (dom.isDom(item)) {
+			for (let d = 0; d < item.list.length; d++) {
+				o.element.appendChild(dom(item.list[d], ns).element)
+			}
 		} else if (isObject(item)) {
 			o.element.appendChild(dom(item, ns).element)
 		}
