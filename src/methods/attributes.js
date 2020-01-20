@@ -1,4 +1,4 @@
-import { get, set, isUndefined } from '@t1m0thy_michael/u'
+import { get, set, isUndefined, isObject } from '@t1m0thy_michael/u'
 import {
 	runFactory,
 	runAndReturnFactory,
@@ -14,13 +14,25 @@ export const attr = (element, attr, val) => {
 	element.setAttribute(attr, String(val))
 }
 
-export const data = (element, key, val) => {
-	if (isUndefined(val)) {
-		const rtn = get(element, ['DOM', 'data', key])
-		return isUndefined(rtn) ? null : rtn
+export const data = (element, keyOrObj, val) => {
+
+	if (isObject(keyOrObj)) {
+		const obj = keyOrObj
+		for (let k in obj) {
+			element.DOM.data.set(k, obj[k])
+		}
+		
+	} else {
+		const key = keyOrObj
+		if (isUndefined(val)) {
+			const rtn = element.DOM.data.get(key)
+			return isUndefined(rtn) ? null : rtn
+		}
+		element.DOM.data.set(key, val)
+
 	}
-	set(element, ['DOM', 'data', key], val)
 }
+
 export const disable = (element) => element.disabled = true
 
 export const enable = (element) => element.disabled = false
