@@ -286,3 +286,14 @@ const res = d({
 }).appendTo('body')
 
 console.log(res)
+
+d({
+	input: 'placeholder',
+	on: [{
+		event: 'focusin',
+		fn: function (e) { console.log('focusin', this, e) }
+	}, {
+		event: 'focusout',
+		fn: function (e) { console.log('focusout', this, e)}
+	}]
+}).appendTo('body')

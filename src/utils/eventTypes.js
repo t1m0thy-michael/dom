@@ -15,6 +15,8 @@ export const EventTypes = {
 	drop: {},
 	error: {},
 	focus: {},
+	focusin: {},
+	focusout: {},
 	input: {},
 	invalid: {},
 	keydown: {},
