@@ -46,6 +46,6 @@
     "webpack-dev-server": "^3.9.0"
   },
   "dependencies": {
-    "@t1m0thy_michael/u": "^0.0.7"
+    "@t1m0thy_michael/u": "0.0.10"
   }
 }
