@@ -109,6 +109,16 @@ describe('attributes', function() {
 
 		it('returns null when value has not been set', () => {
 			const elem = document.createElement('div')
+			// DOM info object
+			elem.DOM = {
+				data: new Map(),
+				def: {},
+				event: {
+					subscriptions: [],
+					on: []
+				},
+				on: {}
+			}
 			const result = data(elem, 'key')
 			assert.strictEqual(result, null)
 		})
@@ -131,6 +141,16 @@ describe('attributes', function() {
 
 		it('returns expected value when setting data', () => {
 			const elem = document.createElement('div')
+			// DOM info object
+			elem.DOM = {
+				data: new Map(),
+				def: {},
+				event: {
+					subscriptions: [],
+					on: []
+				},
+				on: {}
+			}
 			data(elem, 'key', 'value')
 			const result = data(elem, 'key', 'value')
 			assert.equal(result, undefined)
