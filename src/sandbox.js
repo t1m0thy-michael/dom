@@ -1,9 +1,11 @@
 import e from '@t1m0thy_michael/e'
 import d from './index'
+import u from '@t1m0thy_michael/u'
 
 d.setEventbus(e)
 window.e = e
 
+window.u = u
 // const createThingToClick = (txt, cls) => d({
 // 	p: txt,
 // 	classes: cls,
@@ -296,4 +298,70 @@ d({
 		event: 'focusout',
 		fn: function (e) { console.log('focusout', this, e)}
 	}]
+}).appendTo('body')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const DEFAULT_MS = 5000
+
+
+// const store = []
+
+const inputMs = d({
+	input: DEFAULT_MS,
+	type: 'number',
+	name: 'inputMs'
+})
+
+const filterCtxSelect = d({
+	select: {
+		live: 1,
+		replay: 2,
+	},
+	name: 'filterCtx',
+})
+
+const filterTypeSelect = d({
+	select: {
+		fx: 3,
+		idx: 4,
+		commodity: 5,
+	},
+	name: 'filterData',
+	attr: {
+		multiple: true
+	}
+})
+
+const submit = d({
+	input: 'Create',
+	type: 'submit',
+	on: [{
+		event: 'click',
+		fn: function () {
+
+			console.log(this.formValues())
+		}
+	}]
+})
+
+d({
+	form: [
+		inputMs,
+		filterCtxSelect,
+		filterTypeSelect,
+		submit,
+	]
 }).appendTo('body')

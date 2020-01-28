@@ -91,16 +91,27 @@ export const formValues = (element) => {
 		if (!item.name) return
 		const dItem = dom(item)
 		const validateFn = dItem.data('validate')
-		if (isFunction(validateFn) && !validateFn.bind(dItem)(item.value)) {
-			output.failedValidation[item.name] = item.value
+
+		let value = item.value
+
+		if (item.tagName === 'SELECT' && item.multiple) {
+			const valuesArr = []
+			for (let i = 0; i < item.selectedOptions.length; i++) {
+				valuesArr.push(item.selectedOptions[i].value)
+			}
+			value = valuesArr
 		}
 
-		output.all[item.name] = item.value
+		if (isFunction(validateFn) && !validateFn.bind(dItem)(value)) {
+			output.failedValidation[item.name] = value
+		}
+
+		output.all[item.name] = value
 
 		switch (item.tagName) {
-			case 'INPUT': output['input'][item.name] = item.value; break
-			case 'SELECT': output['select'][item.name] = item.value; break
-			case 'TEXTAREA': output['textarea'][item.name] = item.value; break
+			case 'INPUT': output['input'][item.name] = value; break
+			case 'SELECT': output['select'][item.name] = value; break
+			case 'TEXTAREA': output['textarea'][item.name] = value; break
 			default: /* nowt */
 		}
 
