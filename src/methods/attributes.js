@@ -5,13 +5,24 @@ import {
 } from '../utils/run'
 import { DOM_WONT_SET } from '../utils/errors'
 
-export const attr = (element, attr, val) => {
+export const attr = (element, keyOrObj, val) => {
+
 	if (!element.setAttribute) return null
-	if (isUndefined(val)) {
-		const rtn = element.getAttribute(attr)
-		return isUndefined(rtn) ? null : rtn
+
+	if (isObject(keyOrObj)) {
+		const obj = keyOrObj
+		for (let k in obj) {
+			element.setAttribute(k, obj[k])
+		}
+
+	} else {
+		const key = keyOrObj
+		if (isUndefined(val)) {
+			const rtn = element.getAttribute(key)
+			return isUndefined(rtn) ? null : rtn
+		}
+		element.setAttribute(key, val)
 	}
-	element.setAttribute(attr, String(val))
 }
 
 export const data = (element, keyOrObj, val) => {

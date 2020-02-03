@@ -303,9 +303,14 @@ d({
 
 
 
+d('body').attr({ test: 1, test2: 2 })
+d('body').attr({ test: 1, test2: 666 })
 
 
+d('body').attr('test', 'changed')
 
+
+console.log(d('body').attr('test'))
 
 
 
