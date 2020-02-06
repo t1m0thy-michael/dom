@@ -1,8 +1,8 @@
 import { runFactory, runAndReturnFactory } from '../utils/run'
-import { isDomElement, isOption, isSelect } from '../utils/typeChecks'
+import { isOption, isSelect } from '../utils/typeChecks'
 import { dom } from '../dom'
 
-import { isUndefined, isFunction, isObject, makeSureItsAnArray} from '@t1m0thy_michael/u'
+import { isUndefined, isFunction, isObject, isArray} from '@t1m0thy_michael/u'
 
 export const value = (element, val) => {
 	if (isUndefined(val)) return element.value
@@ -51,12 +51,13 @@ export const deselect = (element) => {
 export const updateSelect = (element, d) => {
 	if (!isFunction(element.add)) return
 
-	dom(element).empty()
+	const dElem = dom(element)
+	dElem.empty()
 
 	let dflt
 	if (d.dflt) {
 		dflt = isFunction(d.dflt) ? d.dflt() : d.dflt
-		element.DOM.data['dault'] = d.dflt
+		dElem.data('default', d.dflt)
 	}
 
 	if (isObject(d.options)) {
@@ -67,6 +68,17 @@ export const updateSelect = (element, d) => {
 			if (dflt === opt.value)	opt.selected = true
 			element.add(opt, null)
 		})
+	}
+
+	if (isArray(d.options)) {
+
+		const frag = new DocumentFragment()
+
+		for (let i in d.options) {
+			dom(d.options[i]).appendTo(frag)
+		}
+
+		element.appendChild(frag)
 	}
 }
 

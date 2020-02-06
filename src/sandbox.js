@@ -370,3 +370,79 @@ d({
 		submit,
 	]
 }).appendTo('body')
+
+
+
+
+
+
+const def = {
+	id: 'testselect',
+	select: [
+		{ 
+			optgroup: [
+				{ option: 'label1', value: 1, style: { color: '#f00' } },
+				{ option: 'label2', value: 2, attr: {test: 'testing'} },
+				{ option: 'label3', value: 3, classes: ['red'] },
+				{
+					optgroup: [
+						{ option: 'label1', value: 1, style: { color: '#f00' } },
+						{ option: 'label2', value: 2, attr: { test: 'testing' } },
+						{ option: 'label3', value: 3, classes: ['red'] },
+					]
+				},
+			]
+		},
+		{ option: 'label4', value: 5 },
+		{ option: 'label5', value: 6 },
+		{ option: 'label6', value: 6 },
+		{
+			optgroup: [
+				{ option: 'label7', value: 7 },
+				{ option: 'label8', value: 8 },
+				{ option: 'label9', value: 9 },
+			]
+		},
+	]
+}
+
+d(def).appendTo('body')
+
+const def2 = {
+	id: 'testselect2',
+	select: {
+		one: 1,
+		two: 2,
+		three: 3
+	}
+}
+
+d(def2).appendTo('body')
+
+d('#testselect2').updateSelect({ options: [
+	{
+		optgroup: [
+			{ option: 'label1', value: 1, style: { color: '#f00' } },
+			{ option: 'label2', value: 2, attr: { test: 'testing' } },
+			{ option: 'label3', value: 3, classes: ['red'] },
+			{
+				optgroup: [
+					{ option: 'label1', value: 1, style: { color: '#f00' } },
+					{ option: 'label2', value: 2, attr: { test: 'testing' } },
+					{ option: 'label3', value: 3, classes: ['red'] },
+				]
+			},
+		]
+	},
+	{ option: 'label4', value: 5 },
+	{ option: 'label5', value: 6 },
+	{ option: 'label6', value: 6 },
+	{
+		optgroup: [
+			{ option: 'label7', value: 7 },
+			{ option: 'label8', value: 8 },
+			{ option: 'label9', value: 9 },
+		]
+	},
+]
+})
