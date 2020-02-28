@@ -51,7 +51,6 @@ export const tags = {
 		code: { t: HTML },
 		col: { t: HTML },
 		colgroup: { t: HTML },
-		data: { t: HTML },
 		datalist: { t: HTML },
 		dd: { t: HTML },
 		del: { t: HTML },
