@@ -141,7 +141,7 @@ dom.setEventbus = (eb) => getPrototype().eventbus = eb
 dom.getEventbus = () => getPrototype().eventbus
 
 // enforce singleton 
-const gbl = globalThis || window || self || global || {} // node and browser compatible
+const gbl = window || self || global || {} // node and browser compatible
 if (!gbl.d) {
 	gbl.d = dom
 }
